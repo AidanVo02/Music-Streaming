@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signal Onyx — Library</title>
+  <link rel="stylesheet" href="/src/css/base.css">
+  <link rel="stylesheet" href="/src/css/components.css">
+  <link rel="stylesheet" href="/src/css/layout.css">
+  <link rel="stylesheet" href="/src/css/pages/library.css">
+</head>
+<body>
+  <div id="modal-overlay" class="modal-overlay">
+    <div class="modal" id="modal-content"></div>
+  </div>
+
+  <div class="page-body">
+    <div class="page-wrap">
+      <div class="page-header">
+        <h1>LIBRARY</h1>
+        <p>All artists and tracks in the Signal Onyx catalog</p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="lib-tabs">
+        <button class="lib-tab active" data-tab="artists">Artists</button>
+        <button class="lib-tab" data-tab="tracks">Tracks</button>
+      </div>
+
+      <div id="artists-panel" class="lib-panel active">
+        <div class="loading-state"><div class="spinner"></div></div>
+      </div>
+      <div id="tracks-panel" class="lib-panel">
+        <div class="loading-state"><div class="spinner"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/js/pages/library.js"></script>
+</body>
+</html>

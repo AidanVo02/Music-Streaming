@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signal Onyx — Home</title>
+  <link rel="stylesheet" href="/src/css/base.css">
+  <link rel="stylesheet" href="/src/css/components.css">
+  <link rel="stylesheet" href="/src/css/layout.css">
+  <link rel="stylesheet" href="/src/css/pages/home.css">
+</head>
+<body>
+  <div id="modal-overlay" class="modal-overlay">
+    <div class="modal" id="modal-content"></div>
+  </div>
+
+  <div class="page-body">
+    <div class="page-wrap">
+      <!-- Hero -->
+      <section class="hero">
+        <div class="hero-badge">🔴 LIVE BROADCAST</div>
+        <h1 class="hero-title">THE FREQUENCY<br><span>OF MASTERS</span></h1>
+        <p class="hero-sub">High-fidelity electronic music. Curated signals from the underground.</p>
+        <div class="hero-actions">
+          <a href="/discovery.html" class="btn btn-primary">Explore Discovery</a>
+          <a href="/library.html"   class="btn btn-secondary">Browse Library</a>
+        </div>
+      </section>
+
+      <!-- Top Tracks -->
+      <section class="section">
+        <div class="section-header">
+          <span class="section-title">TOP SIGNALS</span>
+          <a href="/discovery.html" class="btn btn-secondary btn-sm">View All</a>
+        </div>
+        <div id="top-tracks" class="tracks-grid">
+          <div class="loading-state"><div class="spinner"></div></div>
+        </div>
+      </section>
+
+      <!-- Genres -->
+      <section class="section">
+        <div class="section-header">
+          <span class="section-title">BROWSE BY GENRE</span>
+        </div>
+        <div id="genre-chips" class="genre-chips">
+          <div class="loading-state"><div class="spinner"></div></div>
+        </div>
+      </section>
+
+      <!-- Artists -->
+      <section class="section">
+        <div class="section-header">
+          <span class="section-title">FEATURED ARTISTS</span>
+          <a href="/library.html" class="btn btn-secondary btn-sm">All Artists</a>
+        </div>
+        <div id="artists-grid" class="artists-grid">
+          <div class="loading-state"><div class="spinner"></div></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script type="module" src="/src/js/pages/home.js"></script>
+</body>
+</html>

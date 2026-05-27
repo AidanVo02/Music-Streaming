@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signal Onyx — Create Account</title>
+  <link rel="stylesheet" href="/src/css/base.css">
+  <link rel="stylesheet" href="/src/css/components.css">
+  <link rel="stylesheet" href="/src/css/layout.css">
+  <link rel="stylesheet" href="/src/css/pages/auth.css">
+</head>
+<body class="auth-page">
+  <div class="auth-wrap">
+    <a href="/index.html" class="auth-logo">
+      <svg width="48" height="48" viewBox="0 0 60 60" fill="none">
+        <rect width="60" height="60" rx="12" fill="#ff8000"/>
+        <path d="M20 30L30 20L40 30L30 40L20 30Z" fill="#000"/>
+      </svg>
+      <span>SIGNAL ONYX</span>
+    </a>
+
+    <div class="auth-card">
+      <h2 class="auth-title">Initialize Account</h2>
+      <p class="auth-sub">PROTOCOL ALPHA — JOIN THE STUDIO</p>
+
+      <form id="register-form" class="auth-form">
+        <div class="input-group">
+          <label>OPERATOR NAME</label>
+          <input class="input" type="text" id="username" placeholder="Username" required>
+        </div>
+        <div class="input-group">
+          <label>SIGNAL CHANNEL</label>
+          <input class="input" type="email" id="email" placeholder="Email address" required>
+        </div>
+        <div class="input-group">
+          <label>ACCESS KEY</label>
+          <div class="input-eye">
+            <input class="input" type="password" id="password" placeholder="••••••••" required>
+            <button type="button" class="eye-btn" id="toggle-pw">👁</button>
+          </div>
+        </div>
+
+        <!-- Password strength -->
+        <div class="strength-wrap">
+          <div class="strength-bar"><div id="strength-fill" class="strength-fill"></div></div>
+          <span id="strength-label" class="strength-label">PENDING INITIALIZATION</span>
+        </div>
+
+        <div id="register-error" class="auth-error hidden"></div>
+
+        <button type="submit" class="btn btn-primary btn-full" id="register-btn">
+          JOIN THE STUDIO →
+        </button>
+      </form>
+
+      <div class="auth-divider">or</div>
+
+      <a href="/login.html" class="btn btn-secondary btn-full">
+        ALREADY HAVE AN ACCOUNT? SIGN IN
+      </a>
+    </div>
+  </div>
+
+  <script type="module" src="/src/js/pages/register.js"></script>
+</body>
+</html>

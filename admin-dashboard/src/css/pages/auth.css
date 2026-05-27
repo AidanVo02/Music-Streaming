@@ -1,0 +1,18 @@
+.auth-page { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; }
+.auth-wrap { width: 100%; max-width: 420px; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
+.auth-logo { display: flex; align-items: center; gap: 0.75rem; font-weight: 900; font-size: 1.3rem; letter-spacing: 2px; color: var(--orange); font-style: italic; }
+.auth-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; width: 100%; }
+.auth-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.25rem; }
+.auth-sub { font-size: 0.78rem; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 1.5rem; }
+.auth-form { display: flex; flex-direction: column; gap: 1rem; }
+.auth-error { color: var(--error); font-size: 0.85rem; padding: 0.75rem; background: rgba(255,68,68,0.1); border-radius: var(--radius-sm); border: 1px solid rgba(255,68,68,0.3); }
+.auth-divider { text-align: center; color: var(--text-muted); font-size: 0.85rem; position: relative; width: 100%; }
+.auth-divider::before, .auth-divider::after { content:''; position:absolute; top:50%; width:45%; height:1px; background:var(--border); }
+.auth-divider::before { left:0; } .auth-divider::after { right:0; }
+.input-eye { position: relative; display: flex; align-items: center; }
+.input-eye .input { flex: 1; padding-right: 3rem; }
+.eye-btn { position: absolute; right: 0.75rem; background: none; border: none; color: var(--text-muted); font-size: 1rem; cursor: pointer; }
+.strength-wrap { display: flex; flex-direction: column; gap: 0.4rem; }
+.strength-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.strength-fill { height: 100%; border-radius: 2px; transition: width 0.3s, background 0.3s; width: 0; }
+.strength-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; color: var(--text-muted); }

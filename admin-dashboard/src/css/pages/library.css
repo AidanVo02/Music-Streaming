@@ -1,0 +1,14 @@
+.lib-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+.lib-tab { background: none; border: none; color: var(--text-sec); padding: 0.75rem 1.5rem; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.5px; border-bottom: 2px solid transparent; transition: all var(--transition); }
+.lib-tab:hover { color: var(--text); }
+.lib-tab.active { color: var(--orange); border-bottom-color: var(--orange); }
+.lib-panel { display: none; }
+.lib-panel.active { display: block; }
+.artists-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.25rem; }
+.artist-card { text-align: center; }
+.artist-img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 50%; border: 2px solid var(--border); margin-bottom: 0.75rem; }
+.artist-img-placeholder { width: 100%; aspect-ratio: 1; border-radius: 50%; background: var(--bg-hover); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 700; color: var(--orange); margin-bottom: 0.75rem; }
+.artist-name { font-weight: 700; font-size: 1rem; margin-bottom: 0.4rem; }
+.artist-bio { font-size: 0.82rem; color: var(--text-muted); line-height: 1.4; }
+.tracks-list { display: flex; flex-direction: column; gap: 0.25rem; }
+.track-num { width: 32px; text-align: center; color: var(--text-muted); font-size: 0.85rem; flex-shrink: 0; }

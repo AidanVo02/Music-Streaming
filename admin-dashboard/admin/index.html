@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signal Onyx — Admin</title>
+  <link rel="stylesheet" href="/src/css/base.css">
+  <link rel="stylesheet" href="/src/css/components.css">
+  <link rel="stylesheet" href="/src/css/layout.css">
+  <link rel="stylesheet" href="/src/css/pages/admin.css">
+</head>
+<body>
+  <div id="modal-overlay" class="modal-overlay">
+    <div class="modal" id="modal-content"></div>
+  </div>
+
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <svg width="32" height="32" viewBox="0 0 60 60" fill="none">
+          <rect width="60" height="60" rx="12" fill="#ff8000"/>
+          <path d="M20 30L30 20L40 30L30 40L20 30Z" fill="#000"/>
+        </svg>
+        <span>ADMIN</span>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="sidebar-link active" data-view="overview">
+          <span class="icon">📊</span> Overview
+        </a>
+        <a href="#" class="sidebar-link" data-view="users">
+          <span class="icon">👥</span> Users
+        </a>
+        <a href="#" class="sidebar-link" data-view="tracks">
+          <span class="icon">🎵</span> Tracks
+        </a>
+        <a href="#" class="sidebar-link" data-view="applications">
+          <span class="icon">📝</span> Applications
+          <span id="pending-badge" class="badge badge-pending hidden" style="margin-left:auto;font-size:0.7rem">0</span>
+        </a>
+        <a href="#" class="sidebar-link" data-view="settings">
+          <span class="icon">⚙️</span> Settings
+        </a>
+        <div style="border-top:1px solid var(--border);margin:0.5rem 0"></div>
+        <a href="/index.html" class="sidebar-link">
+          <span class="icon">🌐</span> View Website
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div id="admin-user-info" style="font-size:0.82rem;color:var(--text-muted);margin-bottom:0.75rem"></div>
+        <button class="btn btn-secondary btn-full btn-sm" id="admin-logout">Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="admin-main">
+      <header class="admin-topbar">
+        <h1 id="page-title">Overview</h1>
+        <div style="display:flex;align-items:center;gap:1rem">
+          <span id="admin-name" class="badge badge-admin"></span>
+          <button class="btn btn-secondary btn-sm" onclick="location.reload()">↻ Refresh</button>
+        </div>
+      </header>
+
+      <div class="admin-content">
+        <!-- Overview -->
+        <div id="overview-view" class="admin-view active">
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-icon">👥</div><div><div class="stat-value" id="stat-users">—</div><div class="stat-label">Total Users</div></div></div>
+            <div class="stat-card"><div class="stat-icon">🎵</div><div><div class="stat-value" id="stat-tracks">—</div><div class="stat-label">Total Tracks</div></div></div>
+            <div class="stat-card"><div class="stat-icon">🎨</div><div><div class="stat-value" id="stat-artists">—</div><div class="stat-label">Artists</div></div></div>
+            <div class="stat-card"><div class="stat-icon">📝</div><div><div class="stat-value" id="stat-pending">—</div><div class="stat-label">Pending Applications</div></div></div>
+          </div>
+          <div class="section">
+            <div class="section-header"><span class="section-title">Recent Activity</span></div>
+            <div class="card" id="activity-list"><div class="loading-state"><div class="spinner"></div></div></div>
+          </div>
+        </div>
+
+        <!-- Users -->
+        <div id="users-view" class="admin-view">
+          <div class="filter-bar">
+            <input class="input" type="text" id="user-search" placeholder="Search users...">
+            <select class="input" id="role-filter">
+              <option value="">All Roles</option>
+              <option value="user">User</option>
+              <option value="artist">Artist</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <div class="card" id="users-table"><div class="loading-state"><div class="spinner"></div></div></div>
+        </div>
+
+        <!-- Tracks -->
+        <div id="tracks-view" class="admin-view">
+          <div class="filter-bar">
+            <input class="input" type="text" id="track-search" placeholder="Search tracks...">
+            <select class="input" id="genre-filter"><option value="">All Genres</option></select>
+          </div>
+          <div class="card" id="tracks-table"><div class="loading-state"><div class="spinner"></div></div></div>
+        </div>
+
+        <!-- Applications -->
+        <div id="applications-view" class="admin-view">
+          <div class="filter-bar">
+            <select class="input" id="status-filter">
+              <option value="">All</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+          <div class="card" id="applications-table"><div class="loading-state"><div class="spinner"></div></div></div>
+        </div>
+
+        <!-- Settings -->
+        <div id="settings-view" class="admin-view">
+          <div class="card" style="max-width:560px">
+            <h3 style="margin-bottom:1.5rem;color:var(--orange)">System Settings</h3>
+            <div class="input-group" style="margin-bottom:1.5rem">
+              <label>Backend API URL</label>
+              <input class="input" type="text" id="api-endpoint">
+              <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.4rem">Change this if your server IP changes</p>
+            </div>
+            <div style="display:flex;gap:0.75rem">
+              <button class="btn btn-primary" onclick="saveSettings()">Save</button>
+              <button class="btn btn-secondary" onclick="resetSettings()">Reset Default</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/js/pages/admin.js"></script>
+</body>
+</html>

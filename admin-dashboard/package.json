@@ -1,0 +1,17 @@
+{
+  "name": "oscstation-admin-dashboard",
+  "version": "1.0.0",
+  "description": "Admin Dashboard for OscStation",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}

@@ -1,0 +1,2 @@
+.admin-view { display: none; }
+.admin-view.active { display: block; }

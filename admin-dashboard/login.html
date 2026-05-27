@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signal Onyx — Login</title>
+  <link rel="stylesheet" href="/src/css/base.css">
+  <link rel="stylesheet" href="/src/css/components.css">
+  <link rel="stylesheet" href="/src/css/layout.css">
+  <link rel="stylesheet" href="/src/css/pages/auth.css">
+</head>
+<body class="auth-page">
+  <div class="auth-wrap">
+    <a href="/index.html" class="auth-logo">
+      <svg width="48" height="48" viewBox="0 0 60 60" fill="none">
+        <rect width="60" height="60" rx="12" fill="#ff8000"/>
+        <path d="M20 30L30 20L40 30L30 40L20 30Z" fill="#000"/>
+      </svg>
+      <span>SIGNAL ONYX</span>
+    </a>
+
+    <div class="auth-card">
+      <h2 class="auth-title">Access Terminal</h2>
+      <p class="auth-sub">AUTHENTICATION PROTOCOL REQUIRED</p>
+
+      <form id="login-form" class="auth-form">
+        <div class="input-group">
+          <label>EMAIL ADDRESS</label>
+          <input class="input" type="email" id="email" placeholder="operator@signalonyx.com" required>
+        </div>
+        <div class="input-group">
+          <label>SECURITY KEY</label>
+          <div class="input-eye">
+            <input class="input" type="password" id="password" placeholder="••••••••" required>
+            <button type="button" class="eye-btn" id="toggle-pw">👁</button>
+          </div>
+        </div>
+
+        <div id="login-error" class="auth-error hidden"></div>
+
+        <button type="submit" class="btn btn-primary btn-full" id="login-btn">
+          INITIALIZE ENGINE
+        </button>
+      </form>
+
+      <div class="auth-divider">or</div>
+
+      <a href="/register.html" class="btn btn-secondary btn-full">
+        CREATE ACCOUNT
+      </a>
+    </div>
+  </div>
+
+  <script type="module" src="/src/js/pages/login.js"></script>
+</body>
+</html>
