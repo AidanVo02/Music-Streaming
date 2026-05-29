@@ -9,8 +9,10 @@ node_modules/
 # Ignore OS and editor files
 .DS_Store
 Thumbs.db
-.vscode/
 .idea/
+
+.vscode/
+.kiro/
 
 # Ignore build and runtime artifacts
 dist/
