@@ -3,7 +3,6 @@
 A full-stack music streaming platform with a modern Expo React Native frontend, Node.js/Express backend, admin dashboard, playlists, queue system, and artist management.
 
 ## 🚀 Why this project stands out
-- Crossplay-ready music streaming app for web and mobile
 - Smooth queue, playlist, and player controls
 - Artist applications with admin approval
 - Secure authentication and role-based access

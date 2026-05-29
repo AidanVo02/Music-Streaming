@@ -16,10 +16,9 @@ Database
 - Google Cloud Storage
 
 Core Features 
-1. Crossplay (Seamless Sync )
-2. Searching, Filter search
-3. Play, Pause, Next songs
-4. Login, Register User
+1. Searching, Filter search
+2. Play, Pause, Next songs
+3. Login, Register User
 
 Database Table
 1. Nhóm quản lý Nhạc:
