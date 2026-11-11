@@ -69,8 +69,8 @@ class User {
       values.push(display_name);
     }
     if (profile_pic_url !== undefined) {
-      query += 'profile_pic_url = ?, ';
-      values.push(profile_pic_url);
+      query += 'profile_pic_url = ?, avatar_url = ?, ';
+      values.push(profile_pic_url, profile_pic_url);
     }
     
     // Remove trailing comma and space

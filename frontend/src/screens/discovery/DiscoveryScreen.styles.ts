@@ -1,112 +1,121 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import THEME from '@/src/constants/theme';
 
-const ORANGE = '#ff8000';
 const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#111' },
+  container: {
+    flex: 1,
+    backgroundColor: THEME.colors.background,
+  },
 
   title: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: width * 0.08,
-    marginLeft: width * 0.05,
-    marginTop: width * 0.025,
-    marginBottom: width * 0.02,
-    letterSpacing: 1.5,
+    color: THEME.colors.textPrimary,
+    fontWeight: '800',
+    fontSize: 26,
+    marginLeft: 20,
+    marginTop: 14,
+    marginBottom: 10,
+    letterSpacing: 0.3,
   },
 
   sectionTitle: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: width * 0.045,
-    marginLeft: width * 0.05,
-    marginTop: width * 0.04,
-    marginBottom: width * 0.025,
-    letterSpacing: 1.1,
+    color: THEME.colors.textPrimary,
+    fontWeight: '700',
+    fontSize: 17,
+    marginLeft: 20,
+    marginTop: 20,
+    marginBottom: 12,
+    letterSpacing: 0.2,
   },
 
   genreChipsWrap: {
-    paddingHorizontal: width * 0.05,
-    marginBottom: width * 0.03,
+    paddingHorizontal: 20,
+    marginBottom: 16,
   },
 
   genreChip: {
-    backgroundColor: '#1a1a1a',
+    backgroundColor: THEME.colors.surfaceCard,
     borderWidth: 1,
-    borderColor: '#333',
-    borderRadius: width * 0.05,
-    paddingHorizontal: width * 0.04,
-    paddingVertical: width * 0.02,
-    marginRight: width * 0.025,
+    borderColor: THEME.colors.border,
+    borderRadius: THEME.radii.full,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    marginRight: 10,
   },
 
   genreChipActive: {
-    backgroundColor: ORANGE,
-    borderColor: ORANGE,
+    backgroundColor: THEME.colors.accent,
+    borderColor: THEME.colors.accent,
+    ...THEME.shadows.glow,
   },
 
   genreChipText: {
-    color: '#aaa',
-    fontWeight: 'bold',
-    fontSize: width * 0.032,
-    letterSpacing: 1,
+    color: THEME.colors.textSecondary,
+    fontWeight: '600',
+    fontSize: 12,
+    letterSpacing: 0.3,
   },
 
   genreChipTextActive: {
-    color: '#111',
+    color: '#fff',
+    fontWeight: '700',
   },
 
   trackCard: {
-    backgroundColor: '#181818',
-    borderRadius: width * 0.03,
-    marginHorizontal: width * 0.05,
-    marginBottom: width * 0.03,
-    padding: width * 0.03,
+    backgroundColor: THEME.colors.surfaceCard,
+    borderRadius: THEME.radii.md,
+    marginHorizontal: 16,
+    marginBottom: 10,
+    padding: 12,
     flexDirection: 'row',
     alignItems: 'center',
-    elevation: 2,
+    borderWidth: 1,
+    borderColor: THEME.colors.border,
   },
 
   trackCover: {
-    width: width * 0.15,
-    height: width * 0.15,
-    borderRadius: width * 0.02,
-    backgroundColor: '#222',
+    width: 52,
+    height: 52,
+    borderRadius: THEME.radii.sm,
+    backgroundColor: THEME.colors.surfaceSubtle,
   },
 
   trackInfo: {
     flex: 1,
-    marginLeft: width * 0.03,
+    marginLeft: 14,
   },
 
   trackTitle: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: width * 0.04,
+    color: THEME.colors.textPrimary,
+    fontWeight: '700',
+    fontSize: 14,
     marginBottom: 2,
+    letterSpacing: 0.2,
   },
 
   trackMeta: {
-    color: '#aaa',
-    fontSize: width * 0.032,
+    color: THEME.colors.textSecondary,
+    fontSize: 12,
     marginTop: 2,
   },
 
   playCountBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#222',
-    borderRadius: width * 0.03,
-    paddingHorizontal: width * 0.025,
-    paddingVertical: width * 0.015,
+    backgroundColor: THEME.colors.surfaceSubtle,
+    borderRadius: THEME.radii.full,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderWidth: 1,
+    borderColor: THEME.colors.borderHighlight,
     gap: 4,
   },
 
   playCountText: {
-    color: ORANGE,
-    fontWeight: 'bold',
-    fontSize: width * 0.03,
+    color: THEME.colors.accent,
+    fontWeight: '700',
+    fontSize: 11,
   },
 
   centered: {
@@ -116,79 +125,88 @@ const styles = StyleSheet.create({
   },
 
   emptyText: {
-    color: '#555',
-    fontSize: width * 0.038,
+    color: THEME.colors.textMuted,
+    fontSize: 13,
     marginTop: 10,
+    fontStyle: 'italic',
   },
 
   // --- Search Styles ---
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1a1a1a',
-    marginHorizontal: width * 0.05,
-    borderRadius: width * 0.02,
-    paddingHorizontal: width * 0.03,
-    marginBottom: width * 0.04,
-    height: width * 0.12,
+    backgroundColor: THEME.colors.surfaceCard,
+    marginHorizontal: 16,
+    borderRadius: THEME.radii.full,
+    paddingHorizontal: 16,
+    marginBottom: 16,
+    height: 48,
+    borderWidth: 1,
+    borderColor: THEME.colors.borderHighlight,
   },
   searchIcon: {
-    marginRight: width * 0.02,
+    marginRight: 10,
   },
   searchInput: {
     flex: 1,
-    color: '#fff',
-    fontSize: width * 0.04,
+    color: THEME.colors.textPrimary,
+    fontSize: 14,
     height: '100%',
   },
   clearButton: {
-    padding: width * 0.02,
+    padding: 6,
   },
   horizontalList: {
-    paddingLeft: width * 0.05,
-    paddingRight: width * 0.01,
+    paddingLeft: 20,
+    paddingRight: 8,
   },
-  
+
   // Artist Result Card
   artistSearchCard: {
-    width: width * 0.28,
-    marginRight: width * 0.04,
+    width: 100,
+    marginRight: 14,
     alignItems: 'center',
   },
   artistSearchImg: {
-    width: width * 0.28,
-    height: width * 0.28,
-    borderRadius: (width * 0.28) / 2,
+    width: 90,
+    height: 90,
+    borderRadius: 45,
     marginBottom: 8,
-    backgroundColor: '#222',
+    backgroundColor: THEME.colors.surfaceCard,
+    borderWidth: 1,
+    borderColor: THEME.colors.borderHighlight,
   },
   artistSearchName: {
-    color: '#fff',
+    color: THEME.colors.textPrimary,
     fontWeight: '600',
-    fontSize: width * 0.035,
+    fontSize: 12,
     textAlign: 'center',
+    letterSpacing: 0.2,
   },
 
   // Playlist Result Card
   playlistSearchCard: {
-    width: width * 0.4,
-    marginRight: width * 0.04,
+    width: 140,
+    marginRight: 14,
   },
   playlistSearchImg: {
     width: '100%',
     aspectRatio: 1,
-    borderRadius: 12,
+    borderRadius: THEME.radii.md,
     marginBottom: 8,
-    backgroundColor: '#222',
+    backgroundColor: THEME.colors.surfaceCard,
+    borderWidth: 1,
+    borderColor: THEME.colors.border,
   },
   playlistSearchTitle: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: width * 0.038,
+    color: THEME.colors.textPrimary,
+    fontWeight: '700',
+    fontSize: 13,
+    letterSpacing: 0.2,
   },
   playlistSearchSub: {
-    color: '#aaa',
-    fontSize: width * 0.03,
+    color: THEME.colors.textSecondary,
+    fontSize: 12,
     marginTop: 2,
   },
 });

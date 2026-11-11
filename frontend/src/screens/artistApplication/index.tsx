@@ -16,9 +16,9 @@ import styles from './artistApplication.styles';
 import AppBar from '@/src/components/appBar';
 import { useAuth } from '@/src/hooks/useAuth';
 import ApiService from '@/src/server/apiService';
+import { ORANGE } from '@/src/constants/theme';
 
 const { width } = Dimensions.get('window');
-const ORANGE = '#ff8000';
 
 const ArtistApplicationScreen = () => {
   const router = useRouter();

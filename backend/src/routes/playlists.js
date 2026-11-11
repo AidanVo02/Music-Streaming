@@ -1,6 +1,6 @@
 const express = require('express');
 const PlaylistController = require('../controllers/PlaylistController');
-const { authenticate } = require('../middleware/auth');
+const { authenticate, optionalAuthenticate } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -21,6 +21,6 @@ router.delete('/:playlist_id/tracks/:track_id', authenticate, PlaylistController
 router.put('/:playlist_id/tracks/reorder', authenticate, PlaylistController.reorderTracks);
 
 // ─── GET PLAYLIST BY ID (must be last to avoid conflicts) ─────────────────
-router.get('/:playlist_id', PlaylistController.getPlaylistById);
+router.get('/:playlist_id', optionalAuthenticate, PlaylistController.getPlaylistById);
 
 module.exports = router;

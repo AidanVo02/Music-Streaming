@@ -1,12 +1,13 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import THEME from '@/src/constants/theme';
 
 const { width } = Dimensions.get('window');
-const ORANGE = '#ff8000';
+const ORANGE = THEME.colors.accent;
 
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0d0d0d',
+    backgroundColor: THEME.colors.background,
   },
   centerContainer: {
     flex: 1,
@@ -15,14 +16,17 @@ export default StyleSheet.create({
     gap: 16,
   },
   header: {
-    padding: width * 0.05,
-    gap: width * 0.04,
+    padding: 20,
+    gap: 16,
   },
   coverImage: {
     width: '100%',
     aspectRatio: 1,
-    borderRadius: width * 0.03,
-    backgroundColor: '#1a1a1a',
+    borderRadius: THEME.radii.xl,
+    backgroundColor: THEME.colors.surfaceCard,
+    borderWidth: 1,
+    borderColor: THEME.colors.borderHighlight,
+    ...THEME.shadows.diffuse,
   },
   headerInfo: {
     gap: width * 0.02,
@@ -69,15 +73,15 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: width * 0.02,
-    backgroundColor: '#1a1a1a',
+    backgroundColor: THEME.colors.surfaceCard,
     paddingHorizontal: width * 0.05,
     paddingVertical: width * 0.03,
-    borderRadius: width * 0.02,
+    borderRadius: THEME.radii.full,
     borderWidth: 1,
-    borderColor: '#333',
+    borderColor: THEME.colors.border,
   },
   actionButtonText: {
-    color: '#fff',
+    color: THEME.colors.textPrimary,
     fontSize: width * 0.035,
     fontWeight: '700',
     letterSpacing: 0.5,
@@ -89,7 +93,7 @@ export default StyleSheet.create({
   sectionTitle: {
     fontSize: width * 0.032,
     fontWeight: '800',
-    color: '#888',
+    color: THEME.colors.textMuted,
     letterSpacing: 1.5,
     marginBottom: width * 0.03,
   },
@@ -107,7 +111,7 @@ export default StyleSheet.create({
   },
   trackPosition: {
     fontSize: width * 0.035,
-    color: '#666',
+    color: THEME.colors.textMuted,
     fontWeight: '700',
     width: width * 0.06,
     textAlign: 'center',
@@ -115,8 +119,8 @@ export default StyleSheet.create({
   trackCover: {
     width: width * 0.13,
     height: width * 0.13,
-    borderRadius: width * 0.015,
-    backgroundColor: '#1a1a1a',
+    borderRadius: THEME.radii.sm,
+    backgroundColor: THEME.colors.surfaceCard,
   },
   trackInfo: {
     flex: 1,

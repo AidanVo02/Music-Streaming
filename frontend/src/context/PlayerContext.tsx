@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useRef, useCallback, useEffect } from 'react';
-import { Audio } from 'expo-av';
+import { createAudioPlayer, setAudioModeAsync, AudioPlayer, AudioStatus } from 'expo-audio';
 import { API_BASE_URL } from '@/src/server/apiConfig';
 
 export interface PlayerTrack {
@@ -38,12 +38,13 @@ const HISTORY_TRIM_TO = 500; // Keep this many tracks when limit reached
 const HISTORY_THRESHOLD = 0.1; // Add to history when played >10% of track
 
 export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
-  const soundRef    = useRef<Audio.Sound | null>(null);
-  const rafRef      = useRef<number | null>(null);
-  const lastSyncRef = useRef({ positionMs: 0, timestampMs: 0, isPlaying: false });
+  const playerRef       = useRef<AudioPlayer | null>(null);
+  const subscriptionRef = useRef<{ remove: () => void } | null>(null);
+  const rafRef          = useRef<number | null>(null);
+  const lastSyncRef     = useRef({ positionMs: 0, timestampMs: 0, isPlaying: false });
   const currentTrackRef = useRef<PlayerTrack | null>(null);  // Ref to track current track
   const addedToHistoryRef = useRef(false); // Track if current track was added to history
-  const playTokenRef = useRef(0); // Token to prevent race conditions during track loading
+  const playTokenRef    = useRef(0); // Token to prevent race conditions during track loading
 
   const [currentTrack, setCurrentTrack] = useState<PlayerTrack | null>(null);
   const [isPlaying,    setIsPlaying]    = useState(false);
@@ -117,12 +118,21 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
-  // ── Unload current sound ─────────────────────────────────────────────────
+  // ── Unload current player ────────────────────────────────────────────────
   const unloadSound = useCallback(async () => {
     stopRaf();
-    if (soundRef.current) {
-      await soundRef.current.unloadAsync();
-      soundRef.current = null;
+    if (subscriptionRef.current) {
+      try {
+        subscriptionRef.current.remove();
+      } catch {}
+      subscriptionRef.current = null;
+    }
+    if (playerRef.current) {
+      try {
+        playerRef.current.pause();
+        playerRef.current.remove();
+      } catch {}
+      playerRef.current = null;
     }
     lastSyncRef.current = { positionMs: 0, timestampMs: 0, isPlaying: false };
   }, [stopRaf]);
@@ -142,7 +152,7 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoading(true);
     setIsPlaying(false);
     setPosition(0);
-    setDuration(0);
+    setDuration((track.duration ?? 0) * 1000);
     setIsTrackEnded(false);
 
     const rawUrl = track.audio_url ?? track.file_path ?? '';
@@ -156,58 +166,74 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     try {
-      await Audio.setAudioModeAsync({
-        playsInSilentModeIOS:    true,
-        staysActiveInBackground: true,
-      });
+      try {
+        await setAudioModeAsync({
+          playsInSilentMode: true,
+          shouldPlayInBackground: true,
+        });
+      } catch {}
 
-      // Avoid creating sound if another track is already requested
+      // Avoid creating player if another track is already requested
       if (currentToken !== playTokenRef.current) return;
 
-      const { sound } = await Audio.Sound.createAsync(
-        { uri: url },
-        { shouldPlay: true, progressUpdateIntervalMillis: 100 },
-        (status) => {
-          if (!status.isLoaded) return;
-          
-          // Only sync state if this token is actually the currently active one (prevents memory leak and TDZ error on Web)
-          if (playTokenRef.current !== currentToken) return;
+      const player = createAudioPlayer(url, {
+        updateInterval: 100,
+      });
 
-          lastSyncRef.current = {
-            positionMs:  status.positionMillis ?? 0,
-            timestampMs: performance.now(),
-            isPlaying:   status.isPlaying,
-          };
-
-          setIsPlaying(status.isPlaying);
-          setDuration(status.durationMillis ?? 0);
-          setIsLoading(false);
-
-          if (!status.isPlaying) {
-            stopRaf();
-            setPosition(status.positionMillis ?? 0);
-          } else {
-            startRaf();
-          }
-
-          if (status.didJustFinish) {
-            stopRaf();
-            setIsPlaying(false);
-            setPosition(0);
-            setIsTrackEnded(true);
-            lastSyncRef.current = { positionMs: 0, timestampMs: 0, isPlaying: false };
-            soundRef.current?.setPositionAsync(0);
-          }
-        }
-      );
-
-      // If a newer track was requested while createAsync was running, unload this orphaned sound
+      // If a newer track was requested while createAudioPlayer was running, remove this player
       if (currentToken !== playTokenRef.current) {
-        await sound.unloadAsync();
+        player.remove();
         return;
       }
 
-      soundRef.current = sound;
+      playerRef.current = player;
+
+      const sub = player.addListener('playbackStatusUpdate', (status: AudioStatus) => {
+        // Only sync state if this token is actually the currently active one
+        if (playTokenRef.current !== currentToken) return;
+
+        const posMs = (status.currentTime ?? 0) * 1000;
+        const durMs = (status.duration ?? 0) * 1000;
+
+        lastSyncRef.current = {
+          positionMs:  posMs,
+          timestampMs: performance.now(),
+          isPlaying:   status.playing,
+        };
+
+        setIsPlaying(status.playing);
+        if (durMs > 0) {
+          setDuration(durMs);
+        }
+        if (status.isLoaded) {
+          setIsLoading(false);
+        }
+        if (status.error) {
+          setIsLoading(false);
+        }
+
+        if (!status.playing) {
+          stopRaf();
+          setPosition(posMs);
+        } else {
+          startRaf();
+        }
+
+        if (status.didJustFinish) {
+          stopRaf();
+          setIsPlaying(false);
+          setPosition(0);
+          setIsTrackEnded(true);
+          lastSyncRef.current = { positionMs: 0, timestampMs: 0, isPlaying: false };
+          try {
+            player.seekTo(0);
+          } catch {}
+        }
+      });
+
+      subscriptionRef.current = sub;
+
+      player.play();
     } catch {
       // Check if we are still active before setting loading to false
       if (currentToken === playTokenRef.current) {
@@ -218,27 +244,41 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
 
   // ── Toggle play/pause ────────────────────────────────────────────────────
   const togglePlay = useCallback(async () => {
-    if (!soundRef.current) return;
+    if (!playerRef.current) return;
     try {
       if (isPlaying) {
-        await soundRef.current.pauseAsync();
+        playerRef.current.pause();
       } else {
-        await soundRef.current.playAsync();
+        playerRef.current.play();
       }
-    } catch {}
+    } catch (err) {
+      console.warn('togglePlay error:', err);
+    }
   }, [isPlaying]);
 
   // ── Seek ─────────────────────────────────────────────────────────────────
   const seekTo = useCallback(async (ms: number) => {
+    if (!Number.isFinite(ms) || !Number.isFinite(duration) || duration <= 0) {
+      return;
+    }
     const clamped = Math.max(0, Math.min(ms, duration));
+    if (!Number.isFinite(clamped)) return;
+
     setPosition(clamped);
     lastSyncRef.current = {
       positionMs:  clamped,
       timestampMs: performance.now(),
       isPlaying:   lastSyncRef.current.isPlaying,
     };
-    await soundRef.current?.setPositionAsync(clamped);
+    try {
+      if (playerRef.current) {
+        await playerRef.current.seekTo(clamped / 1000);
+      }
+    } catch (err) {
+      console.warn('seekTo error:', err);
+    }
   }, [duration]);
+
 
   // ── Stop ─────────────────────────────────────────────────────────────────
   const stopPlayer = useCallback(async () => {

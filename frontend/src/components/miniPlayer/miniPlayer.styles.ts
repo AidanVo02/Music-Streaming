@@ -1,59 +1,63 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import THEME from '@/src/constants/theme';
 
-const ORANGE = '#ff8000';
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-    miniMixCard: {
+  miniMixCard: {
     flex: 1,
-    marginRight: width * 0.025,
-    backgroundColor: '#181818',
-    borderRadius: 10,
+    marginRight: 10,
+    backgroundColor: THEME.colors.surfaceCard,
+    borderRadius: THEME.radii.md,
     alignItems: 'center',
-    padding: width * 0.02,
+    padding: 8,
+    borderWidth: 1,
+    borderColor: THEME.colors.border,
   },
   miniMixImg: {
-    width: width * 0.16,
-    height: width * 0.16,
-    borderRadius: 8,
-    marginBottom: 4,
+    width: 60,
+    height: 60,
+    borderRadius: THEME.radii.sm,
+    marginBottom: 6,
   },
   miniMixTitle: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: width * 0.032,
+    color: THEME.colors.textPrimary,
+    fontWeight: '600',
+    fontSize: 12,
     textAlign: 'center',
   },
   miniPlayer: {
     position: 'absolute',
-    left: width * 0.04,
-    right: width * 0.04,
-    bottom: 70,
-    backgroundColor: '#181818',
-    borderRadius: 12,
+    left: 12,
+    right: 12,
+    bottom: 74,
+    backgroundColor: THEME.colors.surfaceCard,
+    borderRadius: THEME.radii.lg,
     flexDirection: 'row',
     alignItems: 'center',
-    padding: width * 0.03,
-    elevation: 6,
-    shadowColor: '#000',
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    borderWidth: 1,
+    borderColor: THEME.colors.borderHighlight,
+    ...THEME.shadows.floating,
   },
   miniPlayerImg: {
-    width: width * 0.12,
-    height: width * 0.12,
-    borderRadius: 8,
+    width: 44,
+    height: 44,
+    borderRadius: THEME.radii.sm,
   },
   miniPlayerTitle: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: width * 0.04,
+    color: THEME.colors.textPrimary,
+    fontWeight: '700',
+    fontSize: 14,
+    letterSpacing: 0.2,
   },
   miniPlayerSub: {
-    color: ORANGE,
-    fontSize: width * 0.03,
-    fontWeight: 'bold',
+    color: THEME.colors.accent,
+    fontSize: 11,
+    fontWeight: '600',
     marginTop: 2,
+    letterSpacing: 0.5,
   },
 });
 

@@ -5,9 +5,15 @@ import { API_BASE_URL } from './apiConfig';
 const REQUEST_TIMEOUT = 10000; // 10 seconds
 const USE_MOCK_DATA = false; // Set to true to use mock data when backend fails
 
+interface RequestOptions {
+  method?: string;
+  headers?: Record<string, string>;
+  body?: any;
+}
+
 class ApiService {
   // Generic request method
-  static async request(endpoint, options = {}) {
+  static async request(endpoint: string, options: RequestOptions = {}) {
     try {
       const url = `${API_BASE_URL}${endpoint}`;
       console.log('🌐 API Request:', { 
@@ -50,14 +56,14 @@ class ApiService {
         dataCount: Array.isArray(data.data) ? data.data.length : 1
       });
       return data;
-    } catch (error) {
-      if (error.name === 'AbortError') {
+    } catch (error: any) {
+      if (error?.name === 'AbortError') {
         console.error('⏱️ API Timeout:', { endpoint, timeout: REQUEST_TIMEOUT });
         throw new Error(`Request timeout (${REQUEST_TIMEOUT}ms)`);
       }
       console.error('❌ API Request Failed:', { 
         endpoint, 
-        error: error.message,
+        error: error?.message || String(error),
         url: `${API_BASE_URL}${endpoint}`
       });
       throw error;
@@ -128,12 +134,12 @@ class ApiService {
   }
 
   // Lấy artist theo ID
-  static async getArtistById(id) {
+  static async getArtistById(id: number | string) {
     return this.request(`/api/artists/${id}`);
   }
 
   // Tạo artist mới
-  static async createArtist(artistData) {
+  static async createArtist(artistData: any) {
     return this.request('/api/artists', {
       method: 'POST',
       body: artistData,
@@ -141,7 +147,7 @@ class ApiService {
   }
 
   // Cập nhật artist
-  static async updateArtist(id, artistData) {
+  static async updateArtist(id: number | string, artistData: any) {
     return this.request(`/api/artists/${id}`, {
       method: 'PUT',
       body: artistData,
@@ -149,14 +155,14 @@ class ApiService {
   }
 
   // Xóa artist
-  static async deleteArtist(id) {
+  static async deleteArtist(id: number | string) {
     return this.request(`/api/artists/${id}`, {
       method: 'DELETE',
     });
   }
 
   // Tìm artist theo tên
-  static async searchArtists(searchTerm) {
+  static async searchArtists(searchTerm: string) {
     return this.request(`/api/artists/search?q=${encodeURIComponent(searchTerm)}`);
   }
 
@@ -168,9 +174,10 @@ class ApiService {
   }
 
   // Lấy tất cả tracks
-  static async getAllTracks() {
-    return this.request('/api/tracks');
+  static async getAllTracks(limit = 50, offset = 0) {
+    return this.request(`/api/tracks?limit=${limit}&offset=${offset}`);
   }
+
 
   // Lấy track theo ID
   static async getTrackById(id: number | string) {

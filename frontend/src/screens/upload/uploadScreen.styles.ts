@@ -1,10 +1,11 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import THEME from '@/src/constants/theme';
 
 const { width, height } = Dimensions.get('window');
-const ORANGE = '#ff8000';
-const BG_COLOR = '#0a0a0a';
-const CARD_BG = '#1a1a1a';
-const BORDER_COLOR = '#333';
+const ORANGE = THEME.colors.accent;
+const BG_COLOR = THEME.colors.background;
+const CARD_BG = THEME.colors.surfaceCard;
+const BORDER_COLOR = THEME.colors.border;
 
 export default StyleSheet.create({
   container: {
@@ -14,21 +15,23 @@ export default StyleSheet.create({
 
   /* Inject Signal Section */
   injectSection: {
-    marginHorizontal: width * 0.05,
-    marginVertical: width * 0.08,
+    marginHorizontal: 16,
+    marginVertical: 20,
     alignItems: 'center',
   },
 
   injectBox: {
-    width: width * 0.85,
-    height: width * 0.85,
-    borderWidth: 2,
-    borderColor: ORANGE,
-    borderRadius: width * 0.1,
-    backgroundColor: '#1a1a1a',
+    width: width * 0.88,
+    height: width * 0.65,
+    borderWidth: 1.5,
+    borderStyle: 'dashed',
+    borderColor: THEME.colors.borderHighlight,
+    borderRadius: THEME.radii.xl,
+    backgroundColor: THEME.colors.surfaceCard,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: width * 0.05,
+    marginBottom: 16,
+    ...THEME.shadows.diffuse,
   },
 
   injectText: {
@@ -94,10 +97,10 @@ export default StyleSheet.create({
   },
 
   textInput: {
-    backgroundColor: '#0a0a0a',
+    backgroundColor: 'transparent',
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
-    color: '#fff',
+    borderBottomColor: THEME.colors.borderHighlight,
+    color: THEME.colors.textPrimary,
     fontSize: width * 0.04,
     paddingVertical: width * 0.03,
     paddingHorizontal: 0,
@@ -114,18 +117,18 @@ export default StyleSheet.create({
 
   chainCard: {
     flex: 1,
-    backgroundColor: '#1a1a1a',
-    borderWidth: 2,
-    borderColor: '#333',
-    borderRadius: width * 0.03,
+    backgroundColor: THEME.colors.surfaceCard,
+    borderWidth: 1,
+    borderColor: THEME.colors.border,
+    borderRadius: THEME.radii.lg,
     padding: width * 0.04,
     alignItems: 'center',
     justifyContent: 'center',
   },
 
   chainCardActive: {
-    borderColor: ORANGE,
-    backgroundColor: '#2a1a0a',
+    borderColor: THEME.colors.borderActive,
+    backgroundColor: THEME.colors.accentMuted,
   },
 
   chainIcon: {
@@ -136,7 +139,7 @@ export default StyleSheet.create({
   chainName: {
     fontSize: width * 0.03,
     fontWeight: '700',
-    color: '#aaa',
+    color: THEME.colors.textPrimary,
     letterSpacing: 1,
     marginBottom: width * 0.01,
     textAlign: 'center',
@@ -144,7 +147,7 @@ export default StyleSheet.create({
 
   chainDesc: {
     fontSize: width * 0.025,
-    color: '#666',
+    color: THEME.colors.textMuted,
     letterSpacing: 0.5,
     textAlign: 'center',
   },
@@ -153,24 +156,24 @@ export default StyleSheet.create({
   chainItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1a1a1a',
+    backgroundColor: THEME.colors.surfaceCard,
     borderWidth: 1,
-    borderColor: '#333',
-    borderRadius: width * 0.02,
+    borderColor: THEME.colors.border,
+    borderRadius: THEME.radii.md,
     padding: width * 0.04,
     marginBottom: width * 0.04,
   },
 
   chainItemActive: {
-    borderColor: ORANGE,
-    backgroundColor: '#2a1a0a',
+    borderColor: THEME.colors.borderActive,
+    backgroundColor: THEME.colors.accentMuted,
   },
 
   chainItemIcon: {
     width: width * 0.12,
     height: width * 0.12,
     borderRadius: width * 0.06,
-    backgroundColor: '#2a2a2a',
+    backgroundColor: THEME.colors.surfaceHover,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: width * 0.03,
@@ -183,30 +186,30 @@ export default StyleSheet.create({
   chainItemName: {
     fontSize: width * 0.035,
     fontWeight: '700',
-    color: '#aaa',
+    color: THEME.colors.textPrimary,
     letterSpacing: 1,
     marginBottom: width * 0.005,
   },
 
   chainItemDesc: {
     fontSize: width * 0.03,
-    color: '#666',
+    color: THEME.colors.textMuted,
     letterSpacing: 0.5,
   },
 
   /* Signal Chain Analysis */
   analysisBox: {
-    backgroundColor: '#1a1a1a',
+    backgroundColor: THEME.colors.surfaceCard,
     borderWidth: 1,
-    borderColor: '#333',
-    borderRadius: width * 0.03,
+    borderColor: THEME.colors.border,
+    borderRadius: THEME.radii.lg,
     padding: width * 0.04,
     marginBottom: width * 0.05,
   },
 
   analysisLabel: {
     fontSize: width * 0.03,
-    color: '#666',
+    color: THEME.colors.textSecondary,
     letterSpacing: 1.5,
     marginBottom: width * 0.02,
     fontWeight: '600',
@@ -260,11 +263,11 @@ export default StyleSheet.create({
   imagePicker: {
     width: '100%',
     height: width * 0.45,
-    borderRadius: width * 0.03,
+    borderRadius: THEME.radii.md,
     overflow: 'hidden',
-    backgroundColor: '#0a0a0a',
-    borderWidth: 1,
-    borderColor: '#333',
+    backgroundColor: THEME.colors.surfaceSubtle,
+    borderWidth: 1.5,
+    borderColor: THEME.colors.borderHighlight,
     borderStyle: 'dashed',
     marginTop: width * 0.01,
     position: 'relative',
@@ -344,7 +347,7 @@ export default StyleSheet.create({
   masterButtonText: {
     fontSize: width * 0.045,
     fontWeight: '700',
-    color: '#000',
+    color: '#fff',
     letterSpacing: 1.5,
   },
 
@@ -358,13 +361,13 @@ export default StyleSheet.create({
     marginHorizontal: width * 0.05,
     marginVertical: width * 0.04,
     padding: width * 0.04,
-    backgroundColor: '#1a1a1a',
-    borderRadius: width * 0.025,
+    backgroundColor: THEME.colors.surfaceCard,
+    borderRadius: THEME.radii.lg,
     borderWidth: 1,
-    borderColor: ORANGE,
+    borderColor: THEME.colors.borderActive,
   },
   progressLabel: {
-    color: '#fff',
+    color: THEME.colors.textPrimary,
     fontSize: width * 0.035,
     fontWeight: 'bold',
     marginBottom: width * 0.02,
@@ -372,7 +375,7 @@ export default StyleSheet.create({
   },
   progressBar: {
     height: width * 0.02,
-    backgroundColor: '#333',
+    backgroundColor: THEME.colors.surfaceHover,
     borderRadius: width * 0.01,
     overflow: 'hidden',
   },
@@ -385,36 +388,38 @@ export default StyleSheet.create({
     marginHorizontal: width * 0.05,
     marginVertical: width * 0.02,
     padding: width * 0.04,
-    backgroundColor: '#2a1515',
-    borderRadius: width * 0.025,
+    backgroundColor: 'rgba(248, 113, 113, 0.12)',
+    borderRadius: THEME.radii.lg,
     borderWidth: 1,
-    borderColor: '#ff4444',
+    borderColor: THEME.colors.error,
   },
   errorText: {
-    color: '#ff4444',
+    color: THEME.colors.error,
     fontSize: width * 0.035,
     textAlign: 'center',
   },
   // Modal Styles
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+    backgroundColor: 'rgba(0, 0, 0, 0.85)',
     justifyContent: 'flex-end',
   },
   modalContent: {
-    backgroundColor: '#181818',
-    borderTopLeftRadius: width * 0.05,
-    borderTopRightRadius: width * 0.05,
-    paddingBottom: width * 0.1,
+    backgroundColor: THEME.colors.surfaceCard,
+    borderTopLeftRadius: THEME.radii.xl,
+    borderTopRightRadius: THEME.radii.xl,
+    paddingBottom: 36,
     maxHeight: height * 0.75,
+    borderTopWidth: 1,
+    borderTopColor: THEME.colors.borderHighlight,
   },
   modalHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: width * 0.05,
+    padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
+    borderBottomColor: THEME.colors.border,
   },
   modalTitle: {
     color: ORANGE,
@@ -426,17 +431,19 @@ export default StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#222',
+    backgroundColor: THEME.colors.surfaceHover,
     marginHorizontal: width * 0.05,
     marginVertical: width * 0.04,
     paddingHorizontal: width * 0.04,
     paddingVertical: width * 0.03,
-    borderRadius: width * 0.025,
+    borderRadius: THEME.radii.full,
+    borderWidth: 1,
+    borderColor: THEME.colors.border,
     gap: width * 0.02,
   },
   searchInput: {
     flex: 1,
-    color: '#fff',
+    color: THEME.colors.textPrimary,
     fontSize: width * 0.04,
     fontWeight: '600',
   },
@@ -447,7 +454,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   loadingText: {
-    color: '#888',
+    color: THEME.colors.textMuted,
     fontSize: width * 0.035,
     marginTop: width * 0.03,
   },
@@ -459,13 +466,13 @@ export default StyleSheet.create({
     paddingHorizontal: width * 0.05,
     paddingVertical: width * 0.04,
     borderBottomWidth: 1,
-    borderBottomColor: '#222',
+    borderBottomColor: THEME.colors.border,
   },
   genreItemSelected: {
-    backgroundColor: '#2a2a2a',
+    backgroundColor: THEME.colors.surfaceSubtle,
   },
   genreItemText: {
-    color: '#fff',
+    color: THEME.colors.textPrimary,
     fontSize: width * 0.04,
     fontWeight: '600',
     letterSpacing: 0.5,

@@ -11,10 +11,10 @@ import { useArtists } from '@/src/hooks/useArtists';
 import { useMyPlaylists, usePlaylistActions } from '@/src/hooks/usePlaylists';
 import { useRouter } from 'expo-router';
 import { useLikes } from '@/src/context/LikeContext';
+import { ORANGE } from '@/src/constants/theme';
 
 const { width } = Dimensions.get('window');
 
-const ORANGE = '#ff8000';
 const tabs = ['PLAYLISTS', 'ARTISTS', 'ALBUMS'];
 
 const LibraryScreen = () => {

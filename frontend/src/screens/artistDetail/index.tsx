@@ -14,9 +14,9 @@ import { useRouter } from 'expo-router';
 import styles from './ArtistDetailScreen.styles';
 import { useArtistDetail } from '@/src/hooks/useArtistDetail';
 import { usePlayer } from '@/src/context/PlayerContext';
+import THEME, { ORANGE } from '@/src/constants/theme';
 
 const { width } = Dimensions.get('window');
-const ORANGE = '#ff8000';
 
 const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80';
 
@@ -114,12 +114,12 @@ const ArtistDetailScreen = ({ artistId }: ArtistDetailScreenProps) => {
         {/* Action Buttons */}
         <View style={styles.actionsRow}>
           <TouchableOpacity style={styles.playAllBtn}>
-            <MaterialIcons name="play-arrow" size={width * 0.055} color="#111" />
+            <MaterialIcons name="play-arrow" size={width * 0.055} color={THEME.colors.textInverse} />
             <Text style={styles.playAllText}>PLAY ALL</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.shuffleBtn}>
-            <Ionicons name="shuffle" size={width * 0.05} color="#fff" />
+            <Ionicons name="shuffle" size={width * 0.05} color={THEME.colors.textPrimary} />
             <Text style={styles.shuffleText}>SHUFFLE</Text>
           </TouchableOpacity>
 
@@ -130,7 +130,7 @@ const ArtistDetailScreen = ({ artistId }: ArtistDetailScreenProps) => {
             <Ionicons
               name={followed ? 'heart' : 'heart-outline'}
               size={width * 0.055}
-              color={followed ? '#111' : '#fff'}
+              color={followed ? THEME.colors.textInverse : THEME.colors.textPrimary}
             />
           </TouchableOpacity>
         </View>
@@ -148,8 +148,8 @@ const ArtistDetailScreen = ({ artistId }: ArtistDetailScreenProps) => {
 
         {tracks.length === 0 ? (
           <View style={{ alignItems: 'center', paddingVertical: width * 0.08 }}>
-            <Ionicons name="musical-notes-outline" size={width * 0.12} color="#333" />
-            <Text style={{ color: '#555', marginTop: 10, fontSize: width * 0.038 }}>
+            <Ionicons name="musical-notes-outline" size={width * 0.12} color={THEME.colors.textMuted} />
+            <Text style={{ color: THEME.colors.textMuted, marginTop: 10, fontSize: width * 0.038 }}>
               No tracks available
             </Text>
           </View>

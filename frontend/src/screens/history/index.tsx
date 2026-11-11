@@ -8,9 +8,9 @@ import AppBar from '@/src/components/appBar';
 import TabsBar from '@/src/components/tabsBar/TabsBar';
 import styles from './HistoryScreen.styles';
 import { PlayerTrack } from '@/src/context/PlayerContext';
+import THEME, { ORANGE } from '@/src/constants/theme';
 
 const { width } = Dimensions.get('window');
-const ORANGE = '#ff8000';
 const FALLBACK = 'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=200&q=60';
 
 const HistoryScreen = () => {
@@ -101,14 +101,14 @@ const HistoryScreen = () => {
                 {isPlaying ? (
                   <Ionicons name="pause-circle" size={width * 0.07} color={ORANGE} />
                 ) : (
-                  <Ionicons name="play-circle-outline" size={width * 0.07} color="#666" />
+                  <Ionicons name="play-circle-outline" size={width * 0.07} color={THEME.colors.textMuted} />
                 )}
               </TouchableOpacity>
             );
           })
         ) : (
           <View style={styles.emptyState}>
-            <Ionicons name="time-outline" size={width * 0.15} color="#333" />
+            <Ionicons name="time-outline" size={width * 0.15} color={THEME.colors.textMuted} />
             <Text style={styles.emptyText}>
               {searchQuery ? "No matching tracks found." : "You haven't listened to anything yet."}
             </Text>

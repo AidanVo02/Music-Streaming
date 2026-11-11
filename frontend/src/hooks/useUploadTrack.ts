@@ -18,7 +18,8 @@ interface UseUploadTrackReturn {
     audioFile: any,
     title: string,
     originator: string,
-    genre?: string
+    genre?: string,
+    imageFile?: any
   ) => Promise<UploadTrackResponse | null>;
 }
 
@@ -32,28 +33,30 @@ export const useUploadTrack = (): UseUploadTrackReturn => {
     audioFile: any,
     title: string,
     originator: string,
-    genre: string = 'Electronic'
+    genre: string = 'Electronic',
+    imageFile?: any
   ): Promise<UploadTrackResponse | null> => {
     try {
       setUploading(true);
       setError(null);
       setProgress(0);
 
-      console.log('📤 Starting upload:', { title, originator, genre });
+      console.log('📤 Starting upload:', { title, originator, genre, hasImage: !!imageFile });
 
       // Simulate progress
       const progressInterval = setInterval(() => {
         setProgress((prev) => Math.min(prev + 10, 90));
       }, 500);
 
-      // Upload track with token
+      // Upload track with token and cover image
       const response = await UploadService.uploadTrack(
         audioFile,
         title,
         originator,
         genre,
         180,
-        token || undefined
+        token || undefined,
+        imageFile
       );
 
       clearInterval(progressInterval);

@@ -14,7 +14,7 @@ export function renderNavbar(activePage = '') {
       <div class="navbar-inner">
         <a href="/index.html" class="navbar-logo">
           <svg width="28" height="28" viewBox="0 0 60 60" fill="none">
-            <rect width="60" height="60" rx="12" fill="#ff8000"/>
+            <rect width="60" height="60" rx="12" fill="#FF6E44"/>
             <path d="M20 30L30 20L40 30L30 40L20 30Z" fill="#000"/>
           </svg>
           SIGNAL ONYX

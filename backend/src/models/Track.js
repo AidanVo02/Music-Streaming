@@ -62,12 +62,13 @@ class Track {
             originator = null,
             cover_image_url = null,
             waveform_data = null,
+            uploaded_by = null,
         } = trackData;
 
         const [result] = await db.query(
-            `INSERT INTO tracks (title, artist_id, album_id, duration, file_path, lyrics, play_count, genre, originator, cover_image_url, waveform_data)
-             VALUES (?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?)`,
-            [title, artist_id, album_id, duration, file_path || audio_url, lyrics, genre, originator, cover_image_url, waveform_data]
+            `INSERT INTO tracks (title, artist_id, album_id, duration, file_path, lyrics, play_count, genre, originator, cover_image_url, waveform_data, uploaded_by)
+             VALUES (?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?)`,
+            [title, artist_id, album_id, duration, file_path || audio_url, lyrics, genre, originator, cover_image_url, waveform_data, uploaded_by]
         );
         return result;
     }

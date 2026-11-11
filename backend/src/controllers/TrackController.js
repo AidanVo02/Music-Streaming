@@ -55,15 +55,19 @@ const tryDeleteLocalAudio = (audioUrl) => {
 
 class TrackController {
   static async uploadTrack(req, res) {
+    const audioFile = req.files?.audio?.[0] || req.file;
+    const imageFile = req.files?.image?.[0];
+
     try {
-      if (!req.file) {
+      if (!audioFile) {
+        if (imageFile) deleteTempFile(imageFile.path);
         return res.status(400).json({
           success: false,
           message: 'No audio file provided',
         });
       }
 
-      const { title, originator, genre, duration, cover_image_url } = req.body;
+      const { title, originator, genre, duration } = req.body;
       const normalizedTitle = title?.trim();
       const normalizedOriginator = originator?.trim();
       const normalizedGenre = genre?.trim() || DEFAULT_GENRE;
@@ -74,17 +78,27 @@ class TrackController {
           : DEFAULT_DURATION;
 
       if (!normalizedTitle || !normalizedOriginator) {
-        deleteTempFile(req.file.path);
+        deleteTempFile(audioFile.path);
+        if (imageFile) deleteTempFile(imageFile.path);
         return res.status(400).json({
           success: false,
           message: 'Title and originator are required',
         });
       }
 
-      const storedFileName = buildStoredFileName(req.file.originalname);
-      const finalPath = path.join(path.dirname(req.file.path), storedFileName);
-      fs.renameSync(req.file.path, finalPath);
+      const storedFileName = buildStoredFileName(audioFile.originalname);
+      const finalPath = path.join(path.dirname(audioFile.path), storedFileName);
+      fs.renameSync(audioFile.path, finalPath);
       const audioUrl = buildLocalFileUrl(req, storedFileName);
+
+      // Handle cover image file if uploaded, otherwise fallback to cover_image_url body
+      let coverImageUrl = req.body.cover_image_url || null;
+      if (imageFile) {
+        const storedImageName = buildStoredFileName(imageFile.originalname);
+        const finalImagePath = path.join(path.dirname(imageFile.path), storedImageName);
+        fs.renameSync(imageFile.path, finalImagePath);
+        coverImageUrl = buildLocalFileUrl(req, storedImageName);
+      }
 
       // Generate waveform peaks from the uploaded file
       console.log('🎵 Generating waveform...');
@@ -97,8 +111,9 @@ class TrackController {
         genre: normalizedGenre,
         duration: safeDuration,
         audio_url: audioUrl,
-        cover_image_url: cover_image_url || null,
+        cover_image_url: coverImageUrl,
         waveform_data: JSON.stringify(waveformPeaks),
+        uploaded_by: req.user?.user_id || null,
       });
 
       return res.status(201).json({
@@ -110,13 +125,14 @@ class TrackController {
           originator: normalizedOriginator,
           audio_url: audioUrl,
           duration: safeDuration,
-          cover_image_url: cover_image_url || null,
+          cover_image_url: coverImageUrl,
         },
       });
     } catch (error) {
       console.error('Error uploading track:', error);
 
-      deleteTempFile(req.file?.path);
+      deleteTempFile(audioFile?.path);
+      if (imageFile) deleteTempFile(imageFile?.path);
 
       return res.status(500).json({
         success: false,

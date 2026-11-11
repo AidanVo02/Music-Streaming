@@ -8,9 +8,9 @@ import { useQueue } from '@/src/context/QueueContext';
 import { usePlayerQueue } from '@/src/hooks/usePlayerQueue';
 import CreatePlaylistModal from './CreatePlaylistModal';
 import { usePlaylistActions } from '@/src/hooks/usePlaylists';
+import THEME, { ORANGE } from '@/src/constants/theme';
 
 const { width } = Dimensions.get('window');
-const ORANGE = '#ff8000';
 const FALLBACK = 'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=200&q=60';
 
 interface QueueModalProps {
@@ -260,9 +260,11 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modal: {
-    backgroundColor: '#1a1a1a',
-    borderTopLeftRadius: width * 0.05,
-    borderTopRightRadius: width * 0.05,
+    backgroundColor: THEME.colors.surfaceCard,
+    borderTopLeftRadius: THEME.radii.xl,
+    borderTopRightRadius: THEME.radii.xl,
+    borderTopWidth: 1,
+    borderTopColor: THEME.colors.borderHighlight,
     maxHeight: '85%',
     paddingBottom: width * 0.05,
   },
@@ -272,31 +274,31 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: width * 0.05,
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
+    borderBottomColor: THEME.colors.border,
     gap: width * 0.03,
   },
   title: {
     fontSize: width * 0.05,
     fontWeight: '800',
-    color: '#fff',
+    color: THEME.colors.textPrimary,
     letterSpacing: 1,
   },
   subtitle: {
     fontSize: width * 0.032,
-    color: '#888',
+    color: THEME.colors.textSecondary,
     marginTop: 4,
     fontWeight: '600',
   },
   saveButton: {
     paddingHorizontal: width * 0.03,
     paddingVertical: width * 0.02,
-    backgroundColor: 'rgba(255, 128, 0, 0.1)',
-    borderRadius: width * 0.015,
+    backgroundColor: 'rgba(255, 110, 68, 0.12)',
+    borderRadius: THEME.radii.sm,
     borderWidth: 1,
-    borderColor: '#ff8000',
+    borderColor: ORANGE,
   },
   saveButtonText: {
-    color: '#ff8000',
+    color: ORANGE,
     fontSize: width * 0.03,
     fontWeight: '800',
     letterSpacing: 0.5,
@@ -304,15 +306,15 @@ const styles = StyleSheet.create({
   clearButton: {
     paddingHorizontal: width * 0.04,
     paddingVertical: width * 0.02,
-    backgroundColor: '#0d0d0d',
-    borderRadius: width * 0.015,
+    backgroundColor: THEME.colors.surfaceSubtle,
+    borderRadius: THEME.radii.full,
     borderWidth: 1,
-    borderColor: '#333',
+    borderColor: THEME.colors.borderHighlight,
   },
   clearButtonText: {
-    color: '#ff4444',
+    color: THEME.colors.error,
     fontSize: width * 0.03,
-    fontWeight: '800',
+    fontWeight: '700',
     letterSpacing: 0.5,
   },
   list: {
@@ -324,10 +326,10 @@ const styles = StyleSheet.create({
     padding: width * 0.03,
     gap: width * 0.03,
     borderBottomWidth: 1,
-    borderBottomColor: '#222',
+    borderBottomColor: THEME.colors.border,
   },
   trackItemCurrent: {
-    backgroundColor: 'rgba(255, 128, 0, 0.1)',
+    backgroundColor: 'rgba(255, 110, 68, 0.12)',
   },
   trackItemPast: {
     opacity: 0.5,
@@ -338,17 +340,17 @@ const styles = StyleSheet.create({
   },
   position: {
     fontSize: width * 0.035,
-    color: '#666',
+    color: THEME.colors.textMuted,
     fontWeight: '700',
   },
   positionPast: {
-    color: '#444',
+    color: THEME.colors.textMuted,
   },
   cover: {
     width: width * 0.12,
     height: width * 0.12,
-    borderRadius: width * 0.015,
-    backgroundColor: '#333',
+    borderRadius: THEME.radii.sm,
+    backgroundColor: THEME.colors.surfaceHover,
   },
   coverPast: {
     opacity: 0.6,
@@ -360,31 +362,31 @@ const styles = StyleSheet.create({
   trackTitle: {
     fontSize: width * 0.038,
     fontWeight: '700',
-    color: '#fff',
+    color: THEME.colors.textPrimary,
     letterSpacing: 0.3,
   },
   trackTitleCurrent: {
     color: ORANGE,
   },
   trackTitlePast: {
-    color: '#888',
+    color: THEME.colors.textSecondary,
   },
   trackArtist: {
     fontSize: width * 0.032,
-    color: '#888',
+    color: THEME.colors.textSecondary,
     fontWeight: '600',
   },
   trackArtistPast: {
-    color: '#555',
+    color: THEME.colors.textMuted,
   },
   duration: {
     fontSize: width * 0.032,
-    color: '#666',
+    color: THEME.colors.textMuted,
     fontWeight: '600',
     marginRight: width * 0.02,
   },
   durationPast: {
-    color: '#444',
+    color: THEME.colors.textMuted,
   },
   removeButton: {
     padding: width * 0.01,
@@ -397,7 +399,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: width * 0.04,
-    color: '#555',
+    color: THEME.colors.textMuted,
     fontWeight: '600',
   },
   footer: {
@@ -408,7 +410,7 @@ const styles = StyleSheet.create({
     paddingTop: width * 0.04,
     gap: width * 0.04,
     borderTopWidth: 1,
-    borderTopColor: '#333',
+    borderTopColor: THEME.colors.border,
   },
   footerItem: {
     flexDirection: 'row',
@@ -417,7 +419,7 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: width * 0.03,
-    color: '#666',
+    color: THEME.colors.textMuted,
     fontWeight: '600',
   },
   footerTextActive: {
@@ -426,6 +428,6 @@ const styles = StyleSheet.create({
   footerDivider: {
     width: 1,
     height: width * 0.04,
-    backgroundColor: '#333',
+    backgroundColor: THEME.colors.border,
   },
 });

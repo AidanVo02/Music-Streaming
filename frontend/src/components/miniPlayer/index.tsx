@@ -3,8 +3,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-
-const ORANGE = '#ff8000';
+import { ORANGE } from '@/src/constants/theme';
 
 export default function MiniPlayer() {
   return (

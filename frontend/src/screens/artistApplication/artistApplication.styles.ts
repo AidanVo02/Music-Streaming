@@ -1,20 +1,21 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import THEME from '@/src/constants/theme';
 
-const ORANGE = '#ff8000';
+const ORANGE = THEME.colors.accent;
 const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#111',
+    backgroundColor: THEME.colors.background,
   },
   headerSection: {
     alignItems: 'center',
-    paddingHorizontal: width * 0.05,
-    paddingVertical: width * 0.08,
-    backgroundColor: '#1a1a1a',
-    borderBottomWidth: 2,
-    borderBottomColor: ORANGE,
+    paddingHorizontal: 20,
+    paddingVertical: 28,
+    backgroundColor: THEME.colors.surfaceCard,
+    borderBottomWidth: 1,
+    borderBottomColor: THEME.colors.borderHighlight,
   },
   headerTitle: {
     color: '#fff',
@@ -52,19 +53,19 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   inputHint: {
-    color: '#666',
+    color: THEME.colors.textMuted,
     fontSize: width * 0.03,
     marginBottom: width * 0.02,
     fontStyle: 'italic',
   },
   textInput: {
-    backgroundColor: '#1a1a1a',
+    backgroundColor: THEME.colors.surfaceCard,
     borderWidth: 1,
-    borderColor: '#333',
-    borderRadius: width * 0.02,
+    borderColor: THEME.colors.border,
+    borderRadius: THEME.radii.md,
     paddingHorizontal: width * 0.04,
     paddingVertical: width * 0.035,
-    color: '#fff',
+    color: THEME.colors.textPrimary,
     fontSize: width * 0.04,
   },
   textArea: {
@@ -72,21 +73,21 @@ const styles = StyleSheet.create({
     paddingTop: width * 0.035,
   },
   charCount: {
-    color: '#666',
+    color: THEME.colors.textMuted,
     fontSize: width * 0.028,
     textAlign: 'right',
     marginTop: width * 0.01,
   },
   requirementsBox: {
-    backgroundColor: '#1a2a1a',
+    backgroundColor: 'rgba(52, 211, 153, 0.1)',
     borderWidth: 1,
-    borderColor: '#4CAF50',
-    borderRadius: width * 0.025,
+    borderColor: THEME.colors.success,
+    borderRadius: THEME.radii.lg,
     padding: width * 0.04,
     marginBottom: width * 0.04,
   },
   requirementsTitle: {
-    color: '#4CAF50',
+    color: THEME.colors.success,
     fontSize: width * 0.038,
     fontWeight: 'bold',
     marginBottom: width * 0.03,
@@ -99,15 +100,15 @@ const styles = StyleSheet.create({
     gap: width * 0.02,
   },
   requirementText: {
-    color: '#aaa',
+    color: THEME.colors.textSecondary,
     fontSize: width * 0.035,
     flex: 1,
   },
   benefitsBox: {
-    backgroundColor: '#2a1a0a',
+    backgroundColor: THEME.colors.accentMuted,
     borderWidth: 1,
-    borderColor: ORANGE,
-    borderRadius: width * 0.025,
+    borderColor: THEME.colors.borderActive,
+    borderRadius: THEME.radii.lg,
     padding: width * 0.04,
     marginBottom: width * 0.04,
   },
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
     gap: width * 0.02,
   },
   benefitText: {
-    color: '#aaa',
+    color: THEME.colors.textSecondary,
     fontSize: width * 0.035,
     flex: 1,
   },
@@ -133,15 +134,16 @@ const styles = StyleSheet.create({
     backgroundColor: ORANGE,
     marginHorizontal: width * 0.05,
     marginTop: width * 0.02,
-    paddingVertical: width * 0.045,
-    borderRadius: width * 0.02,
+    paddingVertical: width * 0.04,
+    borderRadius: THEME.radii.full,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     gap: width * 0.02,
+    ...THEME.shadows.glow,
   },
   submitButtonText: {
-    color: '#000',
+    color: '#fff',
     fontSize: width * 0.04,
     fontWeight: 'bold',
     letterSpacing: 1.5,
@@ -149,14 +151,15 @@ const styles = StyleSheet.create({
   cancelButton: {
     marginHorizontal: width * 0.05,
     marginTop: width * 0.03,
-    paddingVertical: width * 0.04,
-    borderRadius: width * 0.02,
+    paddingVertical: width * 0.035,
+    borderRadius: THEME.radii.full,
     borderWidth: 1,
-    borderColor: '#666',
+    borderColor: THEME.colors.border,
+    backgroundColor: THEME.colors.surfaceSubtle,
     alignItems: 'center',
   },
   cancelButtonText: {
-    color: '#666',
+    color: THEME.colors.textSecondary,
     fontSize: width * 0.038,
     fontWeight: '700',
     letterSpacing: 1,

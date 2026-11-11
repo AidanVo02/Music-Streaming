@@ -2,21 +2,21 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --orange:       #ff8000;
-  --orange-dim:   #cc6600;
-  --bg:           #0a0a0a;
-  --bg-card:      #141414;
-  --bg-hover:     #1e1e1e;
-  --border:       #2a2a2a;
-  --text:         #ffffff;
-  --text-sec:     #aaaaaa;
-  --text-muted:   #555555;
-  --success:      #4caf50;
-  --error:        #ff4444;
-  --warning:      #f39c12;
-  --radius:       12px;
+  --orange:       #FF6E44;
+  --orange-dim:   rgba(255, 110, 68, 0.2);
+  --bg:           #0E0E12;
+  --bg-card:      #15151B;
+  --bg-hover:     #1E1E26;
+  --border:       rgba(255, 255, 255, 0.08);
+  --text:         #F5F5F7;
+  --text-sec:     #9A9AA6;
+  --text-muted:   #686876;
+  --success:      #34D399;
+  --error:        #F87171;
+  --warning:      #FBBF24;
+  --radius:       14px;
   --radius-sm:    8px;
-  --shadow:       0 4px 24px rgba(0,0,0,0.5);
+  --shadow:       0 8px 24px rgba(0,0,0,0.35);
   --transition:   0.2s ease;
   --navbar-h:     64px;
 }

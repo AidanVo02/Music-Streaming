@@ -17,12 +17,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import styles from './uploadScreen.styles';
 import AppBar from '@/src/components/appBar';
+import TabsBar from '@/src/components/tabsBar/TabsBar';
 import { usePickAudio, useUploadTrack, usePickImage } from '@/src/hooks/useUploadTrack';
 import { useAuth } from '@/src/hooks/useAuth';
 import ApiService from '@/src/server/apiService';
+import { ORANGE } from '@/src/constants/theme';
 
 const { width } = Dimensions.get('window');
-const ORANGE = '#ff8000';
 
 const UploadScreen = () => {
   const router = useRouter();
@@ -158,12 +159,13 @@ const UploadScreen = () => {
     }
 
     try {
-      // Upload with selected genre
+      // Upload with selected genre and cover image
       const result = await uploadTrack(
         selectedFile,
         trackName.trim(),
         artistName.trim(),
-        selectedGenre
+        selectedGenre,
+        selectedImage
       );
 
       if (result) {
@@ -518,7 +520,7 @@ const UploadScreen = () => {
       </Modal>
 
       {/* Custom TabsBar */}
-      {/* <TabsBar /> */}
+      <TabsBar />
     </SafeAreaView>
   );
 };

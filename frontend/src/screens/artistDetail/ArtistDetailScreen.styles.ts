@@ -1,10 +1,11 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import THEME from '@/src/constants/theme';
 
-const ORANGE = '#ff8000';
+const ORANGE = THEME.colors.accent;
 const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#111' },
+  container: { flex: 1, backgroundColor: THEME.colors.background },
 
   // Header hero image
   heroWrap: {
@@ -18,11 +19,11 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   heroOverlay: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
   heroGradient: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     // gradient from transparent to #111 at bottom
     backgroundColor: 'transparent',
   },
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
   statDivider: {
     width: 1,
     height: width * 0.08,
-    backgroundColor: '#333',
+    backgroundColor: THEME.colors.border,
   },
 
   // Action buttons
@@ -99,60 +100,67 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: ORANGE,
-    borderRadius: width * 0.03,
-    paddingVertical: width * 0.035,
+    borderRadius: THEME.radii.full,
+    paddingVertical: 14,
     gap: 8,
+    ...THEME.shadows.glow,
   },
   playAllText: {
-    color: '#111',
-    fontWeight: 'bold',
-    fontSize: width * 0.038,
-    letterSpacing: 1,
+    color: '#fff',
+    fontWeight: '700',
+    fontSize: 14,
+    letterSpacing: 0.5,
   },
   shuffleBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#222',
-    borderRadius: width * 0.03,
-    paddingVertical: width * 0.035,
-    paddingHorizontal: width * 0.05,
+    backgroundColor: THEME.colors.surfaceSubtle,
+    borderRadius: THEME.radii.full,
+    paddingVertical: 14,
+    paddingHorizontal: 20,
     gap: 8,
+    borderWidth: 1,
+    borderColor: THEME.colors.borderHighlight,
   },
   shuffleText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: width * 0.038,
-    letterSpacing: 1,
+    color: THEME.colors.textPrimary,
+    fontWeight: '700',
+    fontSize: 14,
+    letterSpacing: 0.5,
   },
   followBtn: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#222',
-    borderRadius: width * 0.03,
-    paddingVertical: width * 0.035,
-    paddingHorizontal: width * 0.045,
+    backgroundColor: THEME.colors.surfaceSubtle,
+    borderRadius: THEME.radii.full,
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    borderWidth: 1,
+    borderColor: THEME.colors.borderHighlight,
   },
 
   // Bio section
   bioWrap: {
-    marginHorizontal: width * 0.05,
-    marginBottom: width * 0.05,
-    backgroundColor: '#181818',
-    borderRadius: width * 0.03,
-    padding: width * 0.04,
+    marginHorizontal: 16,
+    marginBottom: 20,
+    backgroundColor: THEME.colors.surfaceCard,
+    borderRadius: THEME.radii.lg,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: THEME.colors.border,
   },
   bioLabel: {
     color: ORANGE,
-    fontWeight: 'bold',
-    fontSize: width * 0.03,
+    fontWeight: '700',
+    fontSize: 12,
     letterSpacing: 1.2,
     marginBottom: 6,
   },
   bioText: {
-    color: '#ccc',
-    fontSize: width * 0.036,
-    lineHeight: width * 0.055,
+    color: THEME.colors.textSecondary,
+    fontSize: 13,
+    lineHeight: 20,
   },
 
   // Section title
@@ -221,7 +229,7 @@ const styles = StyleSheet.create({
     paddingVertical: width * 0.025,
   },
   retryText: {
-    color: '#111',
+    color: THEME.colors.textInverse,
     fontWeight: 'bold',
     fontSize: width * 0.038,
     letterSpacing: 1,

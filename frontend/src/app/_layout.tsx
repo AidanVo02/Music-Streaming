@@ -6,6 +6,7 @@ import { PlayerProvider } from '@/src/context/PlayerContext';
 import { QueueProvider } from '@/src/context/QueueContext';
 import { LikeProvider } from '@/src/context/LikeContext';
 import MiniPlayer from '@/src/components/miniPlayer/MiniPlayer';
+import THEME from '@/src/constants/theme';
 
 function RootNavigator() {
   const { user, loading } = useAuthContext();
@@ -22,15 +23,20 @@ function RootNavigator() {
 
   if (loading) {
     return (
-      <View style={{ flex: 1, backgroundColor: '#111', alignItems: 'center', justifyContent: 'center' }}>
-        <ActivityIndicator size="large" color="#ff8000" />
+      <View style={{ flex: 1, backgroundColor: THEME.colors.background, alignItems: 'center', justifyContent: 'center' }}>
+        <ActivityIndicator size="large" color={THEME.colors.accent} />
       </View>
     );
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      <Stack>
+    <View style={{ flex: 1, backgroundColor: THEME.colors.background }}>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: THEME.colors.background },
+        }}
+      >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="artist/[id]" options={{ headerShown: false }} />
         <Stack.Screen name="player/[id]" options={{ headerShown: false }} />

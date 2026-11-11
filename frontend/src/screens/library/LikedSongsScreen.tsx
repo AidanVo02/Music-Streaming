@@ -11,9 +11,9 @@ import ApiService from '@/src/server/apiService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PlayerTrack } from '@/src/context/PlayerContext';
 import { useLikes } from '@/src/context/LikeContext';
+import THEME, { ORANGE } from '@/src/constants/theme';
 
 const { width } = Dimensions.get('window');
-const ORANGE = '#ff8000';
 const FALLBACK = 'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=200&q=60';
 
 const LikedSongsScreen = () => {
@@ -130,14 +130,14 @@ const LikedSongsScreen = () => {
                   {isPlaying ? (
                     <Ionicons name="pause-circle" size={width * 0.07} color={ORANGE} />
                   ) : (
-                    <Ionicons name="play-circle-outline" size={width * 0.07} color="#666" />
+                    <Ionicons name="play-circle-outline" size={width * 0.07} color={THEME.colors.textMuted} />
                   )}
                 </TouchableOpacity>
               );
             })
           ) : (
             <View style={styles.emptyState}>
-              <Ionicons name="heart-dislike-outline" size={width * 0.15} color="#333" />
+              <Ionicons name="heart-dislike-outline" size={width * 0.15} color={THEME.colors.textMuted} />
               <Text style={styles.emptyText}>
                 {searchQuery ? "No matching liked tracks found." : "You haven't liked any tracks yet."}
               </Text>

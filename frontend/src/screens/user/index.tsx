@@ -11,11 +11,11 @@ import { useAuth } from '@/src/hooks/useAuth';
 import ApiService from '@/src/server/apiService';
 import { usePlayer } from '@/src/context/PlayerContext';
 import { usePickImage } from '@/src/hooks/useUploadTrack';
+import THEME, { ORANGE } from '@/src/constants/theme';
 
 const { width } = Dimensions.get('window');
 
 const UserScreen = () => {
-    const ORANGE = '#ff8000';
     const router = useRouter();
     const { user, token, logout, refreshUser, updateProfile } = useAuth();
     const { history } = usePlayer();
@@ -321,15 +321,7 @@ const UserScreen = () => {
           {/* DEFAULT: no application yet */}
           {applicationStatus === 'none' && (
             <TouchableOpacity
-              style={{
-                marginHorizontal: width * 0.05,
-                marginVertical: width * 0.04,
-                backgroundColor: '#1a1a1a',
-                borderWidth: 2,
-                borderColor: ORANGE,
-                borderRadius: width * 0.025,
-                padding: width * 0.04,
-              }}
+              style={styles.becomeArtistBanner}
               onPress={() => router.push('/artist-application' as any)}
             >
               <View style={styles.becomeArtistContent}>
@@ -360,7 +352,7 @@ const UserScreen = () => {
                   {user?.playlists_count || '0'} PLAYLISTS - {user?.liked_songs_count || '0'} TRACKS
                 </Text>
               </View>
-              <Ionicons name="chevron-forward" size={width * 0.06} color="#666" />
+              <Ionicons name="chevron-forward" size={width * 0.06} color={THEME.colors.textMuted} />
             </View>
 
             <View style={styles.clusterCard}>
@@ -371,7 +363,7 @@ const UserScreen = () => {
                   {user?.followed_artists_count || '0'} ARTISTS
                 </Text>
               </View>
-              <Ionicons name="chevron-forward" size={width * 0.06} color="#666" />
+              <Ionicons name="chevron-forward" size={width * 0.06} color={THEME.colors.textMuted} />
             </View>
 
             <TouchableOpacity 
@@ -383,7 +375,7 @@ const UserScreen = () => {
                 <Text style={styles.clusterTitle}>LISTENING HISTORY</Text>
                 <Text style={styles.clusterSubtitle}>{history.length} TRACKS</Text>
               </View>
-              <Ionicons name="chevron-forward" size={width * 0.06} color="#666" />
+              <Ionicons name="chevron-forward" size={width * 0.06} color={THEME.colors.textMuted} />
             </TouchableOpacity>
           </>
         ) : (
@@ -403,7 +395,7 @@ const UserScreen = () => {
                   } PLAYS
                 </Text>
               </View>
-              <Ionicons name="chevron-forward" size={width * 0.06} color="#666" />
+              <Ionicons name="chevron-forward" size={width * 0.06} color={THEME.colors.textMuted} />
             </View>
 
             <View style={styles.clusterCard}>
@@ -412,7 +404,7 @@ const UserScreen = () => {
                 <Text style={styles.clusterTitle}>ANALYTICS & INSIGHTS</Text>
                 <Text style={styles.clusterSubtitle}>VIEW PERFORMANCE DATA</Text>
               </View>
-              <Ionicons name="chevron-forward" size={width * 0.06} color="#666" />
+              <Ionicons name="chevron-forward" size={width * 0.06} color={THEME.colors.textMuted} />
             </View>
 
             <View style={styles.clusterCard}>
@@ -421,7 +413,7 @@ const UserScreen = () => {
                 <Text style={styles.clusterTitle}>DRAFT SESSIONS</Text>
                 <Text style={styles.clusterSubtitle}>5 UNRELEASED TRACKS</Text>
               </View>
-              <Ionicons name="chevron-forward" size={width * 0.06} color="#666" />
+              <Ionicons name="chevron-forward" size={width * 0.06} color={THEME.colors.textMuted} />
             </View>
           </>
         )}
@@ -433,11 +425,11 @@ const UserScreen = () => {
           marginHorizontal: width * 0.05,
           marginTop: width * 0.04,
           marginBottom: width * 0.02,
-          backgroundColor: '#1a1a1a',
+          backgroundColor: THEME.colors.surfaceCard,
           borderWidth: 1,
-          borderColor: '#ff4444',
-          paddingVertical: width * 0.04,
-          borderRadius: width * 0.02,
+          borderColor: 'rgba(248, 113, 113, 0.35)',
+          paddingVertical: width * 0.035,
+          borderRadius: THEME.radii.lg,
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
@@ -445,8 +437,8 @@ const UserScreen = () => {
         }}
         onPress={handleLogout}
       >
-        <Ionicons name="log-out-outline" size={width * 0.055} color="#ff4444" />
-        <Text style={{ fontSize: width * 0.038, fontWeight: '700', color: '#ff4444', letterSpacing: 1.5 }}>
+        <Ionicons name="log-out-outline" size={width * 0.055} color={THEME.colors.error} />
+        <Text style={{ fontSize: width * 0.038, fontWeight: '700', color: THEME.colors.error, letterSpacing: 1.5 }}>
           LOGOUT
         </Text>
       </TouchableOpacity>
@@ -458,7 +450,9 @@ const UserScreen = () => {
       visible={isEditModalVisible}
       transparent={true}
       animationType="fade"
-      onRequestClose={() => !isSavingProfile && setEditModalVisible(false)}
+      onRequestClose={() => {
+        if (!isSavingProfile) setEditModalVisible(false);
+      }}
     >
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>

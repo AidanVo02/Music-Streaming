@@ -20,8 +20,9 @@ import { useWaveform } from '@/src/hooks/useWaveform';
 import ApiService from '@/src/server/apiService';
 import styles from './PlayerScreen.styles';
 import { useLikes } from '@/src/context/LikeContext';
+import THEME from '@/src/constants/theme';
 
-const ORANGE = '#ff8000';
+const ORANGE = THEME.colors.accent;
 const { width } = Dimensions.get('window');
 const FALLBACK = 'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=800&q=80';
 
@@ -183,15 +184,41 @@ const SmoothProgress = memo(function SmoothProgress({
   };
 
   const handleSeekPress = useCallback((e: any) => {
-    const ratio = Math.max(0, Math.min(e.nativeEvent.locationX / barWidth, 1));
-    onSeek(ratio * duration);
+    if (!Number.isFinite(duration) || duration <= 0) return;
+
+    let clickX: number | undefined;
+
+    // Web: measure accurately from target bounding rect
+    if (typeof e.currentTarget?.getBoundingClientRect === 'function') {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const clientX = e.clientX ?? e.nativeEvent?.clientX;
+      if (rect && rect.width > 0 && typeof clientX === 'number' && Number.isFinite(clientX)) {
+        clickX = clientX - rect.left;
+        const ratio = Math.max(0, Math.min(clickX / rect.width, 1));
+        const targetMs = ratio * duration;
+        if (Number.isFinite(targetMs)) {
+          onSeek(targetMs);
+          return;
+        }
+      }
+    }
+
+    // Native / Fallback
+    clickX = e.nativeEvent?.locationX ?? e.nativeEvent?.offsetX;
+    if (typeof clickX === 'number' && Number.isFinite(clickX) && barWidth > 0) {
+      const ratio = Math.max(0, Math.min(clickX / barWidth, 1));
+      const targetMs = ratio * duration;
+      if (Number.isFinite(targetMs)) {
+        onSeek(targetMs);
+      }
+    }
   }, [barWidth, duration, onSeek]);
 
   return (
     <View style={styles.bottomWrap}>
       {/* Waveform bars */}
       <TouchableOpacity activeOpacity={0.9} onPress={handleSeekPress}>
-        <View style={styles.waveformRow}>
+        <View style={styles.waveformRow} pointerEvents="none">
           {peaks.map((h, i) => {
             const active = (i / peaks.length) <= progress;
             return (
@@ -212,7 +239,7 @@ const SmoothProgress = memo(function SmoothProgress({
 
       {/* Progress bar */}
       <TouchableOpacity activeOpacity={0.9} onPress={handleSeekPress}>
-        <View style={styles.progressBar}>
+        <View style={styles.progressBar} pointerEvents="none">
           <View style={[styles.progressFill, { width: `${progress * 100}%` as any }]} />
         </View>
       </TouchableOpacity>
@@ -301,9 +328,13 @@ export default function PlayerScreen({ trackId }: Props) {
     duration:  player.duration,
     togglePlay: player.togglePlay,
     seekTo:    player.seekTo,
-    seekBy:    async (delta: number) => {
-      const next = Math.max(0, Math.min(player.position + delta, player.duration));
-      await player.seekTo(next);
+    seekBy: async (delta: number) => {
+      if (!Number.isFinite(delta) || !Number.isFinite(player.duration) || player.duration <= 0) return;
+      const currentPos = Number.isFinite(player.position) ? player.position : 0;
+      const next = Math.max(0, Math.min(currentPos + delta, player.duration));
+      if (Number.isFinite(next)) {
+        await player.seekTo(next);
+      }
     },
     error: null as string | null,
   };
@@ -346,44 +377,40 @@ export default function PlayerScreen({ trackId }: Props) {
   // ── MAIN ─────────────────────────────────────────────────────────────────
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <StatusBar barStyle="light-content" backgroundColor="#0d0d0d" />
+      <StatusBar barStyle="light-content" />
       <AppBar />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: width * 0.05 }}
       >
-        {/* ── COVER ART ── */}
-        <View style={styles.coverWrap}>
-          <Image
-            source={{ uri: track.cover_image_url || FALLBACK }}
-            style={styles.coverImg}
-          />
-
-          {/* Gradient overlay for title readability */}
-          <LinearGradient
-            colors={['transparent', 'rgba(0,0,0,0.85)']}
-            style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: width * 0.35 }}
-          />
-
-          {/* Track title + badge in same row — Marquee triggers when title hits badge */}
-          <View style={styles.coverTitleWrap}>
-            <MarqueeTitle
-              title={track.title?.toUpperCase() ?? ''}
-              maxWidth={width - width * 0.1 - badgeWidth - width * 0.04}
+        {/* ── FLOATING COVER ART ── */}
+        <View style={styles.coverOuterWrap}>
+          <View style={styles.coverWrap}>
+            <Image
+              source={{ uri: track.cover_image_url || FALLBACK }}
+              style={styles.coverImg}
             />
-            <View
-              style={styles.qualityBadge}
-              onLayout={(e) => setBadgeWidth(e.nativeEvent.layout.width)}
-            >
-              <MaterialCommunityIcons name="microphone-variant" size={width * 0.04} color={ORANGE} />
-              <Text style={styles.qualityText} numberOfLines={1}>{track.originator?.toUpperCase() || 'UNKNOWN ARTIST'}</Text>
-            </View>
           </View>
         </View>
 
-        {/* ── NOW PLAYING LABEL ── */}
-        <Text style={styles.nowPlayingLabel}>NOW PLAYING</Text>
+        {/* ── TRACK TITLE & ARTIST META ── */}
+        <View style={styles.metaSection}>
+          <View style={styles.titleRow}>
+            <View style={styles.titleTextWrap}>
+              <Text style={styles.trackTitle} numberOfLines={1}>
+                {track.title}
+              </Text>
+              <Text style={styles.artistName} numberOfLines={1}>
+                {track.originator || 'Unknown Artist'}
+              </Text>
+            </View>
+            <View style={styles.qualityBadge}>
+              <MaterialCommunityIcons name="wave" size={14} color={THEME.colors.accent} />
+              <Text style={styles.qualityText}>LOSSLESS</Text>
+            </View>
+          </View>
+        </View>
 
         {/* ── CONTROLS PANEL ── */}
         <View style={styles.controlsPanel}>

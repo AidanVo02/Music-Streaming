@@ -1,33 +1,30 @@
 import { Dimensions } from 'react-native';
+import THEME from '@/src/constants/theme';
 
 const { width } = Dimensions.get('window');
 
 export const styles = {
-  tabBarActiveTintColor: '#ff8000',
-  tabBarInactiveTintColor: '#aaa',
+  tabBarActiveTintColor: THEME.colors.accent,
+  tabBarInactiveTintColor: THEME.colors.textMuted,
   tabBarStyle: {
-    backgroundColor: '#181818',
+    backgroundColor: THEME.colors.backgroundAlt,
     borderTopWidth: 1,
-    borderTopColor: '#222',
-    height: width * 0.18,
-    paddingBottom: width * 0.015,
-    paddingTop: width * 0.01,
-    shadowColor: '#000',
-    shadowOpacity: 0.15,
-    shadowOffset: { width: 0, height: -2 },
-    shadowRadius: 8,
-    elevation: 8,
+    borderTopColor: THEME.colors.border,
+    height: 64,
+    paddingBottom: 8,
+    paddingTop: 6,
+    ...THEME.shadows.diffuse,
   },
   tabBarLabelStyle: {
-    fontSize: width * 0.035,
+    fontSize: 11,
     fontWeight: '600' as const,
-    letterSpacing: 1.1,
+    letterSpacing: 0.5,
     marginTop: 2,
   },
   tabBarItemStyle: {
     alignItems: 'center' as const,
     justifyContent: 'center' as const,
-    paddingVertical: width * 0.01,
+    paddingVertical: 4,
   },
   headerShown: false,
 };

@@ -144,7 +144,8 @@ class UploadService {
     originator: string,
     genre = 'Electronic',
     duration = 180,
-    token?: string
+    token?: string,
+    imageFile?: any
   ): Promise<UploadResponse> {
     const formData = new FormData();
 
@@ -158,6 +159,18 @@ class UploadService {
       } as never);
     } else {
       throw new Error('Invalid audio file payload');
+    }
+
+    if (imageFile) {
+      if (typeof File !== 'undefined' && imageFile.file instanceof File) {
+        formData.append('image', imageFile.file, imageFile.name);
+      } else if (imageFile.uri) {
+        formData.append('image', {
+          uri: imageFile.uri,
+          type: imageFile.type || 'image/jpeg',
+          name: imageFile.name || 'cover.jpg',
+        } as never);
+      }
     }
 
     formData.append('title', title);

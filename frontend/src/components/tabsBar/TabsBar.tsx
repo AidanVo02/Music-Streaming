@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, Dimensions } from 'react-native';
+import { View, TouchableOpacity, Text, Dimensions, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter, usePathname } from 'expo-router';
 import { useAuthContext } from '@/src/context/AuthContext';
+import THEME from '@/src/constants/theme';
 
 const { width } = Dimensions.get('window');
-const ORANGE = '#ff8000';
 
 interface TabItem {
   name: string;
@@ -19,30 +19,60 @@ const tabs: TabItem[] = [
   {
     name: 'index',
     label: 'Home',
-    icon: (focused) => <Ionicons name={focused ? 'home' : 'home-outline'} size={width * 0.065} color={focused ? ORANGE : '#aaa'} />,
+    icon: (focused) => (
+      <Ionicons
+        name={focused ? 'home' : 'home-outline'}
+        size={22}
+        color={focused ? THEME.colors.accent : THEME.colors.textMuted}
+      />
+    ),
   },
   {
     name: 'discovery',
-    label: 'Discovery',
-    icon: (focused) => <Ionicons name={focused ? 'compass' : 'compass-outline'} size={width * 0.065} color={focused ? ORANGE : '#aaa'} />,
+    label: 'Discover',
+    icon: (focused) => (
+      <Ionicons
+        name={focused ? 'compass' : 'compass-outline'}
+        size={22}
+        color={focused ? THEME.colors.accent : THEME.colors.textMuted}
+      />
+    ),
   },
   {
     name: 'library',
     label: 'Library',
-    icon: (focused) => <Ionicons name={focused ? 'albums' : 'albums-outline'} size={width * 0.065} color={focused ? ORANGE : '#aaa'} />,
+    icon: (focused) => (
+      <Ionicons
+        name={focused ? 'musical-notes' : 'musical-notes-outline'}
+        size={22}
+        color={focused ? THEME.colors.accent : THEME.colors.textMuted}
+      />
+    ),
   },
   {
     name: 'upload',
     label: 'Upload',
     requireAuth: true,
     requireRole: ['artist', 'admin'],
-    icon: (focused) => <Ionicons name={focused ? 'cloud-upload' : 'cloud-upload-outline'} size={width * 0.065} color={focused ? ORANGE : '#aaa'} />,
+    icon: (focused) => (
+      <Ionicons
+        name={focused ? 'cloud-upload' : 'cloud-upload-outline'}
+        size={22}
+        color={focused ? THEME.colors.accent : THEME.colors.textMuted}
+      />
+    ),
   },
   {
     name: 'user',
     label: 'Profile',
     requireAuth: true,
-    icon: (focused) => <Ionicons name={focused ? 'person' : 'person-outline'} size={width * 0.065} color={focused ? ORANGE : '#aaa'} />,
+    icon: (focused) => (
+      <Ionicons
+        name={focused ? 'person' : 'person-outline'}
+        size={22}
+        color={focused ? THEME.colors.accent : THEME.colors.textMuted}
+      />
+    ),
   },
 ];
 
@@ -77,45 +107,66 @@ const TabsBar = () => {
   };
 
   return (
-    <View style={{
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      alignItems: 'center',
-      backgroundColor: '#181818',
-      borderTopWidth: 1,
-      borderTopColor: '#222',
-      height: width * 0.18,
-      paddingBottom: width * 0.015,
-      paddingTop: width * 0.01,
-      shadowColor: '#000',
-      shadowOpacity: 0.15,
-      shadowOffset: { width: 0, height: -2 },
-      shadowRadius: 8,
-      elevation: 8,
-    }}>
-      {visibleTabs.map((tab) => {
-        const isFocused = activeTab === tab.name;
-        return (
-          <TouchableOpacity
-            key={tab.name}
-            style={{ alignItems: 'center', justifyContent: 'center', flex: 1, paddingVertical: width * 0.01 }}
-            onPress={() => handleTabPress(tab.name)}
-          >
-            {tab.icon(isFocused)}
-            <Text style={{
-              fontSize: width * 0.025,
-              fontWeight: '600',
-              letterSpacing: 1.1,
-              marginTop: 2,
-              color: isFocused ? ORANGE : '#aaa',
-            }}>
-              {tab.label}
-            </Text>
-          </TouchableOpacity>
-        );
-      })}
+    <View style={tabStyles.wrapper}>
+      <View style={tabStyles.container}>
+        {visibleTabs.map((tab) => {
+          const isFocused = activeTab === tab.name;
+          return (
+            <TouchableOpacity
+              key={tab.name}
+              style={[tabStyles.tabItem, isFocused && tabStyles.tabItemActive]}
+              onPress={() => handleTabPress(tab.name)}
+              activeOpacity={0.7}
+            >
+              {tab.icon(isFocused)}
+              <Text
+                style={[
+                  tabStyles.tabLabel,
+                  { color: isFocused ? THEME.colors.accent : THEME.colors.textMuted },
+                ]}
+              >
+                {tab.label}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
     </View>
   );
 };
+
+const tabStyles = StyleSheet.create({
+  wrapper: {
+    backgroundColor: THEME.colors.background,
+  },
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    backgroundColor: THEME.colors.backgroundAlt,
+    borderTopWidth: 1,
+    borderTopColor: THEME.colors.border,
+    height: 64,
+    paddingBottom: 6,
+    paddingTop: 6,
+    paddingHorizontal: 8,
+  },
+  tabItem: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    paddingVertical: 4,
+    borderRadius: THEME.radii.sm,
+  },
+  tabItemActive: {
+    backgroundColor: THEME.colors.surfaceSubtle,
+  },
+  tabLabel: {
+    fontSize: 10.5,
+    fontWeight: '600',
+    letterSpacing: 0.4,
+    marginTop: 2,
+  },
+});
 
 export default TabsBar;

@@ -8,8 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import styles from './loginScreen.styles';
 import { useAuth } from '@/src/hooks/useAuth';
-
-const ORANGE = '#ff8000';
+import THEME, { ORANGE } from '@/src/constants/theme';
 
 const LoginScreen = () => {
   const router = useRouter();
@@ -56,7 +55,7 @@ const LoginScreen = () => {
             <TextInput
               style={styles.input}
               placeholder="OPERATOR@SIGNALONYX.COM"
-              placeholderTextColor="#555"
+              placeholderTextColor={THEME.colors.textMuted}
               value={email}
               onChangeText={setEmail}
               autoCapitalize="none"
@@ -69,7 +68,7 @@ const LoginScreen = () => {
               <TextInput
                 style={[styles.input, { flex: 1 }]}
                 placeholder="••••••••"
-                placeholderTextColor="#555"
+                placeholderTextColor={THEME.colors.textMuted}
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry={!showPassword}
@@ -79,13 +78,13 @@ const LoginScreen = () => {
                 onPress={() => setShowPassword(!showPassword)}
                 style={styles.eyeBtn}
               >
-                <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={22} color="#aaa" />
+                <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={22} color={THEME.colors.textSecondary} />
               </TouchableOpacity>
             </View>
 
             {/* Error message */}
             {error ? (
-              <Text style={{ color: '#ff4444', fontSize: 12, marginTop: 8, letterSpacing: 0.5 }}>
+              <Text style={{ color: THEME.colors.error, fontSize: 12, marginTop: 8, letterSpacing: 0.5 }}>
                 ⚠ {error}
               </Text>
             ) : null}
@@ -96,11 +95,11 @@ const LoginScreen = () => {
               disabled={submitting}
             >
               {submitting ? (
-                <ActivityIndicator size="small" color="#181818" />
+                <ActivityIndicator size="small" color="#fff" />
               ) : (
                 <>
                   <Text style={styles.loginBtnText}>INITIALIZE ENGINE</Text>
-                  <Ionicons name="power" size={22} color="#181818" style={{ marginLeft: 8 }} />
+                  <Ionicons name="power" size={22} color="#fff" style={{ marginLeft: 8 }} />
                 </>
               )}
             </TouchableOpacity>

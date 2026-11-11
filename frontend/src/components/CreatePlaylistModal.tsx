@@ -4,9 +4,9 @@ import {
   Modal, StyleSheet, Dimensions, ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import THEME, { ORANGE } from '@/src/constants/theme';
 
 const { width } = Dimensions.get('window');
-const ORANGE = '#ff8000';
 
 interface CreatePlaylistModalProps {
   visible: boolean;
@@ -127,10 +127,13 @@ const styles = StyleSheet.create({
   modal: {
     width: '100%',
     maxWidth: 500,
-    backgroundColor: '#1a1a1a',
-    borderRadius: width * 0.04,
-    padding: width * 0.05,
-    gap: width * 0.05,
+    backgroundColor: THEME.colors.surfaceCard,
+    borderRadius: THEME.radii.xl,
+    padding: 24,
+    gap: 20,
+    borderWidth: 1,
+    borderColor: THEME.colors.borderHighlight,
+    ...THEME.shadows.floating,
   },
   header: {
     flexDirection: 'row',
@@ -138,69 +141,70 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: width * 0.05,
+    fontSize: 20,
     fontWeight: '800',
-    color: '#fff',
-    letterSpacing: 1,
+    color: THEME.colors.textPrimary,
+    letterSpacing: 0.3,
   },
   form: {
-    gap: width * 0.04,
+    gap: 16,
   },
   inputGroup: {
-    gap: width * 0.02,
+    gap: 8,
   },
   label: {
-    fontSize: width * 0.03,
-    fontWeight: '700',
-    color: '#888',
-    letterSpacing: 1,
+    fontSize: 12,
+    fontWeight: '600',
+    color: THEME.colors.textSecondary,
+    letterSpacing: 0.5,
   },
   input: {
-    backgroundColor: '#0d0d0d',
+    backgroundColor: THEME.colors.surfaceHover,
     borderWidth: 1,
-    borderColor: '#333',
-    borderRadius: width * 0.02,
-    paddingHorizontal: width * 0.04,
-    paddingVertical: width * 0.035,
-    fontSize: width * 0.04,
-    color: '#fff',
+    borderColor: THEME.colors.border,
+    borderRadius: THEME.radii.md,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    fontSize: 15,
+    color: THEME.colors.textPrimary,
     fontWeight: '600',
   },
   textArea: {
-    height: width * 0.25,
+    height: 90,
     textAlignVertical: 'top',
-    paddingTop: width * 0.035,
+    paddingTop: 12,
   },
   actions: {
     flexDirection: 'row',
-    gap: width * 0.03,
+    gap: 12,
   },
   button: {
     flex: 1,
-    paddingVertical: width * 0.04,
-    borderRadius: width * 0.02,
+    paddingVertical: 14,
+    borderRadius: THEME.radii.full,
     alignItems: 'center',
     justifyContent: 'center',
   },
   cancelButton: {
-    backgroundColor: '#0d0d0d',
+    backgroundColor: THEME.colors.surfaceSubtle,
     borderWidth: 1,
-    borderColor: '#333',
+    borderColor: THEME.colors.borderHighlight,
   },
   cancelButtonText: {
-    fontSize: width * 0.035,
-    fontWeight: '800',
-    color: '#aaa',
-    letterSpacing: 1,
+    fontSize: 14,
+    fontWeight: '700',
+    color: THEME.colors.textSecondary,
+    letterSpacing: 0.5,
   },
   createButton: {
     backgroundColor: ORANGE,
+    ...THEME.shadows.glow,
   },
   createButtonText: {
-    fontSize: width * 0.035,
-    fontWeight: '800',
-    color: '#000',
-    letterSpacing: 1,
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#fff',
+    letterSpacing: 0.5,
   },
   buttonDisabled: {
     opacity: 0.5,

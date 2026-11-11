@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Audio } from 'expo-av';
+import { createAudioPlayer, setAudioModeAsync, AudioPlayer, AudioStatus } from 'expo-audio';
 import { API_BASE_URL } from '@/src/server/apiConfig';
 
 export interface AudioPlayerState {
@@ -12,10 +12,11 @@ export interface AudioPlayerState {
 }
 
 export function useAudioPlayer(audioUrl?: string | null) {
-  const soundRef    = useRef<Audio.Sound | null>(null);
+  const playerRef   = useRef<AudioPlayer | null>(null);
+  const subRef      = useRef<{ remove: () => void } | null>(null);
   const rafRef      = useRef<number | null>(null);
 
-  // "Ground truth" from expo-av callbacks (updated every ~100ms)
+  // "Ground truth" from expo-audio callbacks (updated every ~100ms)
   const lastSyncRef = useRef({ positionMs: 0, timestampMs: 0, isPlaying: false });
 
   const [state, setState] = useState<AudioPlayerState>({
@@ -67,9 +68,19 @@ export function useAudioPlayer(audioUrl?: string | null) {
     const load = async () => {
       stopRaf();
 
-      if (soundRef.current) {
-        await soundRef.current.unloadAsync();
-        soundRef.current = null;
+      if (subRef.current) {
+        try {
+          subRef.current.remove();
+        } catch {}
+        subRef.current = null;
+      }
+
+      if (playerRef.current) {
+        try {
+          playerRef.current.pause();
+          playerRef.current.remove();
+        } catch {}
+        playerRef.current = null;
       }
 
       setState(s => ({
@@ -82,62 +93,73 @@ export function useAudioPlayer(audioUrl?: string | null) {
       }));
 
       try {
-        await Audio.setAudioModeAsync({
-          playsInSilentModeIOS:    true,
-          staysActiveInBackground: true,
-        });
+        try {
+          await setAudioModeAsync({
+            playsInSilentMode: true,
+            shouldPlayInBackground: true,
+          });
+        } catch {}
 
-        const { sound } = await Audio.Sound.createAsync(
-          { uri: resolvedUrl },
-          { shouldPlay: false, progressUpdateIntervalMillis: 100 }, // 100ms sync
-          (status) => {
-            if (cancelled || !status.isLoaded) return;
+        if (cancelled) return;
 
-            // Update ground-truth ref (no re-render here)
-            lastSyncRef.current = {
-              positionMs:  status.positionMillis ?? 0,
-              timestampMs: performance.now(),
-              isPlaying:   status.isPlaying,
+        const player = createAudioPlayer(resolvedUrl, { updateInterval: 100 });
+
+        if (cancelled) {
+          player.remove();
+          return;
+        }
+
+        const sub = player.addListener('playbackStatusUpdate', (status: AudioStatus) => {
+          if (cancelled) return;
+
+          const posMs = (status.currentTime ?? 0) * 1000;
+          const durMs = (status.duration ?? 0) * 1000;
+
+          // Update ground-truth ref (no re-render here)
+          lastSyncRef.current = {
+            positionMs:  posMs,
+            timestampMs: performance.now(),
+            isPlaying:   status.playing,
+          };
+
+          setState(s => {
+            const next = {
+              ...s,
+              isPlaying: status.playing,
+              duration:  durMs > 0 ? durMs : s.duration,
+              isLoaded:  status.isLoaded,
+              isLoading: false,
+              error:     status.error ?? s.error,
             };
 
-            // Only update React state for non-position fields
-            setState(s => {
-              const next = {
-                ...s,
-                isPlaying: status.isPlaying,
-                duration:  status.durationMillis ?? s.duration,
-                isLoaded:  true,
-                isLoading: false,
-              };
-
-              // Sync position from status when paused / seeking
-              if (!status.isPlaying) {
-                next.position = status.positionMillis ?? 0;
-              }
-
-              return next;
-            });
-
-            if (status.isPlaying) {
-              startRaf();
-            } else {
-              stopRaf();
+            // Sync position from status when paused / seeking
+            if (!status.playing) {
+              next.position = posMs;
             }
 
-            if (status.didJustFinish) {
-              stopRaf();
-              setState(s => ({ ...s, isPlaying: false, position: 0 }));
-              lastSyncRef.current = { positionMs: 0, timestampMs: 0, isPlaying: false };
-              sound.setPositionAsync(0);
-            }
+            return next;
+          });
+
+          if (status.playing) {
+            startRaf();
+          } else {
+            stopRaf();
           }
-        );
 
-        if (cancelled) { await sound.unloadAsync(); return; }
+          if (status.didJustFinish) {
+            stopRaf();
+            setState(s => ({ ...s, isPlaying: false, position: 0 }));
+            lastSyncRef.current = { positionMs: 0, timestampMs: 0, isPlaying: false };
+            try {
+              player.seekTo(0);
+            } catch {}
+          }
+        });
 
-        soundRef.current = sound;
+        subRef.current = sub;
+        playerRef.current = player;
         setState(s => ({ ...s, isLoading: false, isLoaded: true }));
-      } catch (e: any) {
+      } catch {
         if (!cancelled) {
           setState(s => ({ ...s, isLoading: false, error: 'Failed to load audio' }));
         }
@@ -149,27 +171,43 @@ export function useAudioPlayer(audioUrl?: string | null) {
     return () => {
       cancelled = true;
       stopRaf();
-      soundRef.current?.unloadAsync();
-      soundRef.current = null;
+      if (subRef.current) {
+        try {
+          subRef.current.remove();
+        } catch {}
+        subRef.current = null;
+      }
+      if (playerRef.current) {
+        try {
+          playerRef.current.pause();
+          playerRef.current.remove();
+        } catch {}
+        playerRef.current = null;
+      }
     };
   }, [resolvedUrl]);
 
   // ── Controls ─────────────────────────────────────────────────────────────
   const togglePlay = useCallback(async () => {
-    const sound = soundRef.current;
-    if (!sound) return;
+    const player = playerRef.current;
+    if (!player) return;
     try {
       if (state.isPlaying) {
-        await sound.pauseAsync();
+        player.pause();
       } else {
-        await sound.playAsync();
+        player.play();
       }
     } catch {}
   }, [state.isPlaying]);
 
   const seekTo = useCallback(async (positionMs: number) => {
     try {
+      if (!Number.isFinite(positionMs) || !Number.isFinite(state.duration) || state.duration <= 0) {
+        return;
+      }
       const clamped = Math.max(0, Math.min(positionMs, state.duration));
+      if (!Number.isFinite(clamped)) return;
+
       // Optimistic UI update immediately
       setState(s => ({ ...s, position: clamped }));
       lastSyncRef.current = {
@@ -177,13 +215,19 @@ export function useAudioPlayer(audioUrl?: string | null) {
         timestampMs: performance.now(),
         isPlaying:   lastSyncRef.current.isPlaying,
       };
-      await soundRef.current?.setPositionAsync(clamped);
+      if (playerRef.current) {
+        await playerRef.current.seekTo(clamped / 1000);
+      }
     } catch {}
   }, [state.duration]);
 
   const seekBy = useCallback(async (deltaMs: number) => {
-    const next = Math.max(0, Math.min(state.position + deltaMs, state.duration));
-    await seekTo(next);
+    if (!Number.isFinite(deltaMs) || !Number.isFinite(state.duration) || state.duration <= 0) return;
+    const currentPos = Number.isFinite(state.position) ? state.position : 0;
+    const next = Math.max(0, Math.min(currentPos + deltaMs, state.duration));
+    if (Number.isFinite(next)) {
+      await seekTo(next);
+    }
   }, [state.position, state.duration, seekTo]);
 
   return { ...state, togglePlay, seekTo, seekBy };

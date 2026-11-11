@@ -44,7 +44,34 @@ const uploadImage = multer({
   limits: { fileSize: 10 * 1024 * 1024 } // 10MB
 });
 
+// Track media filter (supports audio and cover image)
+const trackMediaFilter = (req, file, cb) => {
+  if (file.fieldname === 'audio') {
+    if (file.mimetype && file.mimetype.startsWith('audio/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only audio files are allowed for audio field'), false);
+    }
+  } else if (file.fieldname === 'image' || file.fieldname === 'cover') {
+    if (file.mimetype && file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed for cover image'), false);
+    }
+  } else {
+    cb(null, true);
+  }
+};
+
+const uploadTrackMedia = multer({
+  storage,
+  fileFilter: trackMediaFilter,
+  limits: { fileSize: 500 * 1024 * 1024 }
+});
+
 module.exports = {
   uploadAudio,
-  uploadImage
+  uploadImage,
+  uploadTrackMedia
 };
+

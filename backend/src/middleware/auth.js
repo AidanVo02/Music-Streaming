@@ -41,4 +41,26 @@ const requireRole = (...roles) => (req, res, next) => {
   next();
 };
 
-module.exports = { authenticate, requireRole };
+// Optional authentication
+const optionalAuthenticate = async (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return next();
+    }
+
+    const token = authHeader.split(' ')[1];
+    const decoded = verifyToken(token);
+
+    const user = await User.findById(decoded.user_id);
+    if (user && !user.is_banned) {
+      req.user = user;
+    }
+    next();
+  } catch {
+    next();
+  }
+};
+
+module.exports = { authenticate, requireRole, optionalAuthenticate };
+

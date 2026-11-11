@@ -5,9 +5,9 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useMyPlaylists, usePlaylistActions } from '@/src/hooks/usePlaylists';
+import THEME, { ORANGE } from '@/src/constants/theme';
 
 const { width } = Dimensions.get('window');
-const ORANGE = '#ff8000';
 
 interface AddToPlaylistModalProps {
   visible: boolean;
@@ -127,30 +127,32 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modal: {
-    backgroundColor: '#1a1a1a',
-    borderTopLeftRadius: width * 0.05,
-    borderTopRightRadius: width * 0.05,
+    backgroundColor: THEME.colors.surfaceCard,
+    borderTopLeftRadius: THEME.radii.xl,
+    borderTopRightRadius: THEME.radii.xl,
     maxHeight: '80%',
-    paddingBottom: width * 0.05,
+    paddingBottom: 24,
+    borderTopWidth: 1,
+    borderTopColor: THEME.colors.borderHighlight,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: width * 0.05,
+    padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
-    gap: width * 0.03,
+    borderBottomColor: THEME.colors.border,
+    gap: 12,
   },
   title: {
-    fontSize: width * 0.045,
+    fontSize: 18,
     fontWeight: '800',
-    color: '#fff',
-    letterSpacing: 1,
+    color: THEME.colors.textPrimary,
+    letterSpacing: 0.5,
   },
   subtitle: {
-    fontSize: width * 0.032,
-    color: '#888',
+    fontSize: 13,
+    color: THEME.colors.textSecondary,
     marginTop: 4,
     fontWeight: '600',
   },
@@ -160,23 +162,25 @@ const styles = StyleSheet.create({
   centerContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: width * 0.15,
+    paddingVertical: 40,
   },
   playlistItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: width * 0.04,
-    gap: width * 0.03,
+    padding: 16,
+    gap: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#222',
+    borderBottomColor: THEME.colors.border,
   },
   playlistIcon: {
-    width: width * 0.12,
-    height: width * 0.12,
-    borderRadius: width * 0.02,
-    backgroundColor: '#0d0d0d',
+    width: 48,
+    height: 48,
+    borderRadius: THEME.radii.sm,
+    backgroundColor: THEME.colors.surfaceSubtle,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: THEME.colors.border,
   },
   playlistInfo: {
     flex: 1,

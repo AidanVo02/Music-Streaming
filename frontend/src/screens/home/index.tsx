@@ -13,9 +13,9 @@ import { useArtists } from '@/src/hooks/useArtists';
 import { usePublicPlaylists } from '@/src/hooks/usePlaylists';
 import { usePlayer } from '@/src/context/PlayerContext';
 import { useQueue } from '@/src/context/QueueContext';
+import { ORANGE } from '@/src/constants/theme';
 
 const { width } = Dimensions.get('window');
-const ORANGE = '#ff8000';
 
 export default function HomeScreen() {
   const { topTracks, loading: tracksLoading } = useDiscovery();

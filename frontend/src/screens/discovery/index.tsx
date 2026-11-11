@@ -19,9 +19,9 @@ import { useDiscovery, useGenreTracks } from '@/src/hooks/useDiscovery';
 import { useGlobalSearch } from '@/src/hooks/useGlobalSearch';
 import { usePlayer } from '@/src/context/PlayerContext';
 import { useQueue } from '@/src/context/QueueContext';
+import THEME, { ORANGE } from '@/src/constants/theme';
 
 const { width } = Dimensions.get('window');
-const ORANGE = '#ff8000';
 
 const DiscoveryScreen = () => {
   const router = useRouter();
@@ -205,7 +205,7 @@ const DiscoveryScreen = () => {
               {/* No Results Fallback */}
               {results.tracks.length === 0 && results.artists.length === 0 && results.playlists.length === 0 && (
                 <View style={styles.centered}>
-                  <Ionicons name="search-outline" size={width * 0.12} color="#333" />
+                  <Ionicons name="search-outline" size={width * 0.12} color={THEME.colors.textMuted} />
                   <Text style={styles.emptyText}>
                     No results found for {`"${searchQuery}"`}
                   </Text>
@@ -277,7 +277,7 @@ const DiscoveryScreen = () => {
               </View>
             ) : displayTracks.length === 0 ? (
               <View style={styles.centered}>
-                <Ionicons name="musical-notes-outline" size={width * 0.12} color="#333" />
+                <Ionicons name="musical-notes-outline" size={width * 0.12} color={THEME.colors.textMuted} />
                 <Text style={styles.emptyText}>No tracks found</Text>
               </View>
             ) : (

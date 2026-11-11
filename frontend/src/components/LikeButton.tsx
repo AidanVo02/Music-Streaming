@@ -5,6 +5,7 @@ import { useLikes } from '@/src/context/LikeContext';
 import { useAuthContext } from '@/src/context/AuthContext';
 import { useRouter } from 'expo-router';
 import { Alert } from 'react-native';
+import THEME from '@/src/constants/theme';
 
 interface LikeButtonProps {
   trackId: number | string;
@@ -19,7 +20,7 @@ export default function LikeButton({
   size = 24, 
   style, 
   color = '#aaa', 
-  likedColor = '#ff8000' 
+  likedColor = THEME.colors.accent 
 }: LikeButtonProps) {
   const { isLiked, toggleLike, loading } = useLikes();
   const { user } = useAuthContext();

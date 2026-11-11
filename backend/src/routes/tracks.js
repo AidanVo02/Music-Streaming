@@ -1,12 +1,22 @@
 const express = require('express');
 const TrackController = require('../controllers/TrackController.js');
 const { authenticate, requireRole } = require('../middleware/auth.js');
-const { uploadAudio } = require('../middleware/upload.js');
+const { uploadAudio, uploadTrackMedia } = require('../middleware/upload.js');
 
 const router = express.Router();
 
 // Routes
-router.post('/upload', authenticate, requireRole('artist', 'admin'), uploadAudio.single('audio'), TrackController.uploadTrack);
+router.get('/', TrackController.getAllTracks);
+router.post(
+  '/upload',
+  authenticate,
+  requireRole('artist', 'admin'),
+  uploadTrackMedia.fields([
+    { name: 'audio', maxCount: 1 },
+    { name: 'image', maxCount: 1 },
+  ]),
+  TrackController.uploadTrack
+);
 router.get('/search', TrackController.searchTracks);
 router.get('/genres', TrackController.getAllGenres);
 router.get('/top-by-genre', TrackController.getTopByGenre);

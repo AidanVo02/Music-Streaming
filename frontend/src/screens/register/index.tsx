@@ -8,8 +8,7 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import styles from './registerScreen.styles';
 import { useAuth } from '@/src/hooks/useAuth';
-
-const ORANGE = '#ff8000';
+import THEME, { ORANGE } from '@/src/constants/theme';
 
 const RegisterScreen = () => {
   const router = useRouter();
@@ -30,7 +29,7 @@ const RegisterScreen = () => {
     return score;
   };
   const strength = getStrength(password);
-  const strengthColor = strength < 40 ? '#ff4444' : strength < 80 ? ORANGE : '#4CAF50';
+  const strengthColor = strength < 40 ? THEME.colors.error : strength < 80 ? ORANGE : THEME.colors.success;
   const strengthLabel =
     strength < 40 ? 'WEAK' : strength < 80 ? 'MODERATE' : 'STRONG';
 
@@ -75,7 +74,7 @@ const RegisterScreen = () => {
             <TextInput
               style={styles.input}
               placeholder="USERNAME"
-              placeholderTextColor="#555"
+              placeholderTextColor={THEME.colors.textMuted}
               value={username}
               onChangeText={setUsername}
               editable={!submitting}
@@ -85,7 +84,7 @@ const RegisterScreen = () => {
             <TextInput
               style={styles.input}
               placeholder="EMAIL ADDRESS"
-              placeholderTextColor="#555"
+              placeholderTextColor={THEME.colors.textMuted}
               value={email}
               onChangeText={setEmail}
               autoCapitalize="none"
@@ -101,7 +100,7 @@ const RegisterScreen = () => {
               <TextInput
                 style={[styles.input, { flex: 1 }]}
                 placeholder="••••••••"
-                placeholderTextColor="#555"
+                placeholderTextColor={THEME.colors.textMuted}
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry={!showPassword}
@@ -111,7 +110,7 @@ const RegisterScreen = () => {
                 onPress={() => setShowPassword(!showPassword)}
                 style={styles.eyeBtn}
               >
-                <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={22} color="#aaa" />
+                <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={22} color={THEME.colors.textSecondary} />
               </TouchableOpacity>
             </View>
 
@@ -135,7 +134,7 @@ const RegisterScreen = () => {
 
             {/* Error */}
             {error ? (
-              <Text style={{ color: '#ff4444', fontSize: 12, marginBottom: 8, letterSpacing: 0.5 }}>
+              <Text style={{ color: THEME.colors.error, fontSize: 12, marginBottom: 8, letterSpacing: 0.5 }}>
                 ⚠ {error}
               </Text>
             ) : null}
@@ -146,11 +145,11 @@ const RegisterScreen = () => {
               disabled={submitting}
             >
               {submitting ? (
-                <ActivityIndicator size="small" color="#181818" />
+                <ActivityIndicator size="small" color="#fff" />
               ) : (
                 <>
                   <Text style={styles.joinBtnText}>JOIN THE STUDIO</Text>
-                  <Ionicons name="arrow-forward" size={22} color="#181818" style={{ marginLeft: 8 }} />
+                  <Ionicons name="arrow-forward" size={22} color="#fff" style={{ marginLeft: 8 }} />
                 </>
               )}
             </TouchableOpacity>
@@ -159,7 +158,7 @@ const RegisterScreen = () => {
               style={{ alignItems: 'center', marginTop: 12 }}
               onPress={() => router.push('/login')}
             >
-              <Text style={{ color: '#aaa', fontSize: 13 }}>
+              <Text style={{ color: THEME.colors.textSecondary, fontSize: 13 }}>
                 Already have an account?{' '}
                 <Text style={{ color: ORANGE, fontWeight: 'bold' }}>SIGN IN</Text>
               </Text>

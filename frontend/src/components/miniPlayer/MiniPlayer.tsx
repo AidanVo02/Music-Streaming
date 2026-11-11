@@ -7,9 +7,9 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useRouter, usePathname, useSegments } from 'expo-router';
 import { usePlayer } from '@/src/context/PlayerContext';
 import AddToPlaylistModal from '@/src/components/AddToPlaylistModal';
+import THEME from '@/src/constants/theme';
 
 const { width } = Dimensions.get('window');
-const ORANGE = '#ff8000';
 const FALLBACK = 'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=200&q=60';
 
 // Screens where MiniPlayer should NOT appear
@@ -30,7 +30,6 @@ export default function MiniPlayer() {
   const shouldHide =
     !currentTrack ||
     HIDDEN_ON.some(screen => {
-      // Check both pathname and segments
       const inPathname = pathname.includes(screen);
       const inSegments = segments.some(seg => seg.includes(screen));
       return inPathname || inSegments;
@@ -38,18 +37,14 @@ export default function MiniPlayer() {
 
   useEffect(() => {
     Animated.spring(slideY, {
-      toValue: shouldHide ? 100 : 0,
+      toValue: shouldHide ? 120 : 0,
       useNativeDriver: true,
-      tension: 80,
+      tension: 90,
       friction: 12,
     }).start();
   }, [shouldHide]);
 
-  // Return null when should hide (better than animation)
-  if (shouldHide) return null;
-  
-  // Safety check - should not happen but just in case
-  if (!currentTrack) return null;
+  if (shouldHide || !currentTrack) return null;
 
   const progress = duration > 0 ? Math.min(position / duration, 1) : 0;
 
@@ -69,46 +64,56 @@ export default function MiniPlayer() {
 
   return (
     <>
-      <Animated.View style={[styles.container, { transform: [{ translateY: slideY }] }]}>
-        {/* Progress bar at top */}
+      <Animated.View style={[styles.capsuleWrapper, { transform: [{ translateY: slideY }] }]}>
+        {/* Top Hairline Progress Bar */}
         <View style={styles.progressTrack}>
           <View style={[styles.progressFill, { width: `${progress * 100}%` as any }]} />
         </View>
 
         <TouchableOpacity
           style={styles.inner}
-          activeOpacity={0.85}
+          activeOpacity={0.88}
           onPress={() => router.push(`/player/${currentTrack.track_id}` as any)}
           onLongPress={handleLongPress}
           delayLongPress={500}
         >
-          {/* Cover */}
+          {/* Cover Art */}
           <Image
             source={{ uri: currentTrack.cover_image_url || FALLBACK }}
             style={styles.cover}
           />
 
-          {/* Info */}
+          {/* Track Info */}
           <View style={styles.info}>
             <Text style={styles.title} numberOfLines={1}>
               {currentTrack.title}
             </Text>
             <Text style={styles.sub} numberOfLines={1}>
-              {isLoading ? 'LOADING...' : isPlaying ? 'NOW MASTERING' : 'PAUSED'}
+              {isLoading
+                ? 'LOADING...'
+                : currentTrack.originator
+                ? `${currentTrack.originator} • ${isPlaying ? 'PLAYING' : 'PAUSED'}`
+                : isPlaying
+                ? 'PLAYING'
+                : 'PAUSED'}
             </Text>
           </View>
 
-          {/* Play/Pause button */}
+          {/* Quick Play/Pause Circular Button */}
           <TouchableOpacity
             style={styles.playBtn}
-            onPress={(e) => { e.stopPropagation(); togglePlay(); }}
-            hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+            onPress={(e) => {
+              e.stopPropagation();
+              togglePlay();
+            }}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            activeOpacity={0.8}
           >
             <View style={styles.playBtnInner}>
               <Ionicons
                 name={isPlaying ? 'pause' : 'play'}
-                size={width * 0.065}
-                color="#fff"
+                size={18}
+                color={THEME.colors.textPrimary}
               />
             </View>
           </TouchableOpacity>
@@ -146,18 +151,13 @@ export default function MiniPlayer() {
             <View style={styles.menuDivider} />
 
             <TouchableOpacity style={styles.menuItem} onPress={handleGoToPlayer}>
-              <Ionicons name="expand" size={24} color="#fff" />
-              <Text style={styles.menuItemText}>Go to Player</Text>
+              <Ionicons name="expand-outline" size={20} color={THEME.colors.textPrimary} />
+              <Text style={styles.menuItemText}>Open Player</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.menuItem} onPress={handleAddToPlaylist}>
-              <MaterialIcons name="playlist-add" size={24} color="#fff" />
+              <MaterialIcons name="playlist-add" size={22} color={THEME.colors.textPrimary} />
               <Text style={styles.menuItemText}>Add to Playlist</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.menuItem}>
-              <Ionicons name="share-outline" size={24} color="#fff" />
-              <Text style={styles.menuItemText}>Share</Text>
             </TouchableOpacity>
 
             <View style={styles.menuDivider} />
@@ -166,7 +166,7 @@ export default function MiniPlayer() {
               style={[styles.menuItem, styles.menuItemCancel]}
               onPress={() => setShowMenu(false)}
             >
-              <Text style={styles.menuItemCancelText}>Cancel</Text>
+              <Text style={styles.menuItemCancelText}>Dismiss</Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
@@ -184,135 +184,135 @@ export default function MiniPlayer() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  capsuleWrapper: {
     position: 'absolute',
-    bottom: width * 0.18, // Đặt phía trên TabsBar (TabsBar height = width * 0.18)
-    left: 0,
-    right: 0,
-    backgroundColor: 'rgba(28, 28, 28, 0.85)', // Thêm alpha 0.85 để trong suốt một chút
-    borderTopLeftRadius: width * 0.04,
-    borderTopRightRadius: width * 0.04,
-    shadowColor: '#000',
-    shadowOpacity: 0.5,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: -4 },
-    elevation: 20,
+    bottom: 74, // Floating cleanly above bottom tabs
+    left: 12,
+    right: 12,
+    backgroundColor: THEME.colors.surfaceCard,
+    borderRadius: THEME.radii.md,
+    borderWidth: 1,
+    borderColor: THEME.colors.borderHighlight,
     overflow: 'hidden',
+    ...THEME.shadows.floating,
   },
   progressTrack: {
-    height: 3,
-    backgroundColor: '#2a2a2a',
+    height: 2,
+    backgroundColor: THEME.colors.surfaceSubtle,
+    width: '100%',
   },
   progressFill: {
     height: '100%',
-    backgroundColor: ORANGE,
+    backgroundColor: THEME.colors.accent,
   },
   inner: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: width * 0.04,
-    paddingVertical: width * 0.03,
-    gap: width * 0.03,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    gap: 12,
   },
   cover: {
-    width: width * 0.13,
-    height: width * 0.13,
-    borderRadius: width * 0.02,
-    backgroundColor: '#333',
+    width: 44,
+    height: 44,
+    borderRadius: THEME.radii.sm,
+    backgroundColor: THEME.colors.surfaceSubtle,
   },
   info: {
     flex: 1,
     gap: 3,
   },
   title: {
-    color: '#fff',
-    fontSize: width * 0.04,
+    color: THEME.colors.textPrimary,
+    fontSize: 14,
     fontWeight: '700',
-    letterSpacing: 0.3,
+    letterSpacing: 0.2,
   },
   sub: {
-    color: ORANGE,
-    fontSize: width * 0.028,
-    fontWeight: '700',
-    letterSpacing: 1.2,
+    color: THEME.colors.textSecondary,
+    fontSize: 11,
+    fontWeight: '500',
+    letterSpacing: 0.4,
   },
   playBtn: {
-    padding: width * 0.01,
+    padding: 2,
   },
   playBtnInner: {
-    width: width * 0.12,
-    height: width * 0.12,
-    borderRadius: width * 0.02,
-    backgroundColor: ORANGE,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: THEME.colors.surfaceHover,
+    borderWidth: 1,
+    borderColor: THEME.colors.borderHighlight,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  // Context Menu Styles
+  // Context Menu Modal
   menuOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
     justifyContent: 'flex-end',
-    paddingBottom: width * 0.18 + width * 0.05, // TabsBar height + spacing
+    paddingBottom: 90,
   },
   menuContainer: {
-    backgroundColor: '#1a1a1a',
-    marginHorizontal: width * 0.04,
-    borderRadius: width * 0.04,
+    backgroundColor: THEME.colors.surfaceCard,
+    marginHorizontal: 16,
+    borderRadius: THEME.radii.lg,
+    borderWidth: 1,
+    borderColor: THEME.colors.borderHighlight,
     overflow: 'hidden',
+    ...THEME.shadows.floating,
   },
   menuHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: width * 0.04,
-    gap: width * 0.03,
-    backgroundColor: '#222',
+    padding: 16,
+    gap: 12,
+    backgroundColor: THEME.colors.surfaceSubtle,
   },
   menuCover: {
-    width: width * 0.12,
-    height: width * 0.12,
-    borderRadius: width * 0.015,
-    backgroundColor: '#333',
+    width: 46,
+    height: 46,
+    borderRadius: THEME.radii.sm,
+    backgroundColor: THEME.colors.surfaceSubtle,
   },
   menuInfo: {
     flex: 1,
-    gap: 4,
+    gap: 3,
   },
   menuTitle: {
-    color: '#fff',
-    fontSize: width * 0.04,
+    color: THEME.colors.textPrimary,
+    fontSize: 15,
     fontWeight: '700',
-    letterSpacing: 0.3,
   },
   menuArtist: {
-    color: '#888',
-    fontSize: width * 0.032,
-    fontWeight: '600',
+    color: THEME.colors.textSecondary,
+    fontSize: 13,
   },
   menuDivider: {
     height: 1,
-    backgroundColor: '#333',
+    backgroundColor: THEME.colors.border,
   },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: width * 0.04,
-    gap: width * 0.04,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    gap: 12,
   },
   menuItemText: {
-    color: '#fff',
-    fontSize: width * 0.04,
+    color: THEME.colors.textPrimary,
+    fontSize: 14,
     fontWeight: '600',
-    letterSpacing: 0.3,
   },
   menuItemCancel: {
     justifyContent: 'center',
-    paddingVertical: width * 0.035,
+    paddingVertical: 14,
   },
   menuItemCancelText: {
-    color: '#888',
-    fontSize: width * 0.04,
-    fontWeight: '700',
+    color: THEME.colors.textMuted,
+    fontSize: 14,
+    fontWeight: '600',
     textAlign: 'center',
-    letterSpacing: 0.5,
   },
 });

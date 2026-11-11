@@ -13,8 +13,9 @@ import { usePlayer } from '@/src/context/PlayerContext';
 import { useAuthContext } from '@/src/context/AuthContext';
 import styles from './playlistDetail.styles';
 
+import { ORANGE } from '@/src/constants/theme';
+
 const { width } = Dimensions.get('window');
-const ORANGE = '#ff8000';
 const FALLBACK = 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80';
 
 export default function PlaylistDetailScreen() {
