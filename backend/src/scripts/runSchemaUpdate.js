@@ -6,7 +6,7 @@ const db = require('../config/db');
 
 async function runSchemaUpdate() {
   try {
-    console.log('🔄 Starting schema update...');
+    console.log('[SYNC] Starting schema update...');
 
     // Check if columns already exist
     const [columns] = await db.query(`
@@ -18,13 +18,13 @@ async function runSchemaUpdate() {
     `);
 
     if (columns.length > 0) {
-      console.log('⚠️  Columns already exist. Skipping ALTER TABLE.');
-      console.log('✅ Schema is up to date!');
+      console.log('[WARN]  Columns already exist. Skipping ALTER TABLE.');
+      console.log('[OK] Schema is up to date!');
       process.exit(0);
       return;
     }
 
-    console.log('📝 Adding new columns to users table...');
+    console.log('[LOG] Adding new columns to users table...');
 
     await db.query(`
       ALTER TABLE users
@@ -41,8 +41,8 @@ async function runSchemaUpdate() {
         ADD COLUMN playlists_count INT NOT NULL DEFAULT 0
     `);
 
-    console.log('✅ Schema updated successfully!');
-    console.log('\n📊 Added columns:');
+    console.log('[OK] Schema updated successfully!');
+    console.log('\n[STATS] Added columns:');
     console.log('   - listening_time_hours (DECIMAL)');
     console.log('   - liked_songs_count (INT)');
     console.log('   - discovery_streak_days (INT)');
@@ -57,7 +57,7 @@ async function runSchemaUpdate() {
 
     process.exit(0);
   } catch (error) {
-    console.error('❌ Error updating schema:', error.message);
+    console.error('[ERROR] Error updating schema:', error.message);
     process.exit(1);
   }
 }

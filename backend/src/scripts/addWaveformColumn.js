@@ -7,10 +7,10 @@ async function run() {
     WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'tracks' AND COLUMN_NAME = 'waveform_data'
   `);
   if (cols.length > 0) {
-    console.log('✅ waveform_data column already exists');
+    console.log('[OK] waveform_data column already exists');
   } else {
     await db.query(`ALTER TABLE tracks ADD COLUMN waveform_data JSON NULL AFTER cover_image_url`);
-    console.log('✅ Added waveform_data column to tracks');
+    console.log('[OK] Added waveform_data column to tracks');
   }
   process.exit(0);
 }

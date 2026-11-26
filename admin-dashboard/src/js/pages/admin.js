@@ -13,8 +13,17 @@ document.getElementById('admin-user-info').textContent = adminUser?.email || '';
 document.getElementById('admin-logout').addEventListener('click', () => { clearAuth(); window.location.href = '/index.html'; });
 
 // Sidebar navigation
+const sidebarEl = document.querySelector('.sidebar');
+document.getElementById('sidebar-toggle')?.addEventListener('click', () => {
+  sidebarEl?.classList.toggle('open');
+});
+
 document.querySelectorAll('.sidebar-link[data-view]').forEach(link => {
-  link.addEventListener('click', e => { e.preventDefault(); switchView(link.dataset.view); });
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    sidebarEl?.classList.remove('open');
+    switchView(link.dataset.view);
+  });
 });
 
 // Filters
@@ -61,7 +70,7 @@ async function loadOverview() {
     if (!data?.length) { actEl.innerHTML = '<p class="muted center" style="padding:2rem">No recent activity</p>'; return; }
     actEl.innerHTML = data.map(a => `
       <div style="display:flex;align-items:center;gap:1rem;padding:0.75rem 0;border-bottom:1px solid var(--border)">
-        <span style="font-size:1.3rem">${a.activity_type==='user_registered'?'👤':'🎵'}</span>
+        <span class="badge ${a.activity_type==='user_registered'?'badge-user':'badge-orange'}" style="font-size:0.72rem">${a.activity_type==='user_registered'?'USER':'TRACK'}</span>
         <div style="flex:1;font-size:0.9rem">
           ${a.activity_type==='user_registered'
             ? `New user: <strong>${escapeHtml(a.username)}</strong>`
@@ -189,7 +198,7 @@ async function loadTracks() {
         <tbody>${!data.length ? `<tr class="empty-row"><td colspan="8">No tracks found</td></tr>` :
           data.map(t => `<tr>
             <td>${t.track_id}</td>
-            <td>${t.cover_image_url ? `<img class="track-thumb" src="${t.cover_image_url}" style="width:40px;height:40px;border-radius:4px;object-fit:cover">` : '<div style="width:40px;height:40px;background:var(--bg-hover);border-radius:4px;display:flex;align-items:center;justify-content:center">🎵</div>'}</td>
+            <td>${t.cover_image_url ? `<img class="track-thumb" src="${t.cover_image_url}" style="width:40px;height:40px;border-radius:4px;object-fit:cover">` : '<div style="width:40px;height:40px;background:var(--bg-hover);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700">AUDIO</div>'}</td>
             <td><strong>${escapeHtml(t.title)}</strong></td>
             <td style="color:var(--text-muted)">${escapeHtml(t.originator||t.artist_name||'Unknown')}</td>
             <td>${t.genre?`<span class="badge badge-orange">${t.genre}</span>`:'<span class="muted">—</span>'}</td>
@@ -296,8 +305,9 @@ window.rejectApp = async function(id) {
 };
 
 // ─── SETTINGS ─────────────────────────────────────────────────────────────────
+const DEFAULT_API = `http://${window.location.hostname || 'localhost'}:5000`;
 function loadSettings() {
-  document.getElementById('api-endpoint').value = localStorage.getItem('api_url') || 'http://192.168.1.101:5000';
+  document.getElementById('api-endpoint').value = localStorage.getItem('api_url') || DEFAULT_API;
 }
 
 window.saveSettings = function() {
@@ -309,7 +319,7 @@ window.saveSettings = function() {
 
 window.resetSettings = function() {
   localStorage.removeItem('api_url');
-  document.getElementById('api-endpoint').value = 'http://192.168.1.101:5000';
+  document.getElementById('api-endpoint').value = DEFAULT_API;
   showToast('Reset to default', 'success');
 };
 

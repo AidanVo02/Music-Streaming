@@ -23,7 +23,7 @@ const users = [
 ];
 
 async function seed() {
-  console.log('🌱 Seeding users...\n');
+  console.log('[SEED] Seeding users...\n');
 
   for (const u of users) {
     const hash = await bcrypt.hash(u.password, 12);
@@ -34,13 +34,13 @@ async function seed() {
          ON DUPLICATE KEY UPDATE role = VALUES(role)`,
         [u.username, u.username, u.email, hash, u.role]
       );
-      console.log(`✅ [${u.role.toUpperCase()}] ${u.email}  |  password: ${u.password}`);
+      console.log(`[OK] [${u.role.toUpperCase()}] ${u.email}  |  password: ${u.password}`);
     } catch (err) {
-      console.error(`❌ Failed to seed ${u.email}:`, err.message);
+      console.error(`[ERROR] Failed to seed ${u.email}:`, err.message);
     }
   }
 
-  console.log('\n✔ Done.');
+  console.log('\n[OK] Done.');
   process.exit(0);
 }
 

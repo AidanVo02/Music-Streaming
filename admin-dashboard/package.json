@@ -1,7 +1,7 @@
 {
-  "name": "oscstation-admin-dashboard",
+  "name": "signal-onyx-admin-dashboard",
   "version": "1.0.0",
-  "description": "Admin Dashboard for OscStation",
+  "description": "Admin Dashboard for Signal Onyx",
   "main": "index.html",
   "scripts": {
     "dev": "vite",

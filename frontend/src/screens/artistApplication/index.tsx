@@ -52,7 +52,7 @@ const ArtistApplicationScreen = () => {
       if (response.success) {
         // Application is now pending — no role change yet
         Alert.alert(
-          '✅ Application Submitted',
+          'Application Submitted',
           'Your artist application has been submitted successfully. An admin will review it soon. You will be notified once approved.',
           [{ text: 'OK', onPress: () => router.replace('/(tabs)/user' as any) }]
         );

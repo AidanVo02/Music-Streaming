@@ -13,7 +13,7 @@ async function loadTopTracks() {
       <div class="track-card" onclick="window.location.href='/discovery.html'">
         ${t.cover_image_url
           ? `<img class="track-thumb" src="${t.cover_image_url}" alt="${escapeHtml(t.title)}">`
-          : `<div class="track-thumb-placeholder">🎵</div>`}
+          : `<div class="track-thumb-placeholder">AUDIO</div>`}
         <div class="track-info">
           <div class="track-title">${escapeHtml(t.title)}</div>
           <div class="track-artist">${escapeHtml(t.originator || 'Unknown')}</div>

@@ -69,16 +69,17 @@ class Like {
 
   // Get all liked tracks for a user
   static async getUserLikedTracks(user_id) {
-    // Assuming tracks and users table are similar to what we've seen
     const [rows] = await db.query(`
       SELECT 
         l.created_at as liked_at,
         t.*,
-        u.username as artist_name,
-        u.profile_pic_url as artist_image_url
+        t.file_path AS audio_url,
+        COALESCE(t.originator, a.name, u.username) as artist_name,
+        COALESCE(a.image_url, u.profile_pic_url) as artist_image_url
       FROM liked_tracks l
       JOIN tracks t ON l.track_id = t.track_id
-      LEFT JOIN users u ON t.artist_id = u.user_id
+      LEFT JOIN artists a ON t.artist_id = a.artist_id
+      LEFT JOIN users u ON t.uploaded_by = u.user_id
       WHERE l.user_id = ?
       ORDER BY l.created_at DESC
     `, [user_id]);

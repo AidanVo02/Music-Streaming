@@ -1,5 +1,5 @@
 // ─── API SERVICE ─────────────────────────────────────────────────────────────
-const DEFAULT_API = 'http://192.168.1.101:5000';
+const DEFAULT_API = `http://${window.location.hostname || 'localhost'}:5000`;
 export const API_BASE_URL = localStorage.getItem('api_url') || DEFAULT_API;
 
 export async function apiCall(endpoint, method = 'GET', body = null, requireAuth = true) {

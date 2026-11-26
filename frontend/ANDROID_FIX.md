@@ -1,10 +1,10 @@
 # Fix AsyncStorage trên Android
 
-## ✅ Đã hoàn tất Prebuild!
+## [OK] Đã hoàn tất Prebuild!
 
 Native Android code đã được tạo lại với AsyncStorage được cấu hình đúng.
 
-## 🚀 Các bước tiếp theo:
+## [START] Các bước tiếp theo:
 
 ### Cách 1: Chạy trên thiết bị Android thật (Khuyến nghị)
 
@@ -49,7 +49,7 @@ npx expo run:android --variant release
 
 Sau đó copy file APK vào điện thoại và cài đặt.
 
-## 🔧 Troubleshooting
+##  Troubleshooting
 
 ### Nếu vẫn gặp lỗi AsyncStorage:
 
@@ -74,7 +74,7 @@ Sau đó copy file APK vào điện thoại và cài đặt.
    npx expo start --clear
    ```
 
-## 📱 Tài khoản test
+## [MOBILE] Tài khoản test
 
 Login với các tài khoản sau để test:
 
@@ -89,16 +89,16 @@ Login với các tài khoản sau để test:
 - **ADMIN**: admin@signalonyx.com / Admin@123
   - Full permissions
 
-## ✨ Tính năng mới
+## [DONE] Tính năng mới
 
-- ✅ Role-based User Profile screen
-- ✅ Fallback storage (app vẫn chạy được nếu AsyncStorage fail)
-- ✅ Real data từ database
-- ✅ Conditional rendering theo role
-- ✅ "Become an Artist" CTA cho user
-- ✅ Personal Library vs Artist Studio
+- [OK] Role-based User Profile screen
+- [OK] Fallback storage (app vẫn chạy được nếu AsyncStorage fail)
+- [OK] Real data từ database
+- [OK] Conditional rendering theo role
+- [OK] "Become an Artist" CTA cho user
+- [OK] Personal Library vs Artist Studio
 
-## 🎯 Kiểm tra sau khi chạy
+## [QUEUE] Kiểm tra sau khi chạy
 
 1. Login thành công
 2. Profile screen hiển thị đúng stats theo role

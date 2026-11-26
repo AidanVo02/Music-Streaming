@@ -25,21 +25,21 @@ export const useArtists = (): UseArtistsReturn => {
     try {
       setLoading(true);
       setError(null);
-      console.log('📡 Fetching artists...');
+      console.log('[API] Fetching artists...');
       const response = await ApiService.getAllArtists();
-      console.log('📥 API Response:', response);
+      console.log('[RESPONSE] API Response:', response);
 
       if (response?.success && response?.data && Array.isArray(response.data)) {
-        console.log(`✅ Got ${response.data.length} artists`);
+        console.log(`[OK] Got ${response.data.length} artists`);
         setArtists(response.data);
       } else {
-        console.warn('⚠️ Invalid response format:', response);
+        console.warn('[WARN] Invalid response format:', response);
         setError('Invalid data format from server');
         setArtists([]);
       }
     } catch (err: any) {
       setError(err.message || 'Failed to fetch artists');
-      console.error('❌ Error fetching artists:', err);
+      console.error('[ERROR] Error fetching artists:', err);
       setArtists([]);
     } finally {
       setLoading(false);

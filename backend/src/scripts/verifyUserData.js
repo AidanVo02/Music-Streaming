@@ -6,7 +6,7 @@ const db = require('../config/db');
 
 async function verifyUserData() {
   try {
-    console.log('🔍 Verifying user data...\n');
+    console.log('[CHECK] Verifying user data...\n');
 
     const [users] = await db.query(`
       SELECT 
@@ -30,34 +30,34 @@ async function verifyUserData() {
     console.log('Found users:', users.length);
     
     if (users.length === 0) {
-      console.log('⚠️  No users found!');
+      console.log('[WARN]  No users found!');
     } else {
       users.forEach(user => {
-        console.log(`\n👤 ${user.username.toUpperCase()} (${user.role})`);
+        console.log(`\n[USER] ${user.username.toUpperCase()} (${user.role})`);
         console.log('   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
         
         if (user.role === 'user') {
-          console.log(`   🎧 Listening Time: ${user.listening_time_hours} hrs`);
-          console.log(`   ❤️  Liked Songs: ${user.liked_songs_count}`);
-          console.log(`   🔥 Discovery Streak: ${user.discovery_streak_days} days`);
-          console.log(`   💎 Membership: ${user.membership_tier.toUpperCase()}`);
-          console.log(`   👥 Followed Artists: ${user.followed_artists_count}`);
-          console.log(`   📁 Playlists: ${user.playlists_count}`);
+          console.log(`   [PLAY] Listening Time: ${user.listening_time_hours} hrs`);
+          console.log(`   [LIKE]  Liked Songs: ${user.liked_songs_count}`);
+          console.log(`   [STREAK] Discovery Streak: ${user.discovery_streak_days} days`);
+          console.log(`   [TIER] Membership: ${user.membership_tier.toUpperCase()}`);
+          console.log(`   [USERS] Followed Artists: ${user.followed_artists_count}`);
+          console.log(`   [FILE] Playlists: ${user.playlists_count}`);
         } else {
-          console.log(`   🎵 Published Tracks: ${user.published_tracks_count}`);
-          console.log(`   📊 Total Plays: ${user.total_plays_count.toLocaleString()}`);
-          console.log(`   💾 Storage: ${user.storage_used_gb} / ${user.storage_limit_gb} GB`);
-          console.log(`   💎 Membership: ${user.membership_tier.toUpperCase()}`);
-          console.log(`   👥 Followed Artists: ${user.followed_artists_count}`);
-          console.log(`   📁 Playlists: ${user.playlists_count}`);
+          console.log(`   [AUDIO] Published Tracks: ${user.published_tracks_count}`);
+          console.log(`   [STATS] Total Plays: ${user.total_plays_count.toLocaleString()}`);
+          console.log(`   [STORAGE] Storage: ${user.storage_used_gb} / ${user.storage_limit_gb} GB`);
+          console.log(`   [TIER] Membership: ${user.membership_tier.toUpperCase()}`);
+          console.log(`   [USERS] Followed Artists: ${user.followed_artists_count}`);
+          console.log(`   [FILE] Playlists: ${user.playlists_count}`);
         }
       });
     }
 
-    console.log('\n\n✅ All user data verified successfully!\n');
+    console.log('\n\n[OK] All user data verified successfully!\n');
     process.exit(0);
   } catch (error) {
-    console.error('❌ Error verifying data:', error.message);
+    console.error('[ERROR] Error verifying data:', error.message);
     process.exit(1);
   }
 }

@@ -52,7 +52,7 @@ async function generateWaveformFromFile(filePath) {
     const max = Math.max(...peaks, 0.001);
     return peaks.map(p => Math.max(0.1, Math.min(1.0, p / max)));
   } catch (err) {
-    console.warn('⚠️ Waveform generation failed, using fallback:', err.message);
+    console.warn('[WARN] Waveform generation failed, using fallback:', err.message);
     return generateFallbackWaveform(filePath || '');
   }
 }

@@ -16,7 +16,7 @@ class ApiService {
   static async request(endpoint: string, options: RequestOptions = {}) {
     try {
       const url = `${API_BASE_URL}${endpoint}`;
-      console.log('🌐 API Request:', { 
+      console.log('[HTTP] API Request:', { 
         method: options.method || 'GET', 
         url,
         timestamp: new Date().toISOString()
@@ -41,7 +41,7 @@ class ApiService {
         const error = await response.json().catch(() => ({
           message: `HTTP ${response.status}`
         }));
-        console.error('❌ API Error:', { 
+        console.error('[ERROR] API Error:', { 
           endpoint, 
           status: response.status, 
           error 
@@ -50,7 +50,7 @@ class ApiService {
       }
 
       const data = await response.json();
-      console.log('✅ API Success:', { 
+      console.log('[OK] API Success:', { 
         endpoint, 
         status: response.status,
         dataCount: Array.isArray(data.data) ? data.data.length : 1
@@ -58,10 +58,10 @@ class ApiService {
       return data;
     } catch (error: any) {
       if (error?.name === 'AbortError') {
-        console.error('⏱️ API Timeout:', { endpoint, timeout: REQUEST_TIMEOUT });
+        console.error('[TIMEOUT] API Timeout:', { endpoint, timeout: REQUEST_TIMEOUT });
         throw new Error(`Request timeout (${REQUEST_TIMEOUT}ms)`);
       }
-      console.error('❌ API Request Failed:', { 
+      console.error('[ERROR] API Request Failed:', { 
         endpoint, 
         error: error?.message || String(error),
         url: `${API_BASE_URL}${endpoint}`
@@ -91,7 +91,7 @@ class ApiService {
     // fetch will set it automatically with the correct boundary
     try {
       const url = `${API_BASE_URL}/api/auth/profile`;
-      console.log('🌐 API Request (Multipart):', { url });
+      console.log('[HTTP] API Request (Multipart):', { url });
 
       const response = await fetch(url, {
         method: 'PUT',
@@ -108,7 +108,7 @@ class ApiService {
 
       return await response.json();
     } catch (error: any) {
-      console.error('❌ API Request Failed:', error.message);
+      console.error('[ERROR] API Request Failed:', error.message);
       throw error;
     }
   }
@@ -120,7 +120,7 @@ class ApiService {
     try {
       return await this.request('/api/artists');
     } catch (error) {
-      console.warn('⚠️ Failed to fetch from API, using mock data');
+      console.warn('[WARN] Failed to fetch from API, using mock data');
       if (USE_MOCK_DATA) {
         return {
           success: true,

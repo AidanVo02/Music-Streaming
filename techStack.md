@@ -1,4 +1,4 @@
-OscStation - Turn up Ur life (Streaming Music App for Web, Mobile)
+Signal Onyx - Turn up Ur life (Streaming Music App for Web, Mobile)
 
 Frontend 
 - React Native ( EXPO )

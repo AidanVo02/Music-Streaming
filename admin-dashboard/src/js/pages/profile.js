@@ -38,13 +38,13 @@ async function loadProfile() {
     <!-- Stats -->
     <div class="stats-grid" style="margin-top:1.5rem">
       ${isArtist ? `
-        <div class="stat-card"><div class="stat-icon">🎵</div><div><div class="stat-value">${user.published_tracks_count || 0}</div><div class="stat-label">Published Tracks</div></div></div>
-        <div class="stat-card"><div class="stat-icon">▶</div><div><div class="stat-value">${fmtNum(user.total_plays_count)}</div><div class="stat-label">Total Plays</div></div></div>
-        <div class="stat-card"><div class="stat-icon">💾</div><div><div class="stat-value">${parseFloat(user.storage_used_gb||0).toFixed(1)} GB</div><div class="stat-label">Storage Used</div></div></div>
+        <div class="stat-card"><div><div class="stat-value">${user.published_tracks_count || 0}</div><div class="stat-label">Published Tracks</div></div></div>
+        <div class="stat-card"><div><div class="stat-value">${fmtNum(user.total_plays_count)}</div><div class="stat-label">Total Plays</div></div></div>
+        <div class="stat-card"><div><div class="stat-value">${parseFloat(user.storage_used_gb||0).toFixed(1)} GB</div><div class="stat-label">Storage Used</div></div></div>
       ` : `
-        <div class="stat-card"><div class="stat-icon">⏱</div><div><div class="stat-value">${parseFloat(user.listening_time_hours||0).toFixed(1)}h</div><div class="stat-label">Listening Time</div></div></div>
-        <div class="stat-card"><div class="stat-icon">❤️</div><div><div class="stat-value">${user.liked_songs_count || 0}</div><div class="stat-label">Liked Songs</div></div></div>
-        <div class="stat-card"><div class="stat-icon">🔥</div><div><div class="stat-value">${user.discovery_streak_days || 0}d</div><div class="stat-label">Discovery Streak</div></div></div>
+        <div class="stat-card"><div><div class="stat-value">${parseFloat(user.listening_time_hours||0).toFixed(1)}h</div><div class="stat-label">Listening Time</div></div></div>
+        <div class="stat-card"><div><div class="stat-value">${user.liked_songs_count || 0}</div><div class="stat-label">Liked Songs</div></div></div>
+        <div class="stat-card"><div><div class="stat-value">${user.discovery_streak_days || 0}d</div><div class="stat-label">Discovery Streak</div></div></div>
       `}
     </div>
 
@@ -52,17 +52,17 @@ async function loadProfile() {
     <div style="margin-top:1.5rem">
       ${isArtist ? `
         <div class="card" style="display:flex;align-items:center;gap:1rem">
-          <span style="font-size:2rem">🎙</span>
+          <span class="badge badge-orange">STUDIO</span>
           <div>
             <div style="font-weight:700;letter-spacing:1px">ARTIST STUDIO</div>
-            <div class="muted" style="font-size:0.85rem">Upload tracks, view analytics</div>
+            <div class="muted" style="font-size:0.85rem">Manage your tracks and catalog</div>
           </div>
-          <a href="/upload.html" class="btn btn-primary btn-sm" style="margin-left:auto">Upload Track</a>
+          <a href="${user.role === 'admin' ? '/admin/index.html' : '/library.html'}" class="btn btn-primary btn-sm" style="margin-left:auto">${user.role === 'admin' ? 'Admin Panel' : 'View Library'}</a>
         </div>
       ` : appStatus === 'pending' ? `
         <div class="card" style="border-color:var(--warning);background:#1a1400">
           <div style="display:flex;align-items:center;gap:1rem">
-            <span style="font-size:2rem">⏳</span>
+            <span class="badge badge-pending">PENDING</span>
             <div>
               <div style="font-weight:700;color:var(--warning);letter-spacing:1px">APPLICATION PENDING</div>
               <div class="muted" style="font-size:0.85rem">Your artist application is under review</div>
@@ -72,23 +72,23 @@ async function loadProfile() {
       ` : appStatus === 'rejected' ? `
         <div class="card" style="border-color:var(--error);background:#1a0a0a;cursor:pointer" onclick="openApplyModal()">
           <div style="display:flex;align-items:center;gap:1rem">
-            <span style="font-size:2rem">❌</span>
+            <span class="badge badge-rejected">REJECTED</span>
             <div style="flex:1">
               <div style="font-weight:700;color:var(--error);letter-spacing:1px">APPLICATION REJECTED</div>
               <div class="muted" style="font-size:0.85rem">Click to apply again</div>
             </div>
-            <span style="color:var(--error)">→</span>
+            <span style="color:var(--error)">APPLY</span>
           </div>
         </div>
       ` : `
         <div class="card" style="border-color:var(--orange);cursor:pointer" onclick="openApplyModal()">
           <div style="display:flex;align-items:center;gap:1rem">
-            <span style="font-size:2rem">📡</span>
+            <span class="badge badge-orange">ARTIST</span>
             <div style="flex:1">
               <div style="font-weight:700;color:var(--orange);letter-spacing:1px">READY TO BROADCAST?</div>
               <div class="muted" style="font-size:0.85rem">Apply for Artist Role and start uploading</div>
             </div>
-            <span style="color:var(--orange)">→</span>
+            <span style="color:var(--orange)">APPLY</span>
           </div>
         </div>
       `}
@@ -105,7 +105,7 @@ window.openApplyModal = function() {
   const overlay = document.getElementById('modal-overlay');
   const content = document.getElementById('modal-content');
   content.innerHTML = `
-    <div class="modal-header"><h3>APPLY FOR ARTIST ROLE</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="modal-header"><h3>APPLY FOR ARTIST ROLE</h3><button class="modal-close" onclick="closeModal()">CLOSE</button></div>
     <div class="modal-body">
       <div class="input-group">
         <label>ARTIST NAME / STAGE NAME *</label>

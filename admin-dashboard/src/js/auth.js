@@ -20,7 +20,8 @@ export async function refreshUser() {
   const token = getToken();
   if (!token) return null;
   try {
-    const API_BASE_URL = localStorage.getItem('api_url') || 'http://192.168.1.101:5000';
+    const DEFAULT_API = `http://${window.location.hostname || 'localhost'}:5000`;
+    const API_BASE_URL = localStorage.getItem('api_url') || DEFAULT_API;
     const res  = await fetch(`${API_BASE_URL}/api/auth/me`, {
       headers: { Authorization: `Bearer ${token}` },
     });

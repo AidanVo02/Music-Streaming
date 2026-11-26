@@ -37,8 +37,12 @@ export default function HomeScreen() {
     const playerTrack = {
       track_id: track.track_id,
       title: track.title,
+      originator: track.originator || track.artist_name,
       cover_image_url: track.cover_image_url,
-      audio_url: track.audio_url,
+      audio_url: track.audio_url || track.file_path,
+      file_path: track.file_path || track.audio_url,
+      duration: track.duration,
+      genre: track.genre,
     };
     
     const trackToPlay = addToQueueAndPlay(playerTrack);

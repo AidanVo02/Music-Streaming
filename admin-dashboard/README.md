@@ -1,14 +1,14 @@
-# OscStation Admin Dashboard
+# Signal Onyx Admin Dashboard
 
-Admin web dashboard for managing OscStation platform.
+Admin web dashboard for managing Signal Onyx platform.
 
 ## Features
 
-- 📊 **Overview Dashboard** - System statistics and recent activity
-- 👥 **User Management** - View, edit, and manage user accounts
-- 🎵 **Track Management** - Browse, edit, and delete tracks
-- 📝 **Artist Applications** - Review and approve/reject artist applications
-- ⚙️ **Settings** - Configure system settings
+- [STATS] **Overview Dashboard** - System statistics and recent activity
+- [USERS] **User Management** - View, edit, and manage user accounts
+- [AUDIO] **Track Management** - Browse, edit, and delete tracks
+- [LOG] **Artist Applications** - Review and approve/reject artist applications
+-  **Settings** - Configure system settings
 
 ## Installation
 

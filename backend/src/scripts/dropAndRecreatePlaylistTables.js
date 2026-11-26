@@ -4,19 +4,19 @@ const path = require('path');
 
 async function dropAndRecreate() {
   try {
-    console.log('🗑️  Dropping existing playlist tables...');
+    console.log('[TRIM]  Dropping existing playlist tables...');
 
     // Drop triggers first
     await db.query('DROP TRIGGER IF EXISTS after_playlist_track_insert').catch(() => {});
     await db.query('DROP TRIGGER IF EXISTS after_playlist_track_delete').catch(() => {});
-    console.log('✅ Triggers dropped');
+    console.log('[OK] Triggers dropped');
 
     // Drop tables
     await db.query('DROP TABLE IF EXISTS playlist_tracks');
     await db.query('DROP TABLE IF EXISTS playlists');
-    console.log('✅ Tables dropped');
+    console.log('[OK] Tables dropped');
 
-    console.log('\n📦 Creating new playlist tables...');
+    console.log('\n[DB] Creating new playlist tables...');
 
     const sqlPath = path.join(__dirname, 'createPlaylistTables.sql');
     const sql = fs.readFileSync(sqlPath, 'utf8');
@@ -33,22 +33,22 @@ async function dropAndRecreate() {
       }
     }
 
-    console.log('✅ Playlist tables created successfully!');
+    console.log('[OK] Playlist tables created successfully!');
     console.log('   - playlists');
     console.log('   - playlist_tracks');
     console.log('   - Triggers for auto-updating stats');
 
     // Verify
-    console.log('\n🔍 Verifying...');
+    console.log('\n[CHECK] Verifying...');
     const [columns] = await db.query('DESCRIBE playlists');
-    console.log('\n📋 Playlists columns:');
+    console.log('\n[INFO] Playlists columns:');
     columns.forEach(col => {
-      console.log(`  ✅ ${col.Field} (${col.Type})`);
+      console.log(`  [OK] ${col.Field} (${col.Type})`);
     });
 
     process.exit(0);
   } catch (error) {
-    console.error('❌ Error:', error);
+    console.error('[ERROR] Error:', error);
     process.exit(1);
   }
 }

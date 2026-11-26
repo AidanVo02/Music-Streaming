@@ -68,15 +68,15 @@ app.use((err, req, res, next) => {
 
 // Start the server - Listen on all network interfaces (0.0.0.0)
 const server = app.listen(PORT, '0.0.0.0', () => {
-  console.log(`✅ Server is running on http://localhost:${PORT}`);
-  console.log(`📱 Mobile access: http://192.168.1.101:${PORT}`);
-  console.log(`📌 API URL: http://localhost:${PORT}/api/artists`);
-  console.log(`🧪 Test DB: http://localhost:${PORT}/test-db`);
+  console.log(`[OK] Server is running on http://localhost:${PORT}`);
+  console.log(`[MOBILE] Mobile access: http://192.168.1.101:${PORT}`);
+  console.log(`[URL] API URL: http://localhost:${PORT}/api/artists`);
+  console.log(`[TEST] Test DB: http://localhost:${PORT}/test-db`);
 });
 
 // Handle server errors
 server.on('error', (err) => {
-  console.error('❌ Server error:', err);
+  console.error('[ERROR] Server error:', err);
   process.exit(1);
 });
 

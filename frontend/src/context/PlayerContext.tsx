@@ -66,13 +66,13 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
       const playedPercentage = position / duration;
       
       if (playedPercentage >= HISTORY_THRESHOLD) {
-        console.log(`📚 Adding to history (${Math.round(playedPercentage * 100)}% played):`, currentTrack.title);
+        console.log(`[HISTORY] Adding to history (${Math.round(playedPercentage * 100)}% played):`, currentTrack.title);
         
         setHistory(prev => {
           // Check if track already exists in history (avoid duplicates)
           const exists = prev.some(t => t.track_id === currentTrack.track_id);
           if (exists) {
-            console.log('⚠️ Track already in history, skipping');
+            console.log('[WARN] Track already in history, skipping');
             return prev;
           }
           
@@ -80,11 +80,11 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
           
           // Trim if needed
           if (newHistory.length > HISTORY_LIMIT) {
-            console.log(`🗑️ History limit reached (${HISTORY_LIMIT}). Trimming to ${HISTORY_TRIM_TO} tracks...`);
+            console.log(`[TRIM] History limit reached (${HISTORY_LIMIT}). Trimming to ${HISTORY_TRIM_TO} tracks...`);
             return newHistory.slice(-HISTORY_TRIM_TO);
           }
           
-          console.log(`📚 History length: ${newHistory.length}`);
+          console.log(`[HISTORY] History length: ${newHistory.length}`);
           return newHistory;
         });
         
@@ -307,7 +307,7 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
     
     const nextTrack = future[0];
     setFuture(prev => prev.slice(1));
-    console.log('🔮 Popped from future:', nextTrack.title, '| Remaining:', future.length - 1);
+    console.log('[QUEUE] Popped from future:', nextTrack.title, '| Remaining:', future.length - 1);
     return nextTrack;
   }, [future]);
 
@@ -315,7 +315,7 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
   const addToFuture = useCallback((track: PlayerTrack) => {
     setFuture(prev => {
       const newFuture = [...prev, track];
-      console.log('🔮 Added to future:', track.title, '| Total:', newFuture.length);
+      console.log('[QUEUE] Added to future:', track.title, '| Total:', newFuture.length);
       return newFuture;
     });
   }, []);

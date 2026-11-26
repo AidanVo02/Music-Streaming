@@ -1,14 +1,14 @@
-# 🎵 PLAYLIST SYSTEM - USER GUIDE
+# [AUDIO] PLAYLIST SYSTEM - USER GUIDE
 
-## ✅ HOÀN THÀNH!
+## [OK] HOÀN THÀNH!
 
 Playlist System đã được implement đầy đủ với các tính năng:
 
 ---
 
-## 📱 **CÁCH SỬ DỤNG**
+## [MOBILE] **CÁCH SỬ DỤNG**
 
-### 1️⃣ **TẠO PLAYLIST MỚI**
+### 1⃣ **TẠO PLAYLIST MỚI**
 
 **Cách 1: Từ Library Screen**
 1. Mở app → Go to **Library** tab
@@ -22,14 +22,14 @@ Playlist System đã được implement đầy đủ với các tính năng:
 
 ---
 
-### 2️⃣ **THÊM TRACK VÀO PLAYLIST**
+### 2⃣ **THÊM TRACK VÀO PLAYLIST**
 
 **Từ Player Screen:**
 1. Đang nghe nhạc → Mở **Player** (full screen)
 2. Scroll xuống phần actions
 3. Click nút **PLAYLIST** (icon playlist-add)
 4. Chọn playlist muốn thêm
-5. Done! ✅
+5. Done! [OK]
 
 **Từ Track List:** *(Coming soon)*
 - Long press vào track → Menu → Add to Playlist
@@ -39,7 +39,7 @@ Playlist System đã được implement đầy đủ với các tính năng:
 
 ---
 
-### 3️⃣ **XEM PLAYLIST**
+### 3⃣ **XEM PLAYLIST**
 
 1. Go to **Library** → **PLAYLISTS** tab
 2. Click vào playlist muốn xem
@@ -47,7 +47,7 @@ Playlist System đã được implement đầy đủ với các tính năng:
 
 ---
 
-### 4️⃣ **XÓA TRACK KHỎI PLAYLIST**
+### 4⃣ **XÓA TRACK KHỎI PLAYLIST**
 
 1. Mở playlist detail
 2. Click nút **X** bên cạnh track (chỉ hiện nếu bạn là owner)
@@ -55,41 +55,41 @@ Playlist System đã được implement đầy đủ với các tính năng:
 
 ---
 
-### 5️⃣ **XÓA PLAYLIST**
+### 5⃣ **XÓA PLAYLIST**
 
 *(Coming soon - Edit playlist screen)*
 
 ---
 
-## 🎯 **TÍNH NĂNG**
+## [QUEUE] **TÍNH NĂNG**
 
-### ✅ Đã Có:
-- ✅ Tạo playlist (public/private)
-- ✅ Xem danh sách playlists
-- ✅ Xem chi tiết playlist với tracks
-- ✅ Thêm track vào playlist từ Player
-- ✅ Xóa track khỏi playlist
-- ✅ Auto-update track count & duration
-- ✅ Owner-only permissions
-- ✅ Public/Private visibility
+### [OK] Đã Có:
+- [OK] Tạo playlist (public/private)
+- [OK] Xem danh sách playlists
+- [OK] Xem chi tiết playlist với tracks
+- [OK] Thêm track vào playlist từ Player
+- [OK] Xóa track khỏi playlist
+- [OK] Auto-update track count & duration
+- [OK] Owner-only permissions
+- [OK] Public/Private visibility
 
-### 🚧 Đang Phát Triển:
-- 🚧 Edit playlist (name, description, cover)
-- 🚧 Delete playlist
-- 🚧 Reorder tracks (drag & drop)
-- 🚧 Add to playlist từ track list
-- 🚧 Add to playlist từ artist detail
-- 🚧 Share playlist
-- 🚧 Play entire playlist
-- 🚧 Playlist cover image upload
+###  Đang Phát Triển:
+-  Edit playlist (name, description, cover)
+-  Delete playlist
+-  Reorder tracks (drag & drop)
+-  Add to playlist từ track list
+-  Add to playlist từ artist detail
+-  Share playlist
+-  Play entire playlist
+-  Playlist cover image upload
 
 ---
 
-## 💡 **TIPS & TRICKS**
+## [TIP] **TIPS & TRICKS**
 
 ### Playlist Public vs Private:
 - **Public**: Ai cũng có thể xem
-- **Private**: Chỉ bạn mới thấy (có icon khóa 🔒)
+- **Private**: Chỉ bạn mới thấy (có icon khóa )
 
 ### Track Count & Duration:
 - Tự động cập nhật khi thêm/xóa tracks
@@ -101,7 +101,7 @@ Playlist System đã được implement đầy đủ với các tính năng:
 
 ---
 
-## 🐛 **TROUBLESHOOTING**
+##  **TROUBLESHOOTING**
 
 ### "Not authenticated" error:
 - Đảm bảo bạn đã đăng nhập
@@ -118,7 +118,7 @@ Playlist System đã được implement đầy đủ với các tính năng:
 
 ---
 
-## 🎨 **UI/UX HIGHLIGHTS**
+## [ARTIST] **UI/UX HIGHLIGHTS**
 
 ### Player Screen:
 - Nút **PLAYLIST** thay thế nút **QUEUE** cũ
@@ -144,7 +144,7 @@ Playlist System đã được implement đầy đủ với các tính năng:
 
 ---
 
-## 📊 **STATISTICS**
+## [STATS] **STATISTICS**
 
 ### Files Created: 8
 - `AddToPlaylistModal.tsx` - Modal component
@@ -170,7 +170,7 @@ Playlist System đã được implement đầy đủ với các tính năng:
 
 ---
 
-## 🚀 **NEXT PHASE: QUEUE SYSTEM**
+## [START] **NEXT PHASE: QUEUE SYSTEM**
 
 Sau khi hoàn thiện Playlist System, phase tiếp theo sẽ là:
 
@@ -193,12 +193,12 @@ Sau khi hoàn thiện Playlist System, phase tiếp theo sẽ là:
 
 ---
 
-## ✨ **ENJOY YOUR PLAYLISTS!**
+## [DONE] **ENJOY YOUR PLAYLISTS!**
 
 Bây giờ bạn có thể:
-- 🎵 Tạo playlists cho từng mood
-- 📝 Organize tracks theo thể loại
-- 🔒 Private playlists cho riêng mình
-- 🌍 Public playlists để share với mọi người
+- [AUDIO] Tạo playlists cho từng mood
+- [LOG] Organize tracks theo thể loại
+-  Private playlists cho riêng mình
+-  Public playlists để share với mọi người
 
-**Happy listening!** 🎧
+**Happy listening!** [PLAY]

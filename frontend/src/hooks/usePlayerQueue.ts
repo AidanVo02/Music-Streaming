@@ -35,15 +35,15 @@ export function usePlayerQueue() {
 
   // Smart Next: Queue first, then Smart Radio (add to Queue)
   const playNext = useCallback(async () => {
-    console.log('⏭️ Next button pressed');
-    console.log('📊 Queue length:', queue.queue.length);
-    console.log('� Current index:', queue.currentIndex);
+    console.log('[NEXT] Next button pressed');
+    console.log('[STATS] Queue length:', queue.queue.length);
+    console.log(' Current index:', queue.currentIndex);
     
     // Try queue first - check if there's a next track
     if (queue.hasNext()) {
       const nextTrack = queue.playNext();
       if (nextTrack) {
-        console.log('✅ Playing next from queue:', nextTrack.title);
+        console.log('[OK] Playing next from queue:', nextTrack.title);
         await player.playTrack(nextTrack);
         return;
       }
@@ -52,14 +52,14 @@ export function usePlayerQueue() {
     // No next in queue → Smart Radio mode (find similar track and add to queue)
     if (player.currentTrack) {
       try {
-        console.log('🎵 Smart Radio: Finding similar track...');
+        console.log('[AUDIO] Smart Radio: Finding similar track...');
         const response = await ApiService.request(
           `/api/tracks/${player.currentTrack.track_id}/similar?limit=1`
         );
         
         if (response.success && response.data && response.data.length > 0) {
           const rawTrack = response.data[0];
-          console.log('✅ Found similar track:', rawTrack.title);
+          console.log('[OK] Found similar track:', rawTrack.title);
           
           // Ensure track has all required fields with fallbacks
           const similarTrack = {
@@ -78,35 +78,35 @@ export function usePlayerQueue() {
           
           // Add to queue and play immediately to avoid stale state issues during transition
           const trackToPlay = queue.addToQueueAndPlay(similarTrack);
-          console.log('➕ Smart Radio added to queue and playing:', trackToPlay.title);
+          console.log('[ADD] Smart Radio added to queue and playing:', trackToPlay.title);
           await player.playTrack(trackToPlay);
         } else {
-          console.log('⚠️ No similar tracks found');
+          console.log('[WARN] No similar tracks found');
         }
       } catch (error) {
-        console.error('❌ Failed to fetch similar track:', error);
+        console.error('[ERROR] Failed to fetch similar track:', error);
       }
     }
   }, [queue, player]);
 
   // Previous: Navigate back in Queue only
   const playPrevious = useCallback(async () => {
-    console.log('⏮️ Previous button pressed');
-    console.log('📊 Queue length:', queue.queue.length);
-    console.log('� Current index:', queue.currentIndex);
+    console.log('[PREV] Previous button pressed');
+    console.log('[STATS] Queue length:', queue.queue.length);
+    console.log(' Current index:', queue.currentIndex);
     
     // Try queue - check if there's a previous track
     if (queue.hasPrevious()) {
       const prevTrack = queue.playPrevious();
       if (prevTrack) {
-        console.log('✅ Playing previous from queue:', prevTrack.title);
+        console.log('[OK] Playing previous from queue:', prevTrack.title);
         await player.playTrack(prevTrack);
         return;
       }
     }
 
     // No previous in queue
-    console.log('⚠️ No previous track in queue');
+    console.log('[WARN] No previous track in queue');
   }, [queue, player]);
 
   const playTrackAtIndex = useCallback(async (index: number) => {

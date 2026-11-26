@@ -4,7 +4,7 @@ const db = require('../config/db');
 
 async function createPlaylistTables() {
   try {
-    console.log('📦 Creating playlist tables...');
+    console.log('[DB] Creating playlist tables...');
 
     const sqlPath = path.join(__dirname, 'createPlaylistTables.sql');
     const sql = fs.readFileSync(sqlPath, 'utf8');
@@ -21,14 +21,14 @@ async function createPlaylistTables() {
       }
     }
 
-    console.log('✅ Playlist tables created successfully!');
+    console.log('[OK] Playlist tables created successfully!');
     console.log('   - playlists');
     console.log('   - playlist_tracks');
     console.log('   - Triggers for auto-updating stats');
 
     process.exit(0);
   } catch (error) {
-    console.error('❌ Error creating playlist tables:', error);
+    console.error('[ERROR] Error creating playlist tables:', error);
     process.exit(1);
   }
 }

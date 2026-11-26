@@ -26,24 +26,24 @@
       </div>
       <nav class="sidebar-nav">
         <a href="#" class="sidebar-link active" data-view="overview">
-          <span class="icon">📊</span> Overview
+          Overview
         </a>
         <a href="#" class="sidebar-link" data-view="users">
-          <span class="icon">👥</span> Users
+          Users
         </a>
         <a href="#" class="sidebar-link" data-view="tracks">
-          <span class="icon">🎵</span> Tracks
+          Tracks
         </a>
         <a href="#" class="sidebar-link" data-view="applications">
-          <span class="icon">📝</span> Applications
+          Applications
           <span id="pending-badge" class="badge badge-pending hidden" style="margin-left:auto;font-size:0.7rem">0</span>
         </a>
         <a href="#" class="sidebar-link" data-view="settings">
-          <span class="icon">⚙️</span> Settings
+          Settings
         </a>
         <div style="border-top:1px solid var(--border);margin:0.5rem 0"></div>
         <a href="/index.html" class="sidebar-link">
-          <span class="icon">🌐</span> View Website
+          View Website
         </a>
       </nav>
       <div class="sidebar-footer">
@@ -55,10 +55,13 @@
     <!-- Main -->
     <div class="admin-main">
       <header class="admin-topbar">
-        <h1 id="page-title">Overview</h1>
+        <div style="display:flex;align-items:center;gap:0.75rem">
+          <button class="btn btn-secondary btn-sm mobile-menu-btn" id="sidebar-toggle" aria-label="Toggle Menu">MENU</button>
+          <h1 id="page-title">Overview</h1>
+        </div>
         <div style="display:flex;align-items:center;gap:1rem">
           <span id="admin-name" class="badge badge-admin"></span>
-          <button class="btn btn-secondary btn-sm" onclick="location.reload()">↻ Refresh</button>
+          <button class="btn btn-secondary btn-sm" onclick="location.reload()">Refresh</button>
         </div>
       </header>
 
@@ -66,10 +69,10 @@
         <!-- Overview -->
         <div id="overview-view" class="admin-view active">
           <div class="stats-grid">
-            <div class="stat-card"><div class="stat-icon">👥</div><div><div class="stat-value" id="stat-users">—</div><div class="stat-label">Total Users</div></div></div>
-            <div class="stat-card"><div class="stat-icon">🎵</div><div><div class="stat-value" id="stat-tracks">—</div><div class="stat-label">Total Tracks</div></div></div>
-            <div class="stat-card"><div class="stat-icon">🎨</div><div><div class="stat-value" id="stat-artists">—</div><div class="stat-label">Artists</div></div></div>
-            <div class="stat-card"><div class="stat-icon">📝</div><div><div class="stat-value" id="stat-pending">—</div><div class="stat-label">Pending Applications</div></div></div>
+            <div class="stat-card"><div><div class="stat-value" id="stat-users">—</div><div class="stat-label">Total Users</div></div></div>
+            <div class="stat-card"><div><div class="stat-value" id="stat-tracks">—</div><div class="stat-label">Total Tracks</div></div></div>
+            <div class="stat-card"><div><div class="stat-value" id="stat-artists">—</div><div class="stat-label">Artists</div></div></div>
+            <div class="stat-card"><div><div class="stat-value" id="stat-pending">—</div><div class="stat-label">Pending Applications</div></div></div>
           </div>
           <div class="section">
             <div class="section-header"><span class="section-title">Recent Activity</span></div>

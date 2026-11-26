@@ -3,7 +3,7 @@ const db = require('../config/db');
 
 async function createArtistRequestsTable() {
   try {
-    console.log('🔄 Checking if artist_requests table exists...');
+    console.log('[SYNC] Checking if artist_requests table exists...');
 
     // Check if table exists
     const [tables] = await db.query(`
@@ -14,17 +14,17 @@ async function createArtistRequestsTable() {
     `, [process.env.DB_NAME || 'oscstation_db']);
 
     if (tables.length > 0) {
-      console.log('✅ artist_requests table already exists');
+      console.log('[OK] artist_requests table already exists');
       
       // Show table structure
       const [structure] = await db.query('DESCRIBE artist_requests');
-      console.log('\n📋 Table structure:');
+      console.log('\n[INFO] Table structure:');
       console.table(structure);
       
       process.exit(0);
     }
 
-    console.log('➕ Creating artist_requests table...');
+    console.log('[ADD] Creating artist_requests table...');
 
     // Create table
     await db.query(`
@@ -45,21 +45,21 @@ async function createArtistRequestsTable() {
       COMMENT='Artist role application requests'
     `);
 
-    console.log('✅ artist_requests table created successfully');
+    console.log('[OK] artist_requests table created successfully');
 
     // Show table structure
     const [structure] = await db.query('DESCRIBE artist_requests');
-    console.log('\n📋 Table structure:');
+    console.log('\n[INFO] Table structure:');
     console.table(structure);
 
     // Show all tables
     const [allTables] = await db.query('SHOW TABLES');
-    console.log('\n📚 All tables in database:');
+    console.log('\n[HISTORY] All tables in database:');
     console.table(allTables);
 
     process.exit(0);
   } catch (error) {
-    console.error('❌ Error:', error.message);
+    console.error('[ERROR] Error:', error.message);
     console.error('Stack:', error.stack);
     process.exit(1);
   }

@@ -293,7 +293,7 @@ export default function PlayerScreen({ trackId }: Props) {
       if (existsInQueue) {
         // Track already in queue, just jump to it
         const index = queue.queue.findIndex(t => t.track_id === trackData.track_id);
-        console.log(`🎯 Track already in queue at index ${index}, jumping to it`);
+        console.log(`[QUEUE] Track already in queue at index ${index}, jumping to it`);
         const trackToPlay = queue.playTrackAtIndex(index);
         if (trackToPlay) {
           player.playTrack(trackToPlay);
@@ -548,7 +548,7 @@ export default function PlayerScreen({ trackId }: Props) {
         {/* Error / no audio */}
         {audio.error && (
           <Text style={{ color: '#ff4444', textAlign: 'center', fontSize: 11, marginHorizontal: 16, marginTop: 4 }}>
-            ⚠ {audio.error}
+            Error: {audio.error}
           </Text>
         )}
         {!track.audio_url && !track.file_path && (

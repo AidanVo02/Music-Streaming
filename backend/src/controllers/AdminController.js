@@ -263,8 +263,12 @@ class AdminController {
       let recentTracks = [];
       if (trackCols.length > 0) {
         [recentTracks] = await db.query(
-          `SELECT t.track_id, t.title, t.created_at, u.username, 'track_uploaded' as activity_type
-           FROM tracks t LEFT JOIN users u ON t.uploaded_by = u.user_id
+          `SELECT t.track_id, t.title, t.created_at,
+                  COALESCE(u.username, t.originator, a.name, 'System') as username,
+                  'track_uploaded' as activity_type
+           FROM tracks t
+           LEFT JOIN users u ON t.uploaded_by = u.user_id
+           LEFT JOIN artists a ON t.artist_id = a.artist_id
            ORDER BY t.created_at DESC LIMIT ?`, [half]
         );
       }

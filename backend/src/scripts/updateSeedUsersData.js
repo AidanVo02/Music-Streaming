@@ -7,7 +7,7 @@ const db = require('../config/db');
 
 async function updateSeedUsersData() {
   try {
-    console.log('🔄 Updating seed users with profile data...');
+    console.log('[SYNC] Updating seed users with profile data...');
 
     // Update USER_DEMO (regular user)
     await db.query(`
@@ -26,7 +26,7 @@ async function updateSeedUsersData() {
         playlists_count = 8
       WHERE email = 'user@signalonyx.com'
     `);
-    console.log('✅ Updated USER_DEMO');
+    console.log('[OK] Updated USER_DEMO');
 
     // Update ARTIST_DEMO (artist user)
     await db.query(`
@@ -45,7 +45,7 @@ async function updateSeedUsersData() {
         playlists_count = 5
       WHERE email = 'artist@signalonyx.com'
     `);
-    console.log('✅ Updated ARTIST_DEMO');
+    console.log('[OK] Updated ARTIST_DEMO');
 
     // Update ADMIN_DEMO (admin user)
     await db.query(`
@@ -64,17 +64,17 @@ async function updateSeedUsersData() {
         playlists_count = 23
       WHERE email = 'admin@signalonyx.com'
     `);
-    console.log('✅ Updated ADMIN_DEMO');
+    console.log('[OK] Updated ADMIN_DEMO');
 
-    console.log('\n✨ All seed users updated successfully!');
-    console.log('\n📊 Summary:');
+    console.log('\n[DONE] All seed users updated successfully!');
+    console.log('\n[STATS] Summary:');
     console.log('   - USER_DEMO: Free tier, 14-day streak, 24 followed artists');
     console.log('   - ARTIST_DEMO: Premium tier, 312GB used, 12 published tracks');
     console.log('   - ADMIN_DEMO: Pro tier, 1TB used, 48 published tracks');
 
     process.exit(0);
   } catch (error) {
-    console.error('❌ Error updating seed users:', error);
+    console.error('[ERROR] Error updating seed users:', error);
     process.exit(1);
   }
 }

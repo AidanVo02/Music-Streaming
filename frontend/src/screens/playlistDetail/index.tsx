@@ -11,6 +11,7 @@ import TabsBar from '@/src/components/tabsBar/TabsBar';
 import { usePlaylistDetail, usePlaylistActions } from '@/src/hooks/usePlaylists';
 import { usePlayer } from '@/src/context/PlayerContext';
 import { useAuthContext } from '@/src/context/AuthContext';
+import CreatePlaylistModal from '@/src/components/CreatePlaylistModal';
 import styles from './playlistDetail.styles';
 
 import { ORANGE } from '@/src/constants/theme';
@@ -23,9 +24,10 @@ export default function PlaylistDetailScreen() {
   const { id } = useLocalSearchParams();
   const { user } = useAuthContext();
   const { playlist, loading, error, refetch } = usePlaylistDetail(id as string);
-  const { removeTrackFromPlaylist } = usePlaylistActions();
+  const { removeTrackFromPlaylist, updatePlaylist, deletePlaylist } = usePlaylistActions();
   const player = usePlayer();
   const [removingTrackId, setRemovingTrackId] = useState<number | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const isOwner = user && playlist && user.user_id === playlist.user_id;
 
@@ -33,16 +35,55 @@ export default function PlaylistDetailScreen() {
     player.playTrack({
       track_id: track.track_id,
       title: track.title,
-      originator: track.artist_name,
+      originator: track.originator || track.artist_name,
       cover_image_url: track.cover_image_url,
-      audio_url: track.audio_url,
+      audio_url: track.audio_url || track.file_path,
       duration: track.duration,
       genre: track.genre,
     });
   };
 
+  const handleUpdatePlaylist = async (name: string, description?: string) => {
+    if (!playlist) return;
+    await updatePlaylist(playlist.playlist_id, { name, description });
+    await refetch();
+  };
+
+  const handleDeletePlaylist = async () => {
+    if (!playlist) return;
+    if (typeof window !== 'undefined' && window.confirm) {
+      if (!window.confirm(`Delete playlist "${playlist.name}"?`)) return;
+      await deletePlaylist(playlist.playlist_id);
+      router.replace('/(tabs)/library' as any);
+      return;
+    }
+    Alert.alert('Delete Playlist', `Delete "${playlist.name}"?`, [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: async () => {
+          await deletePlaylist(playlist.playlist_id);
+          router.replace('/(tabs)/library' as any);
+        },
+      },
+    ]);
+  };
+
   const handleRemoveTrack = async (trackId: number) => {
     if (!playlist) return;
+
+    if (typeof window !== 'undefined' && window.confirm) {
+      if (!window.confirm('Remove this track from playlist?')) return;
+      try {
+        setRemovingTrackId(trackId);
+        await removeTrackFromPlaylist(playlist.playlist_id, trackId);
+        await refetch();
+      } finally {
+        setRemovingTrackId(null);
+      }
+      return;
+    }
 
     Alert.alert(
       'Remove Track',
@@ -152,10 +193,17 @@ export default function PlaylistDetailScreen() {
           <View style={styles.actionsRow}>
             <TouchableOpacity
               style={styles.actionButton}
-              onPress={() => router.push(`/playlist/${id}/edit` as any)}
+              onPress={() => setShowEditModal(true)}
             >
               <MaterialIcons name="edit" size={20} color="#fff" />
               <Text style={styles.actionButtonText}>Edit</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.actionButton, { borderColor: '#ff4444' }]}
+              onPress={handleDeletePlaylist}
+            >
+              <MaterialIcons name="delete-outline" size={20} color="#ff4444" />
+              <Text style={[styles.actionButtonText, { color: '#ff4444' }]}>Delete</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -212,6 +260,12 @@ export default function PlaylistDetailScreen() {
           )}
         </View>
       </ScrollView>
+
+      <CreatePlaylistModal
+        visible={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        onCreate={handleUpdatePlaylist}
+      />
 
       <TabsBar />
     </SafeAreaView>

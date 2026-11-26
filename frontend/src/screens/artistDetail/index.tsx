@@ -14,6 +14,7 @@ import { useRouter } from 'expo-router';
 import styles from './ArtistDetailScreen.styles';
 import { useArtistDetail } from '@/src/hooks/useArtistDetail';
 import { usePlayer } from '@/src/context/PlayerContext';
+import { useQueue } from '@/src/context/QueueContext';
 import THEME, { ORANGE } from '@/src/constants/theme';
 
 const { width } = Dimensions.get('window');
@@ -34,8 +35,41 @@ interface ArtistDetailScreenProps {
 const ArtistDetailScreen = ({ artistId }: ArtistDetailScreenProps) => {
   const router = useRouter();
   const player = usePlayer();
+  const queue = useQueue();
   const { artist, tracks, loading, error, refetch } = useArtistDetail(artistId);
   const [followed, setFollowed] = useState(false);
+
+  const handlePlayAll = () => {
+    if (!tracks.length) return;
+    const mapped = tracks.map(t => ({
+      track_id: t.track_id,
+      title: t.title,
+      originator: t.originator || artist?.name,
+      cover_image_url: t.cover_image_url || artist?.image_url,
+      audio_url: t.audio_url || t.file_path,
+      file_path: t.file_path || t.audio_url,
+      duration: t.duration,
+      genre: t.genre,
+    }));
+    queue.setQueue(mapped, 0);
+    player.playTrack(mapped[0]);
+  };
+
+  const handleShufflePlay = () => {
+    if (!tracks.length) return;
+    const mapped = tracks.map(t => ({
+      track_id: t.track_id,
+      title: t.title,
+      originator: t.originator || artist?.name,
+      cover_image_url: t.cover_image_url || artist?.image_url,
+      audio_url: t.audio_url || t.file_path,
+      file_path: t.file_path || t.audio_url,
+      duration: t.duration,
+      genre: t.genre,
+    })).sort(() => Math.random() - 0.5);
+    queue.setQueue(mapped, 0);
+    player.playTrack(mapped[0]);
+  };
   
 
   if (loading) {
@@ -113,12 +147,12 @@ const ArtistDetailScreen = ({ artistId }: ArtistDetailScreenProps) => {
 
         {/* Action Buttons */}
         <View style={styles.actionsRow}>
-          <TouchableOpacity style={styles.playAllBtn}>
+          <TouchableOpacity style={styles.playAllBtn} onPress={handlePlayAll}>
             <MaterialIcons name="play-arrow" size={width * 0.055} color={THEME.colors.textInverse} />
             <Text style={styles.playAllText}>PLAY ALL</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.shuffleBtn}>
+          <TouchableOpacity style={styles.shuffleBtn} onPress={handleShufflePlay}>
             <Ionicons name="shuffle" size={width * 0.05} color={THEME.colors.textPrimary} />
             <Text style={styles.shuffleText}>SHUFFLE</Text>
           </TouchableOpacity>

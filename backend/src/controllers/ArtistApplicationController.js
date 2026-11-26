@@ -4,7 +4,7 @@ class ArtistApplicationController {
   // Apply for artist role
   static async applyForArtist(req, res) {
     try {
-      console.log('🎨 Artist Application Request:', {
+      console.log('[ARTIST] Artist Application Request:', {
         body: req.body,
         user_id: req.user?.user_id,
         user_role: req.user?.role
@@ -15,7 +15,7 @@ class ArtistApplicationController {
 
       // Validation
       if (!artist_name || artist_name.trim().length < 3) {
-        console.log('❌ Validation failed: artist_name too short');
+        console.log('[ERROR] Validation failed: artist_name too short');
         return res.status(400).json({
           success: false,
           message: 'Artist name must be at least 3 characters',
@@ -23,24 +23,24 @@ class ArtistApplicationController {
       }
 
       // Check if user already has artist role
-      console.log('🔍 Checking user role...');
+      console.log('[CHECK] Checking user role...');
       const [user] = await db.query(
         'SELECT role FROM users WHERE user_id = ?',
         [user_id]
       );
 
       if (!user || user.length === 0) {
-        console.log('❌ User not found');
+        console.log('[ERROR] User not found');
         return res.status(404).json({
           success: false,
           message: 'User not found',
         });
       }
 
-      console.log('👤 User role:', user[0].role);
+      console.log('[USER] User role:', user[0].role);
 
       if (user[0].role === 'artist' || user[0].role === 'admin') {
-        console.log('❌ User already has artist privileges');
+        console.log('[ERROR] User already has artist privileges');
         return res.status(400).json({
           success: false,
           message: 'You already have artist privileges',
@@ -48,14 +48,14 @@ class ArtistApplicationController {
       }
 
       // Check if user already has a pending request
-      console.log('🔍 Checking for existing pending request...');
+      console.log('[CHECK] Checking for existing pending request...');
       const [existingRequest] = await db.query(
         'SELECT * FROM artist_requests WHERE user_id = ? AND status = ?',
         [user_id, 'pending']
       );
 
       if (existingRequest.length > 0) {
-        console.log('❌ User already has pending request');
+        console.log('[ERROR] User already has pending request');
         return res.status(400).json({
           success: false,
           message: 'You already have a pending artist application',
@@ -63,14 +63,14 @@ class ArtistApplicationController {
       }
 
       // Check if artist name is already taken
-      console.log('🔍 Checking if artist name is available...');
+      console.log('[CHECK] Checking if artist name is available...');
       const [existingArtist] = await db.query(
         'SELECT user_id FROM users WHERE artist_name = ? AND user_id != ?',
         [artist_name.trim(), user_id]
       );
 
       if (existingArtist.length > 0) {
-        console.log('❌ Artist name already taken');
+        console.log('[ERROR] Artist name already taken');
         return res.status(400).json({
           success: false,
           message: 'This artist name is already taken',
@@ -78,13 +78,13 @@ class ArtistApplicationController {
       }
 
       // Create artist request — status stays 'pending' until admin reviews
-      console.log('📝 Creating artist request...');
+      console.log('[LOG] Creating artist request...');
       const [result] = await db.query(
         `INSERT INTO artist_requests (user_id, status, note, created_at)
          VALUES (?, 'pending', ?, NOW())`,
         [user_id, bio || null]
       );
-      console.log('✅ Artist request created:', result.insertId);
+      console.log('[OK] Artist request created:', result.insertId);
 
       // Save artist_name to user profile (before approval)
       await db.query(
@@ -92,7 +92,7 @@ class ArtistApplicationController {
         [artist_name.trim(), user_id]
       );
 
-      console.log('⏳ Application pending admin review');
+      console.log('[PENDING] Application pending admin review');
       return res.status(201).json({
         success: true,
         message: 'Application submitted! Please wait for admin review.',
@@ -102,7 +102,7 @@ class ArtistApplicationController {
         },
       });
     } catch (error) {
-      console.error('❌ Apply for artist error:', error);
+      console.error('[ERROR] Apply for artist error:', error);
       console.error('Error stack:', error.stack);
       return res.status(500).json({
         success: false,

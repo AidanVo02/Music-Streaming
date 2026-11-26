@@ -47,7 +47,7 @@ export const QueueProvider = ({ children }: { children: React.ReactNode }) => {
   // ─── AUTO-TRIM QUEUE ───────────────────────────────────────────────────
   const trimQueueIfNeeded = useCallback((newQueue: PlayerTrack[], newIndex: number) => {
     if (newQueue.length > QUEUE_LIMIT) {
-      console.log(`🗑️ Queue limit reached (${QUEUE_LIMIT}). Trimming to ${QUEUE_TRIM_TO} tracks...`);
+      console.log(`[TRIM] Queue limit reached (${QUEUE_LIMIT}). Trimming to ${QUEUE_TRIM_TO} tracks...`);
       
       // Keep the most recent QUEUE_TRIM_TO tracks
       const trimmedQueue = newQueue.slice(-QUEUE_TRIM_TO);
@@ -56,7 +56,7 @@ export const QueueProvider = ({ children }: { children: React.ReactNode }) => {
       const indexOffset = newQueue.length - QUEUE_TRIM_TO;
       const adjustedIndex = Math.max(0, newIndex - indexOffset);
       
-      console.log(`✂️ Removed ${indexOffset} old tracks. New index: ${adjustedIndex}`);
+      console.log(`[TRIM] Removed ${indexOffset} old tracks. New index: ${adjustedIndex}`);
       
       return { queue: trimmedQueue, index: adjustedIndex };
     }
@@ -95,7 +95,7 @@ export const QueueProvider = ({ children }: { children: React.ReactNode }) => {
     setOriginalQueue(trimmedQueue);
     setCurrentIndex(adjustedIndex);
     
-    console.log(`➕ Added track to queue at index ${adjustedIndex}`);
+    console.log(`[ADD] Added track to queue at index ${adjustedIndex}`);
     
     return track;
   }, [queue, trimQueueIfNeeded]);

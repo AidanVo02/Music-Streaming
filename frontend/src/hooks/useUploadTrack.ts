@@ -41,7 +41,7 @@ export const useUploadTrack = (): UseUploadTrackReturn => {
       setError(null);
       setProgress(0);
 
-      console.log('📤 Starting upload:', { title, originator, genre, hasImage: !!imageFile });
+      console.log('[UPLOAD] Starting upload:', { title, originator, genre, hasImage: !!imageFile });
 
       // Simulate progress
       const progressInterval = setInterval(() => {
@@ -63,7 +63,7 @@ export const useUploadTrack = (): UseUploadTrackReturn => {
       setProgress(100);
 
       if (response.success && response.data) {
-        console.log('✅ Upload successful');
+        console.log('[OK] Upload successful');
         setTimeout(() => {
           setUploading(false);
           setProgress(0);
@@ -74,7 +74,7 @@ export const useUploadTrack = (): UseUploadTrackReturn => {
       }
     } catch (err: any) {
       setError(err.message || 'Upload failed');
-      console.error('❌ Upload error:', err);
+      console.error('[ERROR] Upload error:', err);
       setUploading(false);
       setProgress(0);
       return null;
@@ -104,14 +104,14 @@ export const usePickAudio = (): UsePickAudioReturn => {
       setPicking(true);
       setError(null);
 
-      console.log('🎵 Picking audio file...');
+      console.log('[AUDIO] Picking audio file...');
       const file = await UploadService.pickAudioFile();
 
       setPicking(false);
       return file;
     } catch (err: any) {
       setError(err.message || 'Failed to pick file');
-      console.error('❌ Pick error:', err);
+      console.error('[ERROR] Pick error:', err);
       setPicking(false);
       return null;
     }

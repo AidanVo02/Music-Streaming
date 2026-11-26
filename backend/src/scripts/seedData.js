@@ -54,11 +54,11 @@ const tracks = [
 ];
 
 async function seed() {
-  console.log('🌱 Seeding database with sample data...\n');
+  console.log('[SEED] Seeding database with sample data...\n');
 
   try {
     // Insert artists
-    console.log('📝 Creating artists...');
+    console.log('[LOG] Creating artists...');
     const artistIds = [];
     for (const artist of artists) {
       const [result] = await db.query(
@@ -66,16 +66,20 @@ async function seed() {
         [artist.name, artist.bio, artist.image_url]
       );
       artistIds.push(result.insertId);
-      console.log(`  ✅ ${artist.name}`);
+      console.log(`  [OK] ${artist.name}`);
     }
 
+    // Find artist_demo user if seeded
+    const [artistUsers] = await db.query("SELECT user_id FROM users WHERE role = 'artist' LIMIT 1");
+    const defaultUploaderId = artistUsers.length > 0 ? artistUsers[0].user_id : null;
+
     // Insert tracks
-    console.log('\n🎵 Creating tracks...');
+    console.log('\n[AUDIO] Creating tracks...');
     for (const track of tracks) {
       const artistId = artistIds[track.artist_idx];
       await db.query(
-        `INSERT INTO tracks (title, artist_id, genre, duration, play_count, cover_image_url, file_path, originator)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO tracks (title, artist_id, genre, duration, play_count, cover_image_url, file_path, originator, uploaded_by)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           track.title,
           artistId,
@@ -85,19 +89,27 @@ async function seed() {
           track.cover,
           'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', // placeholder audio
           artists[track.artist_idx].name,
+          defaultUploaderId,
         ]
       );
-      console.log(`  ✅ ${track.title} - ${track.genre} (${track.play_count} plays)`);
+      console.log(`  [OK] ${track.title} - ${track.genre} (${track.play_count} plays)`);
     }
 
-    console.log('\n✔ Seeding completed successfully!');
-    console.log(`\n📊 Summary:`);
+    if (defaultUploaderId) {
+      await db.query(
+        'UPDATE users SET published_tracks_count = (SELECT COUNT(*) FROM tracks WHERE uploaded_by = ?) WHERE user_id = ?',
+        [defaultUploaderId, defaultUploaderId]
+      );
+    }
+
+    console.log('\n[OK] Seeding completed successfully!');
+    console.log(`\n[STATS] Summary:`);
     console.log(`   - ${artists.length} artists created`);
     console.log(`   - ${tracks.length} tracks created`);
     console.log(`   - Genres: Electronic, Ambient, House, Techno, Trance, Lo-fi, Synthwave, Drum & Bass`);
     
   } catch (error) {
-    console.error('\n❌ Seeding failed:', error.message);
+    console.error('\n[ERROR] Seeding failed:', error.message);
   } finally {
     process.exit(0);
   }

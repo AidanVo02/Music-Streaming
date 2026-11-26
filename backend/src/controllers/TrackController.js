@@ -101,9 +101,9 @@ class TrackController {
       }
 
       // Generate waveform peaks from the uploaded file
-      console.log('🎵 Generating waveform...');
+      console.log('[AUDIO] Generating waveform...');
       const waveformPeaks = await generateWaveformFromFile(finalPath);
-      console.log(`✅ Waveform generated: ${waveformPeaks.length} peaks`);
+      console.log(`[OK] Waveform generated: ${waveformPeaks.length} peaks`);
 
       const trackResult = await Track.create({
         title: normalizedTitle,
@@ -115,6 +115,14 @@ class TrackController {
         waveform_data: JSON.stringify(waveformPeaks),
         uploaded_by: req.user?.user_id || null,
       });
+
+      if (req.user?.user_id) {
+        const db = require('../config/db.js');
+        await db.query(
+          'UPDATE users SET published_tracks_count = published_tracks_count + 1 WHERE user_id = ?',
+          [req.user.user_id]
+        );
+      }
 
       return res.status(201).json({
         success: true,

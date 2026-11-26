@@ -8,7 +8,7 @@ async function run() {
     'SELECT track_id, file_path, title FROM tracks WHERE waveform_data IS NULL'
   );
 
-  console.log(`🎵 Generating waveforms for ${tracks.length} tracks...`);
+  console.log(`[AUDIO] Generating waveforms for ${tracks.length} tracks...`);
 
   for (const track of tracks) {
     try {
@@ -28,13 +28,13 @@ async function run() {
         'UPDATE tracks SET waveform_data = ? WHERE track_id = ?',
         [JSON.stringify(peaks), track.track_id]
       );
-      console.log(`  ✅ [${track.track_id}] ${track.title}`);
+      console.log(`  [OK] [${track.track_id}] ${track.title}`);
     } catch (e) {
-      console.error(`  ❌ [${track.track_id}] ${track.title}: ${e.message}`);
+      console.error(`  [ERROR] [${track.track_id}] ${track.title}: ${e.message}`);
     }
   }
 
-  console.log('✅ Done!');
+  console.log('[OK] Done!');
   process.exit(0);
 }
 

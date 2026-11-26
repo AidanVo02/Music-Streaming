@@ -149,7 +149,7 @@ export function usePlaylistActions() {
       setError(null);
       const token = await AsyncStorage.getItem('@signal_onyx_token');
 
-      console.log('🔑 Creating playlist with token:', token ? 'Token exists' : 'No token');
+      console.log('[AUTH] Creating playlist with token:', token ? 'Token exists' : 'No token');
 
       if (!token) {
         throw new Error('Not authenticated. Please login first.');
@@ -161,7 +161,7 @@ export function usePlaylistActions() {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log('✅ Playlist created successfully:', response);
+      console.log('[OK] Playlist created successfully:', response);
 
       return response.data;
     } catch (err: any) {

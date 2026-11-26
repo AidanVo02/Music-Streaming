@@ -99,19 +99,19 @@ const UploadScreen = () => {
       id: 0,
       name: 'TUBE WARMTH',
       description: 'ANALOG SATURATION',
-      icon: '🔊',
+      icon: 'volume-high',
     },
     {
       id: 1,
       name: 'PUNCHY DRUMS',
       description: 'TRANSIENT SHAPING',
-      icon: '🥁',
+      icon: 'pulse',
     },
     {
       id: 2,
       name: 'STUDIO NEUTRAL',
       description: 'BALANCED EQ',
-      icon: '📊',
+      icon: 'stats-chart',
     },
   ];
 
@@ -123,7 +123,7 @@ const UploadScreen = () => {
       const file = await pickAudio();
       if (file) {
         setSelectedFile(file);
-        console.log('✅ File selected:', file.name);
+        console.log('[OK] File selected:', file.name);
       }
     } catch (error) {
       Alert.alert('Error', 'Failed to pick audio file');
@@ -215,7 +215,7 @@ const UploadScreen = () => {
             )}
           </View>
           <Text style={styles.injectText}>
-            {selectedFile ? '📁 ' + selectedFile.name : 'TAP TO INJECT SIGNAL'}
+            {selectedFile ? 'Selected: ' + selectedFile.name : 'TAP TO INJECT SIGNAL'}
           </Text>
           <Text style={styles.injectSubtext}>
             {selectedFile ? 'Audio file selected' : 'READY FOR 96KHZ / 24-BIT INPUT'}
@@ -328,7 +328,7 @@ const UploadScreen = () => {
                 onPress={() => setSelectedChain(chain.id)}
                 disabled={uploading}
               >
-                <Text style={styles.chainIcon}>{chain.icon}</Text>
+                <Ionicons name={chain.icon as any} size={width * 0.07} color={selectedChain === chain.id ? ORANGE : '#888'} style={{ marginBottom: 6 }} />
                 <Text
                   style={[
                     styles.chainName,
@@ -413,7 +413,7 @@ const UploadScreen = () => {
         {/* Error Message */}
         {uploadError && (
           <View style={styles.errorContainer}>
-            <Text style={styles.errorText}>❌ {uploadError}</Text>
+            <Text style={styles.errorText}>Error: {uploadError}</Text>
           </View>
         )}
 

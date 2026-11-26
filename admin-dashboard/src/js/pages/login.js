@@ -12,7 +12,7 @@ const pwInput  = document.getElementById('password');
 
 togglePw.addEventListener('click', () => {
   pwInput.type = pwInput.type === 'password' ? 'text' : 'password';
-  togglePw.textContent = pwInput.type === 'password' ? '👁' : '🙈';
+  togglePw.textContent = pwInput.type === 'password' ? 'SHOW' : 'HIDE';
 });
 
 form.addEventListener('submit', async e => {
@@ -42,6 +42,6 @@ form.addEventListener('submit', async e => {
 });
 
 function showError(msg) {
-  errorEl.textContent = '⚠ ' + msg;
+  errorEl.textContent = 'Error: ' + msg;
   errorEl.classList.remove('hidden');
 }

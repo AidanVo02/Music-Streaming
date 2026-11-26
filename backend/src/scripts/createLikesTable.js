@@ -3,7 +3,7 @@ const db = require('../config/db');
 
 async function createLikesTable() {
   try {
-    console.log('🔄 Checking if liked_tracks table exists...');
+    console.log('[SYNC] Checking if liked_tracks table exists...');
 
     const [tables] = await db.query(`
       SELECT TABLE_NAME 
@@ -13,11 +13,11 @@ async function createLikesTable() {
     `, [process.env.DB_NAME || 'oscstation_db']);
 
     if (tables.length > 0) {
-      console.log('✅ liked_tracks table already exists');
+      console.log('[OK] liked_tracks table already exists');
       return process.exit(0);
     }
 
-    console.log('➕ Creating liked_tracks table...');
+    console.log('[ADD] Creating liked_tracks table...');
 
     await db.query(`
       CREATE TABLE liked_tracks (
@@ -34,10 +34,10 @@ async function createLikesTable() {
       COMMENT='Tracks liked by users'
     `);
 
-    console.log('✅ liked_tracks table created successfully');
+    console.log('[OK] liked_tracks table created successfully');
     process.exit(0);
   } catch (error) {
-    console.error('❌ Error:', error.message);
+    console.error('[ERROR] Error:', error.message);
     process.exit(1);
   }
 }

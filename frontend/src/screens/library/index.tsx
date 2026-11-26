@@ -165,8 +165,8 @@ const LibraryScreen = () => {
               <FlatList
                 data={artists}
                 keyExtractor={(item, index) => {
-                  console.log('🔍 Artist item:', item);
-                  return item?.id ? item.id.toString() : `artist-${index}`;
+                  const idVal = item?.artist_id ?? item?.id;
+                  return idVal ? idVal.toString() : `artist-${index}`;
                 }}
                 renderItem={({ item, index }) => (
                   <TouchableOpacity

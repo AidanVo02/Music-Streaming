@@ -9,10 +9,10 @@ async function run() {
     `);
 
     if (cols.length > 0) {
-      console.log('✅ created_at already exists in tracks');
+      console.log('[OK] created_at already exists in tracks');
     } else {
       await db.query(`ALTER TABLE tracks ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP`);
-      console.log('✅ Added created_at to tracks');
+      console.log('[OK] Added created_at to tracks');
     }
 
     // Also check uploaded_by
@@ -22,9 +22,9 @@ async function run() {
     `);
     if (ubCols.length === 0) {
       await db.query(`ALTER TABLE tracks ADD COLUMN uploaded_by INT NULL`);
-      console.log('✅ Added uploaded_by to tracks');
+      console.log('[OK] Added uploaded_by to tracks');
     } else {
-      console.log('✅ uploaded_by already exists in tracks');
+      console.log('[OK] uploaded_by already exists in tracks');
     }
 
     process.exit(0);

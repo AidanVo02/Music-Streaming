@@ -7,10 +7,10 @@ export function showToast(message, type = 'success') {
     document.body.appendChild(container);
   }
 
-  const icons = { success: '✅', error: '❌', warning: '⚠️' };
+  const icons = { success: '[SUCCESS]', error: '[ERROR]', warning: '[WARNING]' };
   const toast = document.createElement('div');
   toast.className = `toast toast-${type}`;
-  toast.innerHTML = `<span class="toast-icon">${icons[type] || '💬'}</span><span class="toast-msg">${message}</span>`;
+  toast.innerHTML = `<span class="toast-icon">${icons[type] || '[INFO]'}</span><span class="toast-msg">${message}</span>`;
   container.appendChild(toast);
 
   requestAnimationFrame(() => toast.classList.add('show'));
@@ -29,7 +29,7 @@ export function openModal(title, bodyHTML, footerHTML = '') {
   content.innerHTML = `
     <div class="modal-header">
       <h3>${title}</h3>
-      <button class="modal-close" onclick="closeModal()">✕</button>
+      <button class="modal-close" onclick="closeModal()">CLOSE</button>
     </div>
     <div class="modal-body">${bodyHTML}</div>
     ${footerHTML ? `<div class="modal-footer">${footerHTML}</div>` : ''}
@@ -89,5 +89,5 @@ export function setLoading(el, loading, text = '') {
 }
 
 export function setError(el, message) {
-  el.innerHTML = `<div class="loading-state" style="color:var(--error)">❌ ${message}</div>`;
+  el.innerHTML = `<div class="loading-state" style="color:var(--error)">Error: ${message}</div>`;
 }

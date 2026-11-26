@@ -4,7 +4,7 @@ class PlaylistController {
   // ─── CREATE PLAYLIST ───────────────────────────────────────────────────
   static async createPlaylist(req, res) {
     try {
-      console.log('📝 Create playlist request:', {
+      console.log('[LOG] Create playlist request:', {
         body: req.body,
         user: req.user ? { user_id: req.user.user_id, username: req.user.username } : 'No user',
         headers: req.headers.authorization ? 'Token present' : 'No token'
@@ -25,9 +25,12 @@ class PlaylistController {
         is_public: is_public !== false, // default true
       });
 
+      const db = require('../config/db');
+      await db.query('UPDATE users SET playlists_count = playlists_count + 1 WHERE user_id = ?', [user_id]);
+
       const playlist = await Playlist.getById(playlist_id);
 
-      console.log('✅ Playlist created:', playlist);
+      console.log('[OK] Playlist created:', playlist);
 
       return res.status(201).json({
         success: true,
@@ -35,7 +38,7 @@ class PlaylistController {
         data: playlist,
       });
     } catch (error) {
-      console.error('❌ createPlaylist error:', error);
+      console.error('[ERROR] createPlaylist error:', error);
       return res.status(500).json({ success: false, message: 'Failed to create playlist' });
     }
   }
@@ -164,6 +167,8 @@ class PlaylistController {
       }
 
       await Playlist.delete(playlist_id);
+      const db = require('../config/db');
+      await db.query('UPDATE users SET playlists_count = GREATEST(playlists_count - 1, 0) WHERE user_id = ?', [user_id]);
 
       return res.json({
         success: true,

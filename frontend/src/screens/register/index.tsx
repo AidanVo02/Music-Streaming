@@ -135,7 +135,7 @@ const RegisterScreen = () => {
             {/* Error */}
             {error ? (
               <Text style={{ color: THEME.colors.error, fontSize: 12, marginBottom: 8, letterSpacing: 0.5 }}>
-                ⚠ {error}
+                Error: {error}
               </Text>
             ) : null}
 

@@ -102,9 +102,11 @@
 .filter-bar select.input { flex: 0 0 auto; min-width: 140px; }
 
 /* ─── RESPONSIVE ─────────────────────────────────────────────────────────── */
+.mobile-menu-btn { display: none; }
 @media (max-width: 900px) {
+  .mobile-menu-btn { display: inline-flex; }
   .sidebar { transform: translateX(-100%); transition: transform 0.3s; }
-  .sidebar.open { transform: translateX(0); }
+  .sidebar.open { transform: translateX(0); box-shadow: 4px 0 24px rgba(0,0,0,0.8); }
   .admin-main { margin-left: 0; }
 }
 @media (max-width: 768px) {

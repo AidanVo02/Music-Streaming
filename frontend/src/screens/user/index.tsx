@@ -56,7 +56,7 @@ const UserScreen = () => {
     };
 
     const handleLogout = async () => {
-      console.log('🔴 Logout button pressed');
+      console.log('[LOGOUT] Logout button pressed');
       
       // For web, use window.confirm
       if (typeof window !== 'undefined' && window.confirm) {
@@ -78,9 +78,9 @@ const UserScreen = () => {
         return;
       }
 
-      console.log('🔴 Logging out...');
+      console.log('[LOGOUT] Logging out...');
       await logout();
-      console.log('🔴 Redirecting to home...');
+      console.log('[LOGOUT] Redirecting to home...');
       router.replace('/(tabs)');
     };
 

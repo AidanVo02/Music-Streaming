@@ -3,7 +3,7 @@ const db = require('../config/db');
 
 async function addArtistNameColumn() {
   try {
-    console.log('🔄 Checking if artist_name column exists...');
+    console.log('[SYNC] Checking if artist_name column exists...');
 
     // Check if column exists
     const [columns] = await db.query(`
@@ -15,11 +15,11 @@ async function addArtistNameColumn() {
     `, [process.env.DB_NAME || 'oscstation_db']);
 
     if (columns.length > 0) {
-      console.log('✅ artist_name column already exists');
+      console.log('[OK] artist_name column already exists');
       process.exit(0);
     }
 
-    console.log('➕ Adding artist_name column...');
+    console.log('[ADD] Adding artist_name column...');
 
     // Add column
     await db.query(`
@@ -29,16 +29,16 @@ async function addArtistNameColumn() {
       AFTER role
     `);
 
-    console.log('✅ artist_name column added successfully');
+    console.log('[OK] artist_name column added successfully');
 
     // Verify
     const [result] = await db.query('DESCRIBE users');
-    console.log('\n📋 Users table structure:');
+    console.log('\n[INFO] Users table structure:');
     console.table(result);
 
     process.exit(0);
   } catch (error) {
-    console.error('❌ Error:', error.message);
+    console.error('[ERROR] Error:', error.message);
     process.exit(1);
   }
 }

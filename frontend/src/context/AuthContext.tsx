@@ -86,10 +86,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (savedToken && savedUser) {
           setToken(savedToken);
           setUser(JSON.parse(savedUser));
-          console.log('✅ Session restored successfully');
+          console.log('[OK] Session restored successfully');
         }
       } catch (e) {
-        console.warn('⚠️ Failed to restore session:', e);
+        console.warn('[WARN] Failed to restore session:', e);
       } finally {
         setLoading(false);
       }
@@ -105,9 +105,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       ]);
       setUser(newUser);
       setToken(newToken);
-      console.log('✅ Auth saved successfully');
+      console.log('[OK] Auth saved successfully');
     } catch (error) {
-      console.error('❌ Failed to save auth:', error);
+      console.error('[ERROR] Failed to save auth:', error);
       // Still set in state even if storage fails
       setUser(newUser);
       setToken(newToken);
@@ -122,9 +122,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       ]);
       setUser(null);
       setToken(null);
-      console.log('✅ Logged out successfully');
+      console.log('[OK] Logged out successfully');
     } catch (error) {
-      console.error('❌ Failed to logout:', error);
+      console.error('[ERROR] Failed to logout:', error);
       setUser(null);
       setToken(null);
     }
@@ -144,10 +144,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const updatedUser: User = data.data;
         await safeAsyncStorage.setItem(USER_KEY, JSON.stringify(updatedUser));
         setUser(updatedUser);
-        console.log('✅ User refreshed, role:', updatedUser.role);
+        console.log('[OK] User refreshed, role:', updatedUser.role);
       }
     } catch (error) {
-      console.warn('⚠️ Failed to refresh user:', error);
+      console.warn('[WARN] Failed to refresh user:', error);
     }
   };
 
